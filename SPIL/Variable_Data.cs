@@ -61,6 +61,9 @@ namespace SPIL
         public int AOI_save_idx_1 = 0;
         public int AOI_save_idx_2 = 0;
         public int AOI_save_idx_3 = 0;
+        public int manual_save_idx_1 = 0;
+        public int manual_save_idx_2 = 0;
+        public int manual_save_idx_3 = 0;
         //手動量測button座標,長寬
         public int hand_measurement_X = 0;
         public int hand_measurement_Y = 0;
@@ -183,6 +186,12 @@ namespace SPIL
                                 AOI_save_idx_2 = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
                             else if (Third_Node_Data_1 == "AOI_save_idx_3")
                                 AOI_save_idx_3 = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
+                            else if (Third_Node_Data_1 == "manual_save_idx_1")
+                                manual_save_idx_1 = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
+                            else if (Third_Node_Data_1 == "manual_save_idx_2")
+                                manual_save_idx_2 = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
+                            else if (Third_Node_Data_1 == "manual_save_idx_3")
+                                manual_save_idx_3 = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
                             else if (Third_Node_Data_1 == "hand_measurement_X")
                                 hand_measurement_X = Convert.ToInt32(Third_Node_Each_XmlElement.InnerText);
                             else if (Third_Node_Data_1 == "hand_measurement_Y")

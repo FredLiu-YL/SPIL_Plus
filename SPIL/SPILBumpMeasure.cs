@@ -21,6 +21,9 @@ namespace SPIL
         public int save_AOI_result_idx_1 = 0;
         public int save_AOI_result_idx_2 = 0;
         public int save_AOI_result_idx_3 = 0;
+        public int manual_save_AOI_result_idx_1 = 0;
+        public int manual_save_AOI_result_idx_2 = 0;
+        public int manual_save_AOI_result_idx_3 = 0;
         //顯示圖片用的cogdisplay元件
         public CogDisplay CogDisplay_result_1;
         public CogDisplay CogDisplay_result_2;
@@ -86,7 +89,7 @@ namespace SPIL
         //    }
         //}
 
-        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, out double distance_CuNi, out double distance_Cu)
+        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, out double distance_CuNi, out double distance_Cu)
         {
             try
             {
@@ -94,9 +97,18 @@ namespace SPIL
                 Bitmap img1 = new Bitmap(Input_Image_Address1);
                 Bitmap img2 = new Bitmap(Input_Image_Address2);
                 Bitmap img3 = new Bitmap(Input_Image_Address3);
-                MeasureToolBlock.Inputs["Image"].Value = new CogImage24PlanarColor(img1);
-                MeasureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img2);
-                MeasureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img3);
+                if (is_maunal)
+                {
+                    MeasureToolBlock.Inputs["Image"].Value = new CogImage24PlanarColor(img1);
+                    MeasureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img2);
+                    MeasureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img3);
+                }
+                else
+                {
+                    MeasureToolBlock.Inputs["Image"].Value = new CogImage24PlanarColor(img1);
+                    MeasureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img2);
+                    MeasureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img3);
+                }
                 MeasureToolBlock.Run();
                 distance_CuNi = (double)MeasureToolBlock.Outputs["Distance"].Value;
                 distance_Cu = (double)MeasureToolBlock.Outputs["Distance1"].Value;
@@ -120,7 +132,7 @@ namespace SPIL
                 }
                 else
                 {
-                    Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3);
+                    Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                     logger.Write_Logger("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }
                 img1.Dispose();
@@ -139,23 +151,36 @@ namespace SPIL
             }
         }
         
-        void Save_Toolblock_result_img(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3)
+        void Save_Toolblock_result_img(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal)
         {
+            int idx1 = 0, idx2 = 0, idx3 = 0;
+            if (is_maunal)
+            {
+                idx1 = manual_save_AOI_result_idx_1;
+                idx2 = manual_save_AOI_result_idx_2;
+                idx3 = manual_save_AOI_result_idx_3;
+            }
+            else
+            {
+                idx1 = save_AOI_result_idx_1;
+                idx2 = save_AOI_result_idx_2;
+                idx3 = save_AOI_result_idx_3;
+            }
             // 存圖
-            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[save_AOI_result_idx_1];
-            logger.Write_Logger("save AOI idx:" + save_AOI_result_idx_1);
+            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx1];
+            logger.Write_Logger("save AOI idx:" + idx1);
             string save_result_name = Path.ChangeExtension(Input_Image_Address1, null);
             Bitmap save_result_img1 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img1.Save(save_result_name + "_AOI.bmp");
 
-            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[save_AOI_result_idx_2];
-            logger.Write_Logger("save AOI idx:" + save_AOI_result_idx_2);
+            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx2];
+            logger.Write_Logger("save AOI idx:" + idx2);
             save_result_name = Path.ChangeExtension(Input_Image_Address2, null);
             Bitmap save_result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img2.Save(save_result_name + "_AOI.bmp");
 
-            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[save_AOI_result_idx_3];
-            logger.Write_Logger("save AOI idx:" + save_AOI_result_idx_3);
+            cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx3];
+            logger.Write_Logger("save AOI idx:" + idx3);
             save_result_name = Path.ChangeExtension(Input_Image_Address3, null);
             Bitmap save_result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img3.Save(save_result_name + "_AOI.bmp");

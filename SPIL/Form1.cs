@@ -236,6 +236,10 @@ namespace SPIL
             numericUpDown_AOI_save_idx2.Value = variable_data.AOI_save_idx_2;
             numericUpDown_AOI_save_idx3.Value = variable_data.AOI_save_idx_3;
             //
+            numericUpDown_manual_save_idx1.Value = variable_data.manual_save_idx_1;
+            numericUpDown_manual_save_idx2.Value = variable_data.manual_save_idx_2;
+            numericUpDown_manual_save_idx3.Value = variable_data.manual_save_idx_3;
+            //
             textBox_hand_measure_X.Text = variable_data.hand_measurement_X.ToString();
             textBox_hand_measure_Y.Text = variable_data.hand_measurement_Y.ToString();
             textBox_hand_measure_H.Text = variable_data.hand_measurement_H.ToString();
@@ -797,6 +801,10 @@ namespace SPIL
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+
                 AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
                 AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
                 AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
@@ -809,6 +817,10 @@ namespace SPIL
                 Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+
                 if (!is_test_mode)
                     Send_Server("12,SetRecipe,e>");
 
@@ -904,11 +916,11 @@ namespace SPIL
         }
         #endregion
         //
-        private void AOI_Calculate(SPILBumpMeasure Measuremrnt ,string file_address1, string file_address2, string file_address3)
+        private void AOI_Calculate(SPILBumpMeasure Measuremrnt ,string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
             logger.Write_Logger("AOI Measurment Point " + textBox_Point.Text);
             double Measurement_Result, Measurement_Result_2;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3,out Measurement_Result,out Measurement_Result_2);
+            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out Measurement_Result,out Measurement_Result_2);
             if (Measurement_Result != -1 && Measurement_Result_2 != -1)
             {
                 Measurement_Result = Measurement_Result * variable_data.Degree_Ratio;
@@ -1104,64 +1116,7 @@ namespace SPIL
         private void Form1_Load(object sender, EventArgs e)
         {
             int counter = 0;
-            //當測試檔案存在時
-            //test mode
-            if (File.Exists("test.txt"))
-            {
-                is_test_mode = true;
-            }
-            if (is_test_mode)
-            {
-                logger.Write_Logger("test mode");
-                groupBox_test_item.Visible = true;
-                string vpp_file_test_path = "";
-                StreamReader file = new StreamReader("test.txt");
-                string line;
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (counter == 0)
-                    {
-                        if (line == "0")
-                        {
-                            radioButton_Degree_0.Checked = true;
-                        }
-                        else if(line == "45")
-                        {
-                            radioButton_Degree_45.Checked = true;
-                        }
-                    }
-                    else if(counter == 1)
-                    {
-                        vpp_file_test_path = line;
-                    }
-                    logger.Write_Logger(line);
-                    counter++;
-                }
-                file.Close();
-                
-                AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
-                ////綁定cogRecordDisplay 用來存toolblock結果圖
-                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
-                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
-                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
-                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                //載入手動量測
-                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
-                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
-                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
-                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
-                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-            }
-            else
-            {
-                groupBox_test_item.Visible = false;
-            }
+
 
             //防止開啟第二次
             if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1)
@@ -1198,6 +1153,71 @@ namespace SPIL
                 button_Start_Server_Click(sender, e);
                 button_Start_Click(sender, e);
                 combine_text_box();
+            }
+
+            //當測試檔案存在時
+            //test mode
+            if (File.Exists("test.txt"))
+            {
+                is_test_mode = true;
+            }
+            if (is_test_mode)
+            {
+                logger.Write_Logger("test mode");
+                groupBox_test_item.Visible = true;
+                string vpp_file_test_path = "";
+                StreamReader file = new StreamReader("test.txt");
+                string line;
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (counter == 0)
+                    {
+                        if (line == "0")
+                        {
+                            radioButton_Degree_0.Checked = true;
+                        }
+                        else if (line == "45")
+                        {
+                            radioButton_Degree_45.Checked = true;
+                        }
+                    }
+                    else if (counter == 1)
+                    {
+                        vpp_file_test_path = line;
+                    }
+                    logger.Write_Logger(line);
+                    counter++;
+                }
+                file.Close();
+
+                AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
+                ////綁定cogRecordDisplay 用來存toolblock結果圖
+                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
+                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
+                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
+                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+                //載入手動量測
+                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
+                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
+                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
+                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+            }
+            else
+            {
+                groupBox_test_item.Visible = false;
             }
         }
         //Log In/Out
@@ -1496,6 +1516,9 @@ namespace SPIL
                 SW_.WriteLine("    <Setup Setup=\"AOI_save_idx_1\">" + Convert.ToString(numericUpDown_AOI_save_idx1.Value) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"AOI_save_idx_2\">" + Convert.ToString(numericUpDown_AOI_save_idx2.Value) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"AOI_save_idx_3\">" + Convert.ToString(numericUpDown_AOI_save_idx3.Value) + "</Setup>");
+                SW_.WriteLine("    <Setup Setup=\"manual_save_idx_1\">" + Convert.ToString(numericUpDown_manual_save_idx1.Value) + "</Setup>");
+                SW_.WriteLine("    <Setup Setup=\"manual_save_idx_2\">" + Convert.ToString(numericUpDown_manual_save_idx2.Value) + "</Setup>");
+                SW_.WriteLine("    <Setup Setup=\"manual_save_idx_3\">" + Convert.ToString(numericUpDown_manual_save_idx3.Value) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"hand_measurement_X\">" + Convert.ToString(textBox_hand_measure_X.Text) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"hand_measurement_Y\">" + Convert.ToString(textBox_hand_measure_Y.Text) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"hand_measurement_H\">" + Convert.ToString(textBox_hand_measure_H.Text) + "</Setup>");
@@ -2008,27 +2031,58 @@ namespace SPIL
                                 logger.Write_Logger("AOI input image " + count.ToString() + ": " + save_full_file_name);
 
                                 count++;
-                                if (count > 3)//已經存超過兩張
+                                //執行AOI計算
+                                if (is_hand_measurement)
                                 {
-                                    //執行AOI計算
-                                    if (is_hand_measurement)
+                                    if (count > 3)//已經存3張
                                     {
-                                        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                                        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2], is_hand_measurement);
                                         logger.Write_Logger("手動量測");
-                                    }
-                                    else
-                                    {
-                                        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                                        logger.Write_Logger("AOI自動量測");
+                                        count = 1;
+                                        logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                                        logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                                        logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
+                                        logger.Write_Logger("AOI_Calculate");
+                                        button_hb_on_Click(sender, e);
                                     }
                                     
-                                    count = 1;
-                                    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                                    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                                    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
-                                    logger.Write_Logger("AOI_Calculate");
-                                    button_hb_on_Click(sender, e);
                                 }
+                                else
+                                {
+                                    if (count > 2)//已經存2張
+                                    {
+                                        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[0], Save_AOI_file_name[1], is_hand_measurement);
+                                        logger.Write_Logger("AOI自動量測");
+                                        count = 1;
+                                        logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                                        logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                                        logger.Write_Logger("AOI_Calculate");
+                                        button_hb_on_Click(sender, e);
+                                    }
+                                    
+                                }
+
+                                //if (count > 3)//已經存超過兩張
+                                //{
+                                //    //執行AOI計算
+                                //    if (is_hand_measurement)
+                                //    {
+                                //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                                //        logger.Write_Logger("手動量測");
+                                //    }
+                                //    else
+                                //    {
+                                //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                                //        logger.Write_Logger("AOI自動量測");
+                                //    }
+                                    
+                                //    count = 1;
+                                //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                                //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                                //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
+                                //    logger.Write_Logger("AOI_Calculate");
+                                //    button_hb_on_Click(sender, e);
+                                //}
                             }
                         }
                         
@@ -2547,12 +2601,18 @@ namespace SPIL
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
             }
             if(Hand_Measurement != null)
             {
                 Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
             }
         }
 

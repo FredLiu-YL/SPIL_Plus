@@ -312,6 +312,14 @@ namespace SPIL
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_connect_client = new System.Windows.Forms.Timer(this.components);
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.numericUpDown_manual_save_idx3 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown_manual_save_idx1 = new System.Windows.Forms.NumericUpDown();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.numericUpDown_manual_save_idx2 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -347,6 +355,11 @@ namespace SPIL
             this.groupBox14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).BeginInit();
             this.groupBox10.SuspendLayout();
+            this.groupBox15.SuspendLayout();
+            this.groupBox16.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx2)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -2325,22 +2338,18 @@ namespace SPIL
             // 
             // groupBox12
             // 
-            this.groupBox12.Controls.Add(this.numericUpDown_AOI_save_idx3);
-            this.groupBox12.Controls.Add(this.label47);
-            this.groupBox12.Controls.Add(this.numericUpDown_AOI_save_idx2);
-            this.groupBox12.Controls.Add(this.label93);
-            this.groupBox12.Controls.Add(this.numericUpDown_AOI_save_idx1);
-            this.groupBox12.Controls.Add(this.label92);
-            this.groupBox12.Location = new System.Drawing.Point(524, 88);
+            this.groupBox12.Controls.Add(this.groupBox16);
+            this.groupBox12.Controls.Add(this.groupBox15);
+            this.groupBox12.Location = new System.Drawing.Point(505, 88);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(203, 137);
+            this.groupBox12.Size = new System.Drawing.Size(232, 149);
             this.groupBox12.TabIndex = 55;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Save AOI Index";
             // 
             // numericUpDown_AOI_save_idx3
             // 
-            this.numericUpDown_AOI_save_idx3.Location = new System.Drawing.Point(42, 76);
+            this.numericUpDown_AOI_save_idx3.Location = new System.Drawing.Point(47, 86);
             this.numericUpDown_AOI_save_idx3.Name = "numericUpDown_AOI_save_idx3";
             this.numericUpDown_AOI_save_idx3.Size = new System.Drawing.Size(54, 27);
             this.numericUpDown_AOI_save_idx3.TabIndex = 5;
@@ -2349,7 +2358,7 @@ namespace SPIL
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(1, 78);
+            this.label47.Location = new System.Drawing.Point(5, 91);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(37, 16);
             this.label47.TabIndex = 4;
@@ -2357,7 +2366,7 @@ namespace SPIL
             // 
             // numericUpDown_AOI_save_idx2
             // 
-            this.numericUpDown_AOI_save_idx2.Location = new System.Drawing.Point(143, 33);
+            this.numericUpDown_AOI_save_idx2.Location = new System.Drawing.Point(48, 54);
             this.numericUpDown_AOI_save_idx2.Name = "numericUpDown_AOI_save_idx2";
             this.numericUpDown_AOI_save_idx2.Size = new System.Drawing.Size(54, 27);
             this.numericUpDown_AOI_save_idx2.TabIndex = 3;
@@ -2366,7 +2375,7 @@ namespace SPIL
             // label93
             // 
             this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(102, 35);
+            this.label93.Location = new System.Drawing.Point(5, 59);
             this.label93.Name = "label93";
             this.label93.Size = new System.Drawing.Size(37, 16);
             this.label93.TabIndex = 2;
@@ -2374,7 +2383,7 @@ namespace SPIL
             // 
             // numericUpDown_AOI_save_idx1
             // 
-            this.numericUpDown_AOI_save_idx1.Location = new System.Drawing.Point(42, 33);
+            this.numericUpDown_AOI_save_idx1.Location = new System.Drawing.Point(48, 21);
             this.numericUpDown_AOI_save_idx1.Name = "numericUpDown_AOI_save_idx1";
             this.numericUpDown_AOI_save_idx1.Size = new System.Drawing.Size(54, 27);
             this.numericUpDown_AOI_save_idx1.TabIndex = 1;
@@ -2383,7 +2392,7 @@ namespace SPIL
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(7, 35);
+            this.label92.Location = new System.Drawing.Point(5, 27);
             this.label92.Name = "label92";
             this.label92.Size = new System.Drawing.Size(37, 16);
             this.label92.TabIndex = 0;
@@ -2519,7 +2528,7 @@ namespace SPIL
             // textBox_0_degree_height_Num
             // 
             this.textBox_0_degree_height_Num.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_0_degree_height_Num.Location = new System.Drawing.Point(478, 172);
+            this.textBox_0_degree_height_Num.Location = new System.Drawing.Point(466, 156);
             this.textBox_0_degree_height_Num.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_0_degree_height_Num.MaxLength = 4;
             this.textBox_0_degree_height_Num.Name = "textBox_0_degree_height_Num";
@@ -2529,7 +2538,7 @@ namespace SPIL
             // label85
             // 
             this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(458, 175);
+            this.label85.Location = new System.Drawing.Point(446, 159);
             this.label85.Name = "label85";
             this.label85.Size = new System.Drawing.Size(13, 16);
             this.label85.TabIndex = 52;
@@ -2538,7 +2547,7 @@ namespace SPIL
             // textBox_0_degree_height_A
             // 
             this.textBox_0_degree_height_A.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_0_degree_height_A.Location = new System.Drawing.Point(419, 172);
+            this.textBox_0_degree_height_A.Location = new System.Drawing.Point(407, 156);
             this.textBox_0_degree_height_A.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_0_degree_height_A.MaxLength = 2;
             this.textBox_0_degree_height_A.Name = "textBox_0_degree_height_A";
@@ -2548,7 +2557,7 @@ namespace SPIL
             // label86
             // 
             this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(349, 175);
+            this.label86.Location = new System.Drawing.Point(337, 159);
             this.label86.Name = "label86";
             this.label86.Size = new System.Drawing.Size(63, 16);
             this.label86.TabIndex = 50;
@@ -3364,6 +3373,84 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.label92);
+            this.groupBox15.Controls.Add(this.numericUpDown_AOI_save_idx3);
+            this.groupBox15.Controls.Add(this.numericUpDown_AOI_save_idx1);
+            this.groupBox15.Controls.Add(this.label47);
+            this.groupBox15.Controls.Add(this.label93);
+            this.groupBox15.Controls.Add(this.numericUpDown_AOI_save_idx2);
+            this.groupBox15.Location = new System.Drawing.Point(7, 18);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(107, 125);
+            this.groupBox15.TabIndex = 6;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "自動";
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.label49);
+            this.groupBox16.Controls.Add(this.numericUpDown_manual_save_idx3);
+            this.groupBox16.Controls.Add(this.numericUpDown_manual_save_idx1);
+            this.groupBox16.Controls.Add(this.label50);
+            this.groupBox16.Controls.Add(this.label51);
+            this.groupBox16.Controls.Add(this.numericUpDown_manual_save_idx2);
+            this.groupBox16.Location = new System.Drawing.Point(120, 15);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(107, 125);
+            this.groupBox16.TabIndex = 7;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "手動";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(5, 27);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(37, 16);
+            this.label49.TabIndex = 0;
+            this.label49.Text = "Idx1";
+            // 
+            // numericUpDown_manual_save_idx3
+            // 
+            this.numericUpDown_manual_save_idx3.Location = new System.Drawing.Point(47, 86);
+            this.numericUpDown_manual_save_idx3.Name = "numericUpDown_manual_save_idx3";
+            this.numericUpDown_manual_save_idx3.Size = new System.Drawing.Size(54, 27);
+            this.numericUpDown_manual_save_idx3.TabIndex = 5;
+            // 
+            // numericUpDown_manual_save_idx1
+            // 
+            this.numericUpDown_manual_save_idx1.Location = new System.Drawing.Point(48, 21);
+            this.numericUpDown_manual_save_idx1.Name = "numericUpDown_manual_save_idx1";
+            this.numericUpDown_manual_save_idx1.Size = new System.Drawing.Size(54, 27);
+            this.numericUpDown_manual_save_idx1.TabIndex = 1;
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(5, 91);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(37, 16);
+            this.label50.TabIndex = 4;
+            this.label50.Text = "Idx3";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(5, 59);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(37, 16);
+            this.label51.TabIndex = 2;
+            this.label51.Text = "Idx2";
+            // 
+            // numericUpDown_manual_save_idx2
+            // 
+            this.numericUpDown_manual_save_idx2.Location = new System.Drawing.Point(48, 54);
+            this.numericUpDown_manual_save_idx2.Name = "numericUpDown_manual_save_idx2";
+            this.numericUpDown_manual_save_idx2.Size = new System.Drawing.Size(54, 27);
+            this.numericUpDown_manual_save_idx2.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -3405,7 +3492,6 @@ namespace SPIL
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
             this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AOI_save_idx3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AOI_save_idx2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AOI_save_idx1)).EndInit();
@@ -3428,6 +3514,13 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).EndInit();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
+            this.groupBox16.ResumeLayout(false);
+            this.groupBox16.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_manual_save_idx2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3714,6 +3807,14 @@ namespace SPIL
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.TextBox textBox_Mesument_9_0;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.NumericUpDown numericUpDown_manual_save_idx3;
+        private System.Windows.Forms.NumericUpDown numericUpDown_manual_save_idx1;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.NumericUpDown numericUpDown_manual_save_idx2;
+        private System.Windows.Forms.GroupBox groupBox15;
     }
 }
 
