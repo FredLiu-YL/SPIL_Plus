@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using YuanLi_Logger;
 using Microsoft.VisualBasic;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
@@ -18,16 +17,27 @@ using System.Threading;
 using Excel = Microsoft.Office.Interop.Excel;//https://jerry5217.pixnet.net/blog/post/312240331
 using System.Management;
 using Microsoft.VisualBasic.FileIO;
+using YuanliCore.ImageProcess.Caliper;
+using YuanliCore.ImageProcess;
+using YuanliCore.Interface;
+using SPIL.model;
+using YuanliCore.ImageProcess.Match;
+using Cognex.VisionPro;
+using Cognex.VisionPro.ToolBlock;
+
+
 
 namespace SPIL
 {
     public partial class Form1 : Form
     {
+        private Logger logger = new Logger("SPIL");
+        private Bitmap aoiImage;
         public Form1()
         {
             InitializeComponent();
         }
-
+       public AlgorithmSetting AlgorithmSetting { get; set; } = new AlgorithmSetting();
 
         #region Var
         string Setup_Data_address = System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml";
@@ -39,8 +49,8 @@ namespace SPIL
         static string Password = "YuanLi11084483";//Taipei
         static string Password2 = "YuanLi97285208";//Taichung
         static string Password3 = "YuanLi97119617";//Kaohsiung
-        char[] can_key_in_data = {'R','D','W','_','-','.','T','*','F','S'};
-        Logger logger = new Logger("SPIL");
+        char[] can_key_in_data = { 'R', 'D', 'W', '_', '-', '.', 'T', '*', 'F', 'S' };
+
         string Save_File_Address = "";
         string Save_File_Folder = "";
         Image I_Red = new Bitmap(SPIL.Properties.Resources.Red);
@@ -50,7 +60,7 @@ namespace SPIL
         int button_click_times = 10;
         int now_button_click_delay = 0;
         int OLS_Initial_Now_Step = 0;
-        int[,] point_data_write_0 = new int[2,9];
+        int[,] point_data_write_0 = new int[2, 9];
         int[,] point_data_write_45 = new int[2, 9];
         int[] recipe_data_Write = new int[2];
         int[] Wafer_ID_data_Write = new int[2];
@@ -157,31 +167,28 @@ namespace SPIL
         }
         private void Load_Setup_Data()
         {
-            logger.Write_Logger("Load Parameter");
+            logger.WriteLog("Load Parameter");
             variable_data = new Variable_Data(Setup_Data_address);
             Show_Data();
 
-            if (variable_data.delete_data_setting != -1)
-            {
+            if (variable_data.delete_data_setting != -1) {
                 DeleteDataSetting(variable_data.delete_data_setting);
             }
-            if (variable_data.Degree_height_A[0] != "")
-            {
+            if (variable_data.Degree_height_A[0] != "") {
                 textBox_0_degree_height_A.Text = variable_data.Degree_height_A[0];
             }
-            if (variable_data.Degree_Num[0] != "")
-            {
+            if (variable_data.Degree_Num[0] != "") {
                 textBox_0_degree_height_Num.Text = variable_data.Degree_Num[0];
             }
             // test
             folder_info = new DirectoryInfo(variable_data.OLS_Folder);
             //folder_info = new DirectoryInfo(@"D:\test\");
             //
-            logger.Write_Logger("Load Parameter Successful");
+            logger.WriteLog("Load Parameter Successful");
         }
         private void Initial_Setup_Data()
         {
-            logger.Write_Error_Logger("Parameter File Not Found");
+            logger.WriteErrorLog("Parameter File Not Found");
             textBox_45_Ratio.Text = "1";
 
         }
@@ -293,17 +300,15 @@ namespace SPIL
         }
         private void Send_Server(string Send_Data)
         {
-            try
-            {
+            try {
                 string send_ss = Send_Data;
                 byte[] send_data = new byte[send_ss.Length];
                 for (int i = 0; i < send_ss.Length; i++)
                     send_data[i] = Convert.ToByte(send_ss[i]);
                 clientSocket_Motion.Send(send_data);
-                logger.Write_Logger("Send Server : " + Send_Data);
+                logger.WriteLog("Send Server : " + Send_Data);
             }
-            catch (Exception error)
-            {
+            catch (Exception error) {
                 MessageBox.Show(error.ToString());
             }
         }
@@ -319,8 +324,7 @@ namespace SPIL
             string folder_add = "";
             file_add = variable_data.Save_File_Path_1 + "\\";
             folder_add = file_add;
-            if (variable_data.Save_File_Path_2 != "")
-            {
+            if (variable_data.Save_File_Path_2 != "") {
                 string second_ = variable_data.Save_File_Path_2.Replace("*R*", textBox_Recipe_Name.Text);
                 second_ = second_.Replace("*D*", D_);
                 second_ = second_.Replace("*T*", T_);
@@ -331,8 +335,7 @@ namespace SPIL
                 folder_add = file_add;
                 Check_Folder_Exist(folder_add);
             }
-            if (variable_data.Save_File_Path_3 != "")
-            {
+            if (variable_data.Save_File_Path_3 != "") {
                 string second_ = variable_data.Save_File_Path_3.Replace("*R*", textBox_Recipe_Name.Text);
                 second_ = second_.Replace("*D*", D_);
                 second_ = second_.Replace("*T*", T_);
@@ -343,8 +346,7 @@ namespace SPIL
                 folder_add = file_add;
                 Check_Folder_Exist(folder_add);
             }
-            if (variable_data.Save_File_Name != "")
-            {
+            if (variable_data.Save_File_Name != "") {
                 string second_ = variable_data.Save_File_Name.Replace("*R*", textBox_Recipe_Name.Text);
                 second_ = second_.Replace("*D*", D_);
                 second_ = second_.Replace("*T*", T_);
@@ -360,21 +362,18 @@ namespace SPIL
         }
         private void Check_Folder_Exist(string folder_address)
         {
-            if (!Directory.Exists(folder_address))
-            {
+            if (!Directory.Exists(folder_address)) {
                 Directory.CreateDirectory(folder_address);
             }
         }
         private int A_to_Num(string A)
         {
             int Byte_to_Int = 0;
-            if (A.Length <=1)
-            {
+            if (A.Length <= 1) {
                 Byte A_to_Byte = Convert.ToByte(Convert.ToChar(A));
                 Byte_to_Int = Convert.ToInt32(A_to_Byte) - 64;
             }
-            else
-            {
+            else {
                 Byte A_to_Byte = Convert.ToByte(Convert.ToChar(A[1]));
                 Byte_to_Int = Convert.ToInt32(A_to_Byte) - 64;
                 Byte_to_Int = Byte_to_Int + (Convert.ToInt32(Convert.ToByte(Convert.ToChar(A[0]))) - 64) * 26;
@@ -383,35 +382,28 @@ namespace SPIL
         }
         int DeleteDataGetting()
         {
-            if (radioButton1.Checked)
-            {
+            if (radioButton1.Checked) {
                 return 1;
             }
-            else if (radioButton2.Checked)
-            {
+            else if (radioButton2.Checked) {
                 return 2;
             }
-            else if (radioButton3.Checked)
-            {
+            else if (radioButton3.Checked) {
                 return 3;
             }
-            else if (radioButton4.Checked)
-            {
+            else if (radioButton4.Checked) {
                 return 4;
             }
-            else if (radioButton5.Checked)
-            {
+            else if (radioButton5.Checked) {
                 return 5;
             }
-            else
-            {
+            else {
                 return 6;
             }
         }
         void DeleteDataSetting(int value)
         {
-            switch (value)
-            {
+            switch (value) {
                 case 1:
                     radioButton1.Checked = true;
                     break;
@@ -436,8 +428,7 @@ namespace SPIL
         private void Search_IP(int card_number)
         {
 
-            try
-            {
+            try {
                 // 指定查詢網路介面卡組態 ( IPEnabled 為 True 的 )
                 string strQry = "Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True";
 
@@ -445,20 +436,16 @@ namespace SPIL
                 ManagementObjectSearcher objSc = new ManagementObjectSearcher(strQry);
                 // 使用 Foreach 陳述式 存取集合類別中物件 (元素)
                 // Get 方法 , 叫用指定的 WMI 查詢 , 並傳回產生的集合。
-                foreach (ManagementObject objQry in objSc.Get())
-                {
+                foreach (ManagementObject objQry in objSc.Get()) {
                     //判斷是否與選取網卡名稱一樣
-                    if (Convert.ToString(objQry["Caption"]) == ethernet_card[card_number])
-                    {
+                    if (Convert.ToString(objQry["Caption"]) == ethernet_card[card_number]) {
                         Object aaa = objQry["IPAddress"];
                         Object[] asda = (Object[])aaa;
-                        if (asda != null && asda.Length > 0)
-                        {
+                        if (asda != null && asda.Length > 0) {
                             comboBox_IP.Items.Add(Convert.ToString(((Object[])aaa)[0]));
                             comboBox_IP_Motion.Items.Add(Convert.ToString(((Object[])aaa)[0]));
                         }
-                        else
-                        {
+                        else {
                             comboBox_IP.Items.Add("NA");
                             comboBox_IP_Motion.Items.Add("NA");
                         }
@@ -466,15 +453,13 @@ namespace SPIL
 
                 }
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Search_IP" + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Search_IP" + error.ToString());
             }
         }
         private void Search_Ethernet_Card()
         {
-            try
-            {
+            try {
                 // 指定查詢網路介面卡組態 ( IPEnabled 為 True 的 )
                 string strQry = "Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True";
 
@@ -483,24 +468,21 @@ namespace SPIL
 
                 // 使用 Foreach 陳述式 存取集合類別中物件 (元素)
                 // Get 方法 , 叫用指定的 WMI 查詢 , 並傳回產生的集合。
-                foreach (ManagementObject objQry in objSc.Get())
-                {
+                foreach (ManagementObject objQry in objSc.Get()) {
                     // 取網路介面卡資訊
                     ethernet_card.Add(Convert.ToString(objQry["Caption"])); // 將 Caption 新增至 ComboBox
 
                 }
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Search_Ethernet_Card" + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Search_Ethernet_Card" + error.ToString());
 
             }
         }
         byte[] StringToByteArray(string str)
         {
             byte[] send_data = new byte[str.Length];
-            for (int i = 0; i < str.Length; i++)
-            {
+            for (int i = 0; i < str.Length; i++) {
                 send_data[i] = Convert.ToByte(str[i]);
             }
             return send_data;
@@ -518,8 +500,7 @@ namespace SPIL
         void imshowValueInMeasurementGUI(string value)
         {
             TextBox textBox = textBox_Mesument_1_0;
-            if (radioButton_Degree_0.Checked)
-            {
+            if (radioButton_Degree_0.Checked) {
                 //20211224-S
                 //switch (textBox_Point.Text)
                 //{
@@ -554,8 +535,7 @@ namespace SPIL
                 textBox = textBoxes_0_1_20[Convert.ToInt32(textBox_Point.Text)];
                 //20211224-E
             }
-            else
-            {
+            else {
                 //20211224-S
                 //switch (textBox_Point.Text)
                 //{
@@ -594,20 +574,17 @@ namespace SPIL
         }
         string create_folder(string path)
         {
-            if (!Directory.Exists(path))
-            {
+            if (!Directory.Exists(path)) {
                 Directory.CreateDirectory(path);
             }
-            if (path[path.Length - 1] != '\\')
-            {
+            if (path[path.Length - 1] != '\\') {
                 path += "\\";
             }
             return path;
         }
         bool SocketConnected(Socket s)
         {
-            if (s == null)
-            {
+            if (s == null) {
                 return false;
             }
             return !((s.Poll(1000, SelectMode.SelectRead) && (s.Available == 0)) || !s.Connected);
@@ -629,10 +606,8 @@ namespace SPIL
 
         public void SaveArrayAsCSV(List<string> arrayToSave, string fileName)
         {
-            using (StreamWriter file = new StreamWriter(fileName))
-            {
-                foreach (string item in arrayToSave)
-                {
+            using (StreamWriter file = new StreamWriter(fileName)) {
+                foreach (string item in arrayToSave) {
                     file.WriteLine(item);
                 }
             }
@@ -643,37 +618,31 @@ namespace SPIL
         private delegate void UpdateUITextbox(string value, TextBox ctl);
         private void UpdateTextbox(string value, TextBox ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUITextbox uu = new UpdateUITextbox(UpdateTextbox);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Text = value;
             }
         }
         private void UpdateTextboxAdd(string value, TextBox ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUITextbox uu = new UpdateUITextbox(UpdateTextbox);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Text += value;
             }
         }
         private void ClearAndUpdateTextbox(string value, TextBox ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUITextbox uu = new UpdateUITextbox(ClearAndUpdateTextbox);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Text = value;
             }
         }
@@ -681,13 +650,11 @@ namespace SPIL
         private delegate void UpdateUIPicturebox(Image value, PictureBox ctl);
         private void UpdatePicturebox(Image value, PictureBox ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUIPicturebox uu = new UpdateUIPicturebox(UpdatePicturebox);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Image = value;
             }
         }
@@ -695,13 +662,11 @@ namespace SPIL
         private delegate void UpdateUIRadioButton(bool value, RadioButton ctl);
         private void UpdateRadioButton(bool value, RadioButton ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUIRadioButton uu = new UpdateUIRadioButton(UpdateRadioButton);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Checked = value;
             }
         }
@@ -709,13 +674,11 @@ namespace SPIL
         private delegate void UpdateUITextboxEnable(bool value, TextBox ctl);
         private void UpdateTextboxEnable(bool value, TextBox ctl)
         {
-            if (this.InvokeRequired)
-            {
+            if (this.InvokeRequired) {
                 UpdateUITextboxEnable uu = new UpdateUITextboxEnable(UpdateTextboxEnable);
                 this.BeginInvoke(uu, value, ctl);
             }
-            else
-            {
+            else {
                 ctl.Enabled = value; ;
             }
         }
@@ -759,15 +722,13 @@ namespace SPIL
                 total_Length += sub_string_[i].Length;
             total_Length = total_Length + sub_string_.Length - 1;
             //20211224-S
-            if (total_Length == Convert.ToInt32(sub_string_[0]))
-            {
+            if (total_Length == Convert.ToInt32(sub_string_[0])) {
                 for (int i = 0; i < sub_string_.Length; i++)
-                    logger.Write_Logger("Cal " + Convert.ToString(i) + " = " + sub_string_[i]);
+                    logger.WriteLog("Cal " + Convert.ToString(i) + " = " + sub_string_[i]);
                 return sub_string_;
-            }    
-            else
-            {
-                logger.Write_Error_Logger("Receive Data Count Error!");
+            }
+            else {
+                logger.WriteErrorLog("Receive Data Count Error!");
                 return null;
             }
             //20211224-E
@@ -778,7 +739,7 @@ namespace SPIL
         }
         private void Receive_Init()
         {
-            logger.Write_Logger("Start Initial");
+            logger.WriteLog("Start Initial");
             //
             Initial_OLS();
         }
@@ -786,14 +747,13 @@ namespace SPIL
         {
             UpdateTextbox(receive_data, textBox_Recipe_Name);
             //
-            try
-            {
+            try {
                 string recipe_name = textBox_Recipe_Name.Text;
                 int recipe_len = recipe_name.Length;
-                
+
                 //
                 DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
-                string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len-4) + "*" + ".vpp")[0].FullName;
+                string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;
                 //AOI_Measurement = new SPILBumpMeasure(variable_data.Vision_Pro_File + "\\" + type_num + ".vpp");
                 AOI_Measurement = new SPILBumpMeasure(vpp_file_name);
                 //綁定cogRecordDisplay 用來存toolblock結果圖
@@ -825,16 +785,14 @@ namespace SPIL
                     Send_Server("12,SetRecipe,e>");
 
             }
-            catch(Exception error)
-            {
-                logger.Write_Error_Logger("Set Recipe Error! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Set Recipe Error! " + error.ToString());
                 Send_Server("12,SetRecipe,x>");
             }
         }
         private void Receive_Mode(string receive_data)
         {
-            if (receive_data == "Top")
-            {
+            if (receive_data == "Top") {
                 UpdateRadioButton(true, radioButton_Degree_0);
                 open_hide_1 = false;
                 open_hide_2 = true;
@@ -842,8 +800,7 @@ namespace SPIL
                 if (!is_test_mode)
                     Send_Server("07,Mode,e>");
             }
-            else if(receive_data == "Side")
-            {
+            else if (receive_data == "Side") {
                 UpdateRadioButton(true, radioButton_Degree_45);
                 open_hide_1 = true;
                 open_hide_2 = false;
@@ -852,10 +809,9 @@ namespace SPIL
                     Send_Server("07,Mode,e>");
             }
         }
-        private void Receive_Start(int Totoal_Point,string wafer_ID,int now_Slot)
+        private void Receive_Start(int Totoal_Point, string wafer_ID, int now_Slot)
         {
-            for(int i=1;i<21;i++)
-            {
+            for (int i = 1; i < 21; i++) {
                 UpdateTextboxEnable(false, textBoxes_0_1_20[i]);
                 UpdateTextbox("0", textBoxes_0_1_20[i]);
                 //
@@ -865,8 +821,7 @@ namespace SPIL
                 UpdateTextboxEnable(false, textBoxes_Cu_1_20[i]);
                 UpdateTextbox("0", textBoxes_Cu_1_20[i]);
             }
-            for (int i = 1; i <= Totoal_Point; i++)
-            {
+            for (int i = 1; i <= Totoal_Point; i++) {
                 UpdateTextboxEnable(true, textBoxes_0_1_20[i]);
                 UpdateTextboxEnable(true, textBoxes_CuNi_1_20[i]);
                 UpdateTextboxEnable(true, textBoxes_Cu_1_20[i]);
@@ -887,19 +842,16 @@ namespace SPIL
         {
             count = 1;
             UpdateTextbox(Convert.ToString(Now_Point), textBox_Point);
-            if (!is_test_mode)
-            {
+            if (!is_test_mode) {
                 Send_Server("08,InPos,e>");
             }
-            
+
         }
         private void Receive_Stop(string receive_data, object sender, EventArgs e)
         {
-            if (receive_data == "0000")
-            {
+            if (receive_data == "0000") {
                 button_Save_Excel_Click(sender, e);
-                if (!is_test_mode)
-                {
+                if (!is_test_mode) {
                     Send_Server("07,Stop,e>");
                 }
                 open_hide_1 = false;
@@ -916,26 +868,24 @@ namespace SPIL
         }
         #endregion
         //
-        private void AOI_Calculate(SPILBumpMeasure Measuremrnt ,string file_address1, string file_address2, string file_address3, bool is_maunal)
+        private void AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
-            logger.Write_Logger("AOI Measurment Point " + textBox_Point.Text);
+            logger.WriteLog("AOI Measurment Point " + textBox_Point.Text);
             double Measurement_Result, Measurement_Result_2;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out Measurement_Result,out Measurement_Result_2);
-            if (Measurement_Result != -1 && Measurement_Result_2 != -1)
-            {
+            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out Measurement_Result, out Measurement_Result_2);
+            if (Measurement_Result != -1 && Measurement_Result_2 != -1) {
                 Measurement_Result = Measurement_Result * variable_data.Degree_Ratio;
                 Measurement_Result_2 = Measurement_Result_2 * variable_data.Degree_Ratio;
-                logger.Write_Logger("AOI Measurment Distance" + Convert.ToString(Measurement_Result));
-                logger.Write_Logger("AOI Measurment Distance1" + Convert.ToString(Measurement_Result_2));
+                logger.WriteLog("AOI Measurment Distance" + Convert.ToString(Measurement_Result));
+                logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(Measurement_Result_2));
                 UpdateTextbox(Convert.ToString(Measurement_Result), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 UpdateTextbox(Convert.ToString(Measurement_Result_2), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
             }
-            else
-            {
+            else {
                 string error_value_string = "量測錯誤";
                 UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
-                logger.Write_Error_Logger("AOI Error!");
+                logger.WriteErrorLog("AOI Error!");
             }
         }
         //
@@ -943,8 +893,7 @@ namespace SPIL
         {
             button_auto_click_Sp5_Click(sender1, e1); //點擊5倍
             Thread.Sleep(Convert.ToInt32(textBox_step4_Delay.Text));
-            if (is_test_mode)
-            {
+            if (is_test_mode) {
                 return;
             }
             Send_Server("07,Init,e>");
@@ -1119,32 +1068,26 @@ namespace SPIL
 
 
             //防止開啟第二次
-            if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1)
-            {
+            if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1) {
                 this.Close();
             }
-            else
-            {
-                logger.Write_Logger("Start Program");
+            else {
+                logger.WriteLog("Start Program");
                 auto_log_out_times = auto_log_out_Delay * 1000 / timer_Log_in_Out.Interval;
-                if (File.Exists(Setup_Data_address))
-                {
+                if (File.Exists(Setup_Data_address)) {
                     Load_Setup_Data();
                 }
-                else
-                {
+                else {
                     Initial_Setup_Data();
                 }
                 //開啟socket server
                 //取得此電腦上ip位置
                 Search_Ethernet_Card();
-                for (int i = 0; i < ethernet_card.Count; i++)
-                {
+                for (int i = 0; i < ethernet_card.Count; i++) {
                     Search_IP(i);
                 }
                 //選擇一個乙太卡開啟socket server
-                if (comboBox_IP.Items.Count == 0)
-                {
+                if (comboBox_IP.Items.Count == 0) {
                     return;
                 }
                 comboBox_IP.SelectedIndex = 0;
@@ -1157,35 +1100,28 @@ namespace SPIL
 
             //當測試檔案存在時
             //test mode
-            if (File.Exists("test.txt"))
-            {
+            if (File.Exists("test.txt")) {
                 is_test_mode = true;
             }
-            if (is_test_mode)
-            {
-                logger.Write_Logger("test mode");
+            if (is_test_mode) {
+                logger.WriteLog("test mode");
                 groupBox_test_item.Visible = true;
                 string vpp_file_test_path = "";
                 StreamReader file = new StreamReader("test.txt");
                 string line;
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (counter == 0)
-                    {
-                        if (line == "0")
-                        {
+                while ((line = file.ReadLine()) != null) {
+                    if (counter == 0) {
+                        if (line == "0") {
                             radioButton_Degree_0.Checked = true;
                         }
-                        else if (line == "45")
-                        {
+                        else if (line == "45") {
                             radioButton_Degree_45.Checked = true;
                         }
                     }
-                    else if (counter == 1)
-                    {
+                    else if (counter == 1) {
                         vpp_file_test_path = line;
                     }
-                    logger.Write_Logger(line);
+                    logger.WriteLog(line);
                     counter++;
                 }
                 file.Close();
@@ -1215,27 +1151,24 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
             }
-            else
-            {
+            else {
                 groupBox_test_item.Visible = false;
             }
         }
         //Log In/Out
         private void timer_Log_in_Out_Tick(object sender, EventArgs e)
         {
-            if (log_in && now_delay >= auto_log_out_times)
-            {
+            if (log_in && now_delay >= auto_log_out_times) {
                 log_in = false;
                 tabControl_Setup.Enabled = false;
                 groupBox_Excel_Data_Setup.Enabled = false;
                 Show_Data();
                 timer_Log_in_Out.Enabled = false;
                 button_Log_in_out.Text = "Log In";
-                logger.Write_Logger("Log Out");
+                logger.WriteLog("Log Out");
                 button_Save_Setup.Enabled = false;
             }
-            else if (log_in)
-            {
+            else if (log_in) {
                 now_delay++;
                 button_Log_in_out.Text =
                     Convert.ToString(auto_log_out_Delay - now_delay * timer_Log_in_Out.Interval / 1000) + "s";
@@ -1243,11 +1176,9 @@ namespace SPIL
         }
         private void button_Log_in_out_Click(object sender, EventArgs e)
         {
-            if (!log_in)
-            {
-                if (textBox_Password.Text == Password || textBox_Password.Text == Password2 || textBox_Password.Text == Password3)
-                {
-                    logger.Write_Logger("Log In");
+            if (!log_in) {
+                if (textBox_Password.Text == Password || textBox_Password.Text == Password2 || textBox_Password.Text == Password3) {
+                    logger.WriteLog("Log In");
                     log_in = true;
                     textBox_Password.Text = "";
                     tabControl_Setup.Enabled = true;
@@ -1261,9 +1192,8 @@ namespace SPIL
                 else
                     MessageBox.Show("Password Error!");
             }
-            else
-            {
-                logger.Write_Logger("Log Out");
+            else {
+                logger.WriteLog("Log Out");
                 log_in = false;
                 textBox_Password.Text = "";
                 tabControl_Setup.Enabled = false;
@@ -1281,30 +1211,25 @@ namespace SPIL
         }
         private void textBox_Excel_File_Path_2_KeyUp(object sender, KeyEventArgs e)
         {
-            for (int i = 32; i <= 126; i++)
-            {
+            for (int i = 32; i <= 126; i++) {
                 bool can_key = false;
                 for (int j = 0; j < can_key_in_data.Length; j++)
                     if (i == Convert.ToInt32(can_key_in_data[j]))
                         can_key = true;
-                if (!can_key)
-                {
-                    if (textBox_Excel_File_Path_2.Focused)
-                    {
+                if (!can_key) {
+                    if (textBox_Excel_File_Path_2.Focused) {
                         textBox_Excel_File_Path_2.Text = textBox_Excel_File_Path_2.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
                         textBox_Excel_File_Path_2.SelectionStart = textBox_Excel_File_Path_2.Text.Length;
                         textBox_Excel_File_Path_2.ScrollToCaret();
                         textBox_Excel_File_Path_2.Focus();
                     }
-                    else if (textBox_Excel_File_Path_3.Focused)
-                    {
+                    else if (textBox_Excel_File_Path_3.Focused) {
                         textBox_Excel_File_Path_3.Text = textBox_Excel_File_Path_3.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
                         textBox_Excel_File_Path_3.SelectionStart = textBox_Excel_File_Path_3.Text.Length;
                         textBox_Excel_File_Path_3.ScrollToCaret();
                         textBox_Excel_File_Path_3.Focus();
                     }
-                    else if (textBox_Excel_File_Name.Focused)
-                    {
+                    else if (textBox_Excel_File_Name.Focused) {
                         textBox_Excel_File_Name.Text = textBox_Excel_File_Name.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
                         textBox_Excel_File_Name.SelectionStart = textBox_Excel_File_Name.Text.Length;
                         textBox_Excel_File_Name.ScrollToCaret();
@@ -1313,17 +1238,15 @@ namespace SPIL
                 }
             }
         }
-       
+
         private void textBox_Point_9_0_Num_KeyUp(object sender, KeyEventArgs e)
         {
-            for (int i = 32; i <= 126; i++)
-            {
+            for (int i = 32; i <= 126; i++) {
                 bool can_key = false;
                 if ((i >= 48 && i <= 57))
                     can_key = true;
-                if (!can_key)
-                {
-                    
+                if (!can_key) {
+
                     textBox_Cover_Start_X1.Text = textBox_Cover_Start_X1.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
                     textBox_Cover_Start_Y1.Text = textBox_Cover_Start_Y1.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
                     textBox_Cover_End_X1.Text = textBox_Cover_End_X1.Text.Replace(Convert.ToString(Convert.ToChar(i)), "");
@@ -1340,12 +1263,10 @@ namespace SPIL
         }
         private void textBox_45_Ratio_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 double ratio_ = Convert.ToDouble(textBox_45_Ratio.Text);
             }
-            catch(Exception error)
-            {
+            catch (Exception error) {
                 textBox_45_Ratio.Text = "";
             }
         }
@@ -1360,8 +1281,7 @@ namespace SPIL
             OpenFileDialog open_ = new OpenFileDialog();
             //
             FolderBrowserDialog folder_ = new FolderBrowserDialog();
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath_Vision.txt"))
-            {
+            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath_Vision.txt")) {
                 StreamReader sr_ = new StreamReader(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath_Vision.txt");
                 string read_old_file_path = sr_.ReadLine();
                 sr_.Close();
@@ -1369,8 +1289,7 @@ namespace SPIL
             }
             else
                 folder_.SelectedPath = "c:\\";
-            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
+            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 textBox_Vision_Pro_File.Text = folder_.SelectedPath;
                 StreamWriter sw = new StreamWriter(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath_Vision.txt");
                 sw.WriteLine(folder_.SelectedPath);
@@ -1381,8 +1300,7 @@ namespace SPIL
         {
             now_delay = 0;
             FolderBrowserDialog folder_ = new FolderBrowserDialog();
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt"))
-            {
+            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt")) {
                 StreamReader sr_ = new StreamReader(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt");
                 string read_old_file_path = sr_.ReadLine();
                 sr_.Close();
@@ -1390,8 +1308,7 @@ namespace SPIL
             }
             else
                 folder_.SelectedPath = "c:\\";
-            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
+            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 textBox_Excel_File_Path_1.Text = folder_.SelectedPath;
                 StreamWriter sw = new StreamWriter(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt");
                 sw.WriteLine(folder_.SelectedPath);
@@ -1402,8 +1319,7 @@ namespace SPIL
         {
             now_delay = 0;
             OpenFileDialog open_ = new OpenFileDialog();
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFilePath.txt"))
-            {
+            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFilePath.txt")) {
                 StreamReader sr_ = new StreamReader(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFilePath.txt");
                 string read_old_file_path = sr_.ReadLine();
                 sr_.Close();
@@ -1415,10 +1331,8 @@ namespace SPIL
             open_.FilterIndex = 1;
             open_.RestoreDirectory = true;
             open_.Multiselect = false;
-            if (open_.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                if (open_.CheckFileExists)
-                {
+            if (open_.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                if (open_.CheckFileExists) {
                     StreamWriter sw = new StreamWriter(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFilePath.txt");
                     sw.WriteLine(open_.FileName);
                     sw.Close();
@@ -1429,8 +1343,7 @@ namespace SPIL
         {
             now_delay = 0;
             FolderBrowserDialog folder_ = new FolderBrowserDialog();
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt"))
-            {
+            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt")) {
                 StreamReader sr_ = new StreamReader(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt");
                 string read_old_file_path = sr_.ReadLine();
                 sr_.Close();
@@ -1438,8 +1351,7 @@ namespace SPIL
             }
             else
                 folder_.SelectedPath = "c:\\";
-            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
+            if (folder_.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 textBox_OLS_Folder.Text = folder_.SelectedPath;
                 StreamWriter sw = new StreamWriter(System.Windows.Forms.Application.StartupPath + "\\Setup\\LoadFolderPath.txt");
                 sw.WriteLine(folder_.SelectedPath);
@@ -1450,11 +1362,10 @@ namespace SPIL
         private void button_Save_Setup_Click(object sender, EventArgs e)
         {
             now_delay = 0;
-            try
-            {
+            try {
                 int delete_data_setting = DeleteDataGetting();
                 //
-                logger.Write_Logger("Save Parameter");
+                logger.WriteLog("Save Parameter");
                 DateTime Now_ = DateTime.Now;
                 String Today_ = "_" +
                     Convert.ToString(Now_.Year) + "_" +
@@ -1538,50 +1449,42 @@ namespace SPIL
 
                 SW_.WriteLine("    <Setup Setup=\"Degree_Ratio\">" + Convert.ToString(textBox_45_Ratio.Text) + "</Setup>");
                 //
-               
+
                 SW_.WriteLine("  </Setup_Part>");//
                 //
                 SW_.WriteLine("</SPIL_Program_Setup>");//
                 SW_.Close();
                 //
-                logger.Write_Logger("Save Parameter Successful");
+                logger.WriteLog("Save Parameter Successful");
                 Load_Setup_Data();
                 MessageBox.Show("Save OK");
             }
-            catch (Exception error)
-            {
-                logger.Write_Logger("Save Parameter Error");
+            catch (Exception error) {
+                logger.WriteLog("Save Parameter Error");
             }
         }
         //
         private void timer_chek_delete_file_Tick(object sender, EventArgs e)
         {
-            if (radioButton1.Checked)
-            {
+            if (radioButton1.Checked) {
                 check_delete_time = 30;
             }
-            else if (radioButton2.Checked)
-            {
+            else if (radioButton2.Checked) {
                 check_delete_time = 30 * 3;
             }
-            else if (radioButton3.Checked)
-            {
+            else if (radioButton3.Checked) {
                 check_delete_time = 30 * 6;
             }
-            else if (radioButton4.Checked)
-            {
+            else if (radioButton4.Checked) {
                 check_delete_time = 30 * 9;
             }
-            else if (radioButton5.Checked)
-            {
+            else if (radioButton5.Checked) {
                 check_delete_time = 30 * 12;
             }
-            else
-            {
+            else {
                 check_delete_time = 30 * 24;
             }
-            if (!backgroundWorker_delete_old_file.IsBusy)
-            {
+            if (!backgroundWorker_delete_old_file.IsBusy) {
                 backgroundWorker_delete_old_file.RunWorkerAsync();
             }
         }
@@ -1589,8 +1492,7 @@ namespace SPIL
         private void backgroundWorker_delete_old_file_DoWork(object sender, DoWorkEventArgs e)
         {
             string check_path = textBox_Excel_File_Path_1.Text + "\\" + textBox_Excel_File_Path_2.Text + "\\" + textBox_Excel_File_Path_3.Text;//要檢查刪除的資料夾位置
-            if (!Directory.Exists(check_path))
-            {
+            if (!Directory.Exists(check_path)) {
                 return;
             }
             //取出資料夾創建時間
@@ -1598,8 +1500,7 @@ namespace SPIL
             DateTime now_time = DateTime.Now;
             var diff = now_time.Subtract(file_create_time).TotalDays;
             //刪除超過設定時間的資料夾
-            if (diff > check_delete_time)
-            {
+            if (diff > check_delete_time) {
                 Directory.Delete(check_path);
             }
 
@@ -1610,8 +1511,7 @@ namespace SPIL
         #region Measurement Data 
         private void button_Save_Excel_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 Cal_File_Address();
                 //20211224-S
                 //double[] zero_degree_ = new double[9];
@@ -1635,7 +1535,7 @@ namespace SPIL
                 //fortyfive_degree_[7] = Convert.ToDouble(textBox_Mesument_8_45.Text);
                 //fortyfive_degree_[8] = Convert.ToDouble(textBox_Mesument_9_45.Text);
                 //20211224-E
-                logger.Write_Logger("Save Point " + textBox_Point.Text);
+                logger.WriteLog("Save Point " + textBox_Point.Text);
                 List<string> Csv_Str_List = new List<string>();
                 Csv_Str_List.Add(
                     "Point," +
@@ -1644,8 +1544,7 @@ namespace SPIL
                     "Cu Height," +
                     "Ni Height," +
                     "Solder tip Height");
-                for(int i=1;i<21;i++)
-                {
+                for (int i = 1; i < 21; i++) {
                     double z_dif = Convert.ToDouble(textBoxes_0_1_20[i].Text) - Convert.ToDouble(textBoxes_CuNi_1_20[i].Text);
                     double Ni = Convert.ToDouble(textBoxes_CuNi_1_20[i].Text) - Convert.ToDouble(textBoxes_Cu_1_20[i].Text);
                     if (textBoxes_0_1_20[i].Enabled)
@@ -1659,175 +1558,134 @@ namespace SPIL
                 }
                 SaveArrayAsCSV(Csv_Str_List, Save_File_Address);
                 File.Copy(Save_File_Address, "C:\\Users\\Public\\Documents\\SPIL_Measurement_Data.csv", true);
-                logger.Write_Logger("Save OK");
+                logger.WriteLog("Save OK");
             }
-            catch(Exception error)
-            {
-                logger.Write_Logger("Save Error!" + error.ToString());
+            catch (Exception error) {
+                logger.WriteLog("Save Error!" + error.ToString());
             }
         }
         private void textBox_Mesument_1_0_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_1_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_1_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_2_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_2_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_3_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_3_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_4_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_4_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_5_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_5_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_6_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_6_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_7_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_7_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_8_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_8_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_9_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_9_0.Text = "";
             }
             //20211224-S
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_10_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_10_0.Text = "";
             }
             //
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_11_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_11_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_12_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_12_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_13_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_13_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_14_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_14_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_15_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_15_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_16_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_16_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_17_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_17_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_18_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_18_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_19_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_19_0.Text = "";
             }
-            try
-            {
+            try {
                 double aaa = Convert.ToDouble(textBox_Mesument_20_0.Text);
             }
-            catch
-            {
+            catch {
                 textBox_Mesument_20_0.Text = "";
             }
             //20211224-E
@@ -1838,29 +1696,26 @@ namespace SPIL
         private void button_Connect_Click(object sender, EventArgs e)
         {
             now_delay = 0;
-            try
-            {
-                logger.Write_Logger("Create Motion Server");
+            try {
+                logger.WriteLog("Create Motion Server");
                 string ip_address = comboBox_IP_Motion.Text;
                 IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Port.Text);
                 Socketserver_Motion = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 Socketserver_Motion.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
                 Socketserver_Motion.Listen(10);    //設定最多10個排隊連線請求
-                logger.Write_Logger("Create Motion Server Successful");
+                logger.WriteLog("Create Motion Server Successful");
                 timer_Server.Enabled = true;
-                UpdatePicturebox(I_Green,pictureBox_Connect_Status);
+                UpdatePicturebox(I_Green, pictureBox_Connect_Status);
             }
-            catch (Exception error)
-            {
+            catch (Exception error) {
                 MessageBox.Show(error.ToString());
-                logger.Write_Error_Logger("Create Motion Server Fail ! " + error.ToString());
+                logger.WriteErrorLog("Create Motion Server Fail ! " + error.ToString());
             }
         }
         private void timer_Server_Tick(object sender, EventArgs e)
         {
-            if (!backgroundWorker_Server.IsBusy)
-            {
+            if (!backgroundWorker_Server.IsBusy) {
                 sender1 = sender;
                 e1 = e;
                 backgroundWorker_Server.RunWorkerAsync();
@@ -1868,37 +1723,30 @@ namespace SPIL
         }
         private void backgroundWorker_Server_DoWork(object sender, DoWorkEventArgs e)
         {
-            try
-            {
-                if (!connect_Motion_client)
-                {
+            try {
+                if (!connect_Motion_client) {
                     //連線成功
                     clientSocket_Motion = Socketserver_Motion.Accept();
                     connect_Motion_client = true;
-                    logger.Write_Logger("Connect client : " + IPAddress.Parse(((IPEndPoint)clientSocket_Motion.RemoteEndPoint).Address.ToString()) + Environment.NewLine);
+                    logger.WriteLog("Connect client : " + IPAddress.Parse(((IPEndPoint)clientSocket_Motion.RemoteEndPoint).Address.ToString()) + Environment.NewLine);
                 }
-                else
-                {
-                    try
-                    {
+                else {
+                    try {
                         byte[] Receive_data = new byte[256];
                         clientSocket_Motion.Receive(Receive_data);
                         string receive_data = "";
-                        for (int i = 0; i < 256; i++)
-                        {
+                        for (int i = 0; i < 256; i++) {
                             if (Receive_data[i] == 0)
                                 break;
-                            else
-                            {
+                            else {
                                 receive_data += Convert.ToString(Convert.ToChar(Receive_data[i]));
                             }
                         }
                         //
                         string[] re_data = Cal_Recive_Data(receive_data);
-                        logger.Write_Logger("Receive : " + receive_data);
-                        if (re_data != null)
-                        {
-                            logger.Write_Logger("Calculate OK : " + receive_data);
+                        logger.WriteLog("Receive : " + receive_data);
+                        if (re_data != null) {
+                            logger.WriteLog("Calculate OK : " + receive_data);
                             if (re_data[1].IndexOf("YuanLi") >= 0)
                                 Receive_YuanLi();
                             else if (re_data[1].IndexOf("Init") >= 0)
@@ -1916,33 +1764,29 @@ namespace SPIL
                             else if (re_data[1].IndexOf("RFID") >= 0)
                                 Receive_RFID(re_data[2], re_data[3]);
                             else
-                                logger.Write_Error_Logger("No Match Data!");
+                                logger.WriteErrorLog("No Match Data!");
                         }
                         else
-                            logger.Write_Error_Logger("Motion Client Receive Error : " + receive_data);
+                            logger.WriteErrorLog("Motion Client Receive Error : " + receive_data);
                     }
-                    catch (Exception error)
-                    {
+                    catch (Exception error) {
                         //MessageBox.Show(error.ToString());
                         int aaa = error.HResult;
-                        if (aaa == -2147467259)
-                        {
-                            logger.Write_Error_Logger("Motion Client Disconnected!" + error.ToString());
+                        if (aaa == -2147467259) {
+                            logger.WriteErrorLog("Motion Client Disconnected!" + error.ToString());
                             clientSocket_Motion = new Socket(SocketType.Stream, ProtocolType.Tcp);
                             UpdatePicturebox(I_Red, pictureBox_Connect_Status);
                             connect_Motion_client = false;
                             timer_Server.Enabled = false;
                         }
-                        else
-                        {
-                            logger.Write_Error_Logger("Motion Client Error! " + error.ToString());
+                        else {
+                            logger.WriteErrorLog("Motion Client Error! " + error.ToString());
                         }
                     }
                 }
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Motion error" + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Motion error" + error.ToString());
             }
         }
         #endregion
@@ -1962,33 +1806,28 @@ namespace SPIL
         }
         private void backgroundWorker_OLS_File_DoWork(object sender, DoWorkEventArgs e)
         {
-            
-            if (!folder_info.Exists)
-            {
-                logger.Write_Error_Logger("OLS File Folder:" + folder_info.FullName + " is not found! ");
+
+            if (!folder_info.Exists) {
+                logger.WriteErrorLog("OLS File Folder:" + folder_info.FullName + " is not found! ");
             }
-            else
-            {
-                if (checkBox_bmp.Checked)
-                {
-                    if (folder_info.GetFiles("*.bmp").Length > 0)
-                    {
+            else {
+                if (checkBox_bmp.Checked) {
+                    if (folder_info.GetFiles("*.bmp").Length > 0) {
                         FileInfo[] FIle_List = folder_info.GetFiles("*.bmp");
                         //try
                         //{
-                        for (int i = 0; i < FIle_List.Length; i++)
-                        {
-                            logger.Write_Logger("New File : " + FIle_List[i].FullName);
-                            logger.Write_Logger("Move File : " + Save_File_Folder + textBox_Point.Text);
+                        for (int i = 0; i < FIle_List.Length; i++) {
+                            logger.WriteLog("New File : " + FIle_List[i].FullName);
+                            logger.WriteLog("Move File : " + Save_File_Folder + textBox_Point.Text);
                             string[] file_list_part_name = FIle_List[i].FullName.Split('_');
-                            logger.Write_Logger("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
+                            logger.WriteLog("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
 
 
                             if (radioButton_Degree_0.Checked) //0度
                             {
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
-                                logger.Write_Logger("split by _ keyword:");
+                                logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 //foreach(string s in split_input_file_names)
                                 //{
@@ -1996,13 +1835,12 @@ namespace SPIL
                                 //}
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0_" + file_list_part_name[file_list_part_name.Length - 1];
-                                if (File.Exists(save_full_file_name))
-                                {
+                                if (File.Exists(save_full_file_name)) {
                                     File.Delete(save_full_file_name);
-                                    logger.Write_Logger("Delete File : " + save_full_file_name);
+                                    logger.WriteLog("Delete File : " + save_full_file_name);
                                 }
                                 File.Move(FIle_List[i].FullName, save_full_file_name);
-                                logger.Write_Logger("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
+                                logger.WriteLog("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
 
                             }
                             else //45度
@@ -2010,56 +1848,52 @@ namespace SPIL
 
                                 //使用'_'分割檔名
                                 string save_degree_45_name = "";
-                                logger.Write_Logger("split by _ keyword:");
+                                logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                                foreach (string s in split_input_file_names)
-                                {
-                                    logger.Write_Logger(s);
+                                foreach (string s in split_input_file_names) {
+                                    logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + $"_45_{count}_" + file_list_part_name[file_list_part_name.Length - 1];
 
-                                if (File.Exists(save_full_file_name))
-                                {
+                                if (File.Exists(save_full_file_name)) {
                                     File.Delete(save_full_file_name);
-                                    logger.Write_Logger("Delete File : " + save_full_file_name);
+                                    logger.WriteLog("Delete File : " + save_full_file_name);
                                 }
                                 File.Move(FIle_List[i].FullName, save_full_file_name);
-                                logger.Write_Logger("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
+                                logger.WriteLog("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
 
                                 Save_AOI_file_name[count - 1] = save_full_file_name;
-                                logger.Write_Logger("AOI input image " + count.ToString() + ": " + save_full_file_name);
+                                logger.WriteLog("AOI input image " + count.ToString() + ": " + save_full_file_name);
 
                                 count++;
                                 //執行AOI計算
-                                if (is_hand_measurement)
-                                {
+                                if (is_hand_measurement) {
                                     if (count > 3)//已經存3張
                                     {
                                         AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2], is_hand_measurement);
-                                        logger.Write_Logger("手動量測");
+                                        logger.WriteLog("手動量測");
                                         count = 1;
-                                        logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                                        logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                                        logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
-                                        logger.Write_Logger("AOI_Calculate");
+                                        logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
+                                        logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
+                                        logger.WriteLog("Img file 3 : " + Save_AOI_file_name[2]);
+                                        logger.WriteLog("AOI_Calculate");
                                         button_hb_on_Click(sender, e);
                                     }
-                                    
+
                                 }
-                                else
-                                {
+                                else {
                                     if (count > 2)//已經存2張
                                     {
                                         AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[0], Save_AOI_file_name[1], is_hand_measurement);
-                                        logger.Write_Logger("AOI自動量測");
+                                        logger.WriteLog("AOI自動量測");
                                         count = 1;
-                                        logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                                        logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                                        logger.Write_Logger("AOI_Calculate");
+                                        logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
+                                        logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
+                                        logger.WriteLog("AOI_Calculate");
                                         button_hb_on_Click(sender, e);
                                     }
-                                    
+
                                 }
 
                                 //if (count > 3)//已經存超過兩張
@@ -2075,7 +1909,7 @@ namespace SPIL
                                 //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
                                 //        logger.Write_Logger("AOI自動量測");
                                 //    }
-                                    
+
                                 //    count = 1;
                                 //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
                                 //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
@@ -2085,69 +1919,55 @@ namespace SPIL
                                 //}
                             }
                         }
-                        
+
                     }
                 }
-                if (checkBox_xlsx.Checked)
-                {
+                if (checkBox_xlsx.Checked) {
                     FileInfo[] FIle_List = folder_info.GetFiles("*.xlsx");
-                    if (FIle_List.Length > 0)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < FIle_List.Length; i++)
-                            {
+                    if (FIle_List.Length > 0) {
+                        try {
+                            for (int i = 0; i < FIle_List.Length; i++) {
                                 //取出excel資料
                                 int row = Convert.ToInt32(textBox_0_degree_height_Num.Text);
                                 int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A' + 1;
                                 string value = getExcelValue(FIle_List[i].FullName, row, column);
                                 //顯示在GUI介面中
                                 imshowValueInMeasurementGUI(value);
-                                logger.Write_Logger("get measurement value: " + value);
-                                logger.Write_Logger("New File : " + FIle_List[i].FullName);
-                                if (radioButton_Degree_0.Checked)
-                                {
+                                logger.WriteLog("get measurement value: " + value);
+                                logger.WriteLog("New File : " + FIle_List[i].FullName);
+                                if (radioButton_Degree_0.Checked) {
                                     if (File.Exists(Save_File_Folder + textBox_Point.Text + "_0.xlsx"))
                                         File.Delete(Save_File_Folder + textBox_Point.Text + "_0.xlsx");
                                     File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_0.xlsx");
                                 }
-                                else
-                                {
+                                else {
                                     if (File.Exists(Save_File_Folder + textBox_Point.Text + "_45.xlsx"))
                                         File.Delete(Save_File_Folder + textBox_Point.Text + "_45.xlsx");
                                     File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_45.xlsx");
                                 }
                             }
                         }
-                        catch (Exception error)
-                        {
-                            logger.Write_Error_Logger("Move xlsx File Error! " + error.ToString());
+                        catch (Exception error) {
+                            logger.WriteErrorLog("Move xlsx File Error! " + error.ToString());
                         }
                     }
                 }
-                if (checkBox_csv.Checked)
-                {
+                if (checkBox_csv.Checked) {
                     FileInfo[] FIle_List = folder_info.GetFiles("*.csv");
-                    if (FIle_List.Length > 0)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < FIle_List.Length; i++)
-                            {
-                                if (radioButton_Degree_0.Checked)
-                                {
+                    if (FIle_List.Length > 0) {
+                        try {
+                            for (int i = 0; i < FIle_List.Length; i++) {
+                                if (radioButton_Degree_0.Checked) {
                                     //取出csv內所有欄位, 存在2d list中
                                     List<List<string>> csv_arr = new List<List<string>>();
                                     string csv_file = FIle_List[i].FullName;
                                     var reader = new StreamReader(File.OpenRead(csv_file));
                                     List<List<string>> tmp = new List<List<string>>();
-                                    while (!reader.EndOfStream)
-                                    {
+                                    while (!reader.EndOfStream) {
                                         List<string> tmp1 = new List<string>();
                                         var line = reader.ReadLine();
                                         var values = line.Split(',');
-                                        foreach (string value in values)
-                                        {
+                                        foreach (string value in values) {
                                             tmp1.Add(value);
                                         }
                                         tmp.Add(tmp1);
@@ -2158,71 +1978,61 @@ namespace SPIL
                                     int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A';
                                     //顯示在GUI Measurement 對應 point點位中
                                     imshowValueInMeasurementGUI(tmp[row][column]);
-                                    logger.Write_Logger("get measurement value: " + tmp[row][column]);
+                                    logger.WriteLog("get measurement value: " + tmp[row][column]);
                                     //移動檔案
                                     //使用'_'分割檔名
                                     string save_degree_0_name = "";
-                                    logger.Write_Logger("split by _ keyword:");
+                                    logger.WriteLog("split by _ keyword:");
                                     string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                                    foreach (string s in split_input_file_names)
-                                    {
-                                        logger.Write_Logger(s);
+                                    foreach (string s in split_input_file_names) {
+                                        logger.WriteLog(s);
                                     }
                                     save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                     string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
                                     if (File.Exists(save_full_file_name))
                                         File.Delete(save_full_file_name);
                                     File.Move(FIle_List[i].FullName, save_full_file_name);
-                                    logger.Write_Logger("New File : " + FIle_List[i].FullName +
+                                    logger.WriteLog("New File : " + FIle_List[i].FullName +
                                                         " Move to :" + save_full_file_name);
                                 }
-                                else
-                                {
+                                else {
                                     //移動檔案
                                     //使用'_'分割檔名
                                     string save_degree_45_name = "";
-                                    logger.Write_Logger("split by _ keyword:");
+                                    logger.WriteLog("split by _ keyword:");
                                     string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                                    foreach (string s in split_input_file_names)
-                                    {
-                                        logger.Write_Logger(s);
+                                    foreach (string s in split_input_file_names) {
+                                        logger.WriteLog(s);
                                     }
                                     save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                     string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
                                     if (File.Exists(save_full_file_name))
                                         File.Delete(save_full_file_name);
                                     File.Move(FIle_List[i].FullName, save_full_file_name);
-                                    logger.Write_Logger("New File : " + FIle_List[i].FullName +
+                                    logger.WriteLog("New File : " + FIle_List[i].FullName +
                                                         " Move to :" + save_full_file_name);
                                 }
                             }
 
                         }
-                        catch (Exception error)
-                        {
-                            logger.Write_Error_Logger("Move csv File Error! " + error.ToString());
+                        catch (Exception error) {
+                            logger.WriteErrorLog("Move csv File Error! " + error.ToString());
                         }
                     }
                 }
-                if (checkBox_poir.Checked && !copy_poir_once)
-                {
+                if (checkBox_poir.Checked && !copy_poir_once) {
                     FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
-                    if (FIle_List.Length > 0)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < FIle_List.Length; i++)
-                            {
-                                logger.Write_Logger("New File : " + FIle_List[i].FullName);
-                                if (radioButton_Degree_0.Checked)
-                                {
+                    if (FIle_List.Length > 0) {
+                        try {
+                            for (int i = 0; i < FIle_List.Length; i++) {
+                                logger.WriteLog("New File : " + FIle_List[i].FullName);
+                                if (radioButton_Degree_0.Checked) {
                                     //使用'_'分割檔名
                                     string save_degree_0_name = "";
-                                    logger.Write_Logger("split by _ keyword:");
+                                    logger.WriteLog("split by _ keyword:");
                                     string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                                    foreach (string s in split_input_file_names)
-                                    {
-                                        logger.Write_Logger(s);
+                                    foreach (string s in split_input_file_names) {
+                                        logger.WriteLog(s);
                                     }
                                     save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                     string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
@@ -2232,15 +2042,13 @@ namespace SPIL
                                     copy_poir_once = true;
                                     Thread.Sleep(15000);
                                 }
-                                else
-                                {
+                                else {
                                     //使用'_'分割檔名
                                     string save_degree_45_name = "";
-                                    logger.Write_Logger("split by _ keyword:");
+                                    logger.WriteLog("split by _ keyword:");
                                     string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                                    foreach (string s in split_input_file_names)
-                                    {
-                                        logger.Write_Logger(s);
+                                    foreach (string s in split_input_file_names) {
+                                        logger.WriteLog(s);
                                     }
                                     save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                     string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
@@ -2254,131 +2062,110 @@ namespace SPIL
                             }
 
                         }
-                        catch (Exception error)
-                        {
-                            logger.Write_Error_Logger("Copy poir File Error! " + error.ToString());
+                        catch (Exception error) {
+                            logger.WriteErrorLog("Copy poir File Error! " + error.ToString());
                         }
                     }
                 }
-                else if(checkBox_poir.Checked && copy_poir_once)
-                {
+                else if (checkBox_poir.Checked && copy_poir_once) {
                     FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
-                    if (FIle_List.Length > 0)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < FIle_List.Length; i++)
-                            {
+                    if (FIle_List.Length > 0) {
+                        try {
+                            for (int i = 0; i < FIle_List.Length; i++) {
                                 File.Delete(FIle_List[i].FullName);
                                 copy_poir_once = false;
                             }
                         }
-                        catch (Exception error)
-                        {
-                            logger.Write_Error_Logger("Delete poir File Error! ");
+                        catch (Exception error) {
+                            logger.WriteErrorLog("Delete poir File Error! ");
                         }
                     }
                 }
             }
-            
+
         }
         private void timer_Initial_Tick(object sender, EventArgs e)
         {
             //server判斷甚麼時候要做事,再傳給client端,client是按左鍵,座標是server預設好的
-            if (now_button_click_delay >= button_click_times)
-            {
+            if (now_button_click_delay >= button_click_times) {
                 now_button_click_delay = 0;
-                if (OLS_Initial_Now_Step == 0 && checkBox_Step_1.Checked)
-                {
+                if (OLS_Initial_Now_Step == 0 && checkBox_Step_1.Checked) {
                     Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_1_X), Convert.ToInt32(variable_data.Initial_Step_1_Y));
                     LeftClick();
                     OLS_Initial_Now_Step = 2;
                 }
-                else if (OLS_Initial_Now_Step == 1 && checkBox_Step_2.Checked)
-                {
+                else if (OLS_Initial_Now_Step == 1 && checkBox_Step_2.Checked) {
                     Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_2_X), Convert.ToInt32(variable_data.Initial_Step_2_Y));
                     LeftClick();
                     OLS_Initial_Now_Step = 2;
                 }
-                else if (OLS_Initial_Now_Step == 2 && checkBox_Step_3.Checked)
-                {
+                else if (OLS_Initial_Now_Step == 2 && checkBox_Step_3.Checked) {
                     Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_3_X), Convert.ToInt32(variable_data.Initial_Step_3_Y));
                     LeftClick();
                     OLS_Initial_Now_Step = 3;
                 }
-                else if (checkBox_Step_4.Checked)
-                {
+                else if (checkBox_Step_4.Checked) {
                     button_click_times = variable_data.Initial_Step_4_Delay_Time * 1000 / timer_Initial.Interval;
                     OLS_Initial_Now_Step = 4;
                 }
-                else if (OLS_Initial_Now_Step == 4 || (!checkBox_Step_1.Checked && !checkBox_Step_2.Checked && !checkBox_Step_3.Checked && !checkBox_Step_3.Checked))
-                {
+                else if (OLS_Initial_Now_Step == 4 || (!checkBox_Step_1.Checked && !checkBox_Step_2.Checked && !checkBox_Step_3.Checked && !checkBox_Step_3.Checked)) {
                     timer_Initial.Enabled = false;
                     OLS_Initial_Now_Step = 0;
                     Send_Server("07,Init,e>");
                 }
             }
-            else
-            {
+            else {
                 now_button_click_delay++;
             }
         }
         private void button_Open_Hide_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.Write_Logger("Open Hide 1");
+            try {
+                logger.WriteLog("Open Hide 1");
                 string send_data_str = get_socket_send_data();
                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
                 Thread.Sleep(100);
                 clientSocket_OLS.Send(StringToByteArray("open_1"));
-                Thread.Sleep(100); 
+                Thread.Sleep(100);
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Open Hide 1 Error! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Open Hide 1 Error! " + error.ToString());
             }
         }
         private void button_Close_Hide_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.Write_Logger("Close Hide 1");
+            try {
+                logger.WriteLog("Close Hide 1");
                 clientSocket_OLS.Send(StringToByteArray("close_1"));
                 Thread.Sleep(100);
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Close Hide 1 Error! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Close Hide 1 Error! " + error.ToString());
             }
         }
         private void button_Open_Hide_2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.Write_Logger("Open Hide 2");
+            try {
+                logger.WriteLog("Open Hide 2");
                 string send_data_str = get_socket_send_data();
                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
                 Thread.Sleep(100);
                 clientSocket_OLS.Send(StringToByteArray("open_2"));
                 Thread.Sleep(100);
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Open Hide 2 Error! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Open Hide 2 Error! " + error.ToString());
             }
         }
         private void button_Close_Hide_2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.Write_Logger("Close Hide 2");
+            try {
+                logger.WriteLog("Close Hide 2");
                 clientSocket_OLS.Send(StringToByteArray("close_2"));
                 Thread.Sleep(100);
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Close Hide 2 Error! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Close Hide 2 Error! " + error.ToString());
             }
         }
         private void timer_Mouse_Point_Tick(object sender, EventArgs e)
@@ -2387,41 +2174,34 @@ namespace SPIL
         }
         private void timer_Open_Hide_Tick(object sender, EventArgs e)
         {
-            if (open_hide_1 && open_hide_1 != open_hide_1_Old)
-            {
+            if (open_hide_1 && open_hide_1 != open_hide_1_Old) {
                 button_Open_Hide_Click(sender, e);
                 open_hide_1_Old = open_hide_1;
             }
-            else if (!open_hide_1 && open_hide_1 != open_hide_1_Old)
-            {
+            else if (!open_hide_1 && open_hide_1 != open_hide_1_Old) {
                 button_Close_Hide_Click(sender, e);
                 open_hide_1_Old = open_hide_1;
             }
-            else if (open_hide_2 && open_hide_2 != open_hide_2_Old)
-            {
+            else if (open_hide_2 && open_hide_2 != open_hide_2_Old) {
                 button_Open_Hide_2_Click(sender, e);
                 open_hide_2_Old = open_hide_2;
             }
-            else if (!open_hide_2 && open_hide_2 != open_hide_2_Old)
-            {
+            else if (!open_hide_2 && open_hide_2 != open_hide_2_Old) {
                 button_Close_Hide_2_Click(sender, e);
                 open_hide_2_Old = open_hide_2;
             }
         }
         private void timer_connect_client_Tick(object sender, EventArgs e)
         {
-            if (!bgWorkerServerRun.IsBusy)
-            {
+            if (!bgWorkerServerRun.IsBusy) {
                 bgWorkerServerRun.RunWorkerAsync();
             }
 
         }
         private void bgWorkerServerRun_DoWork(object sender, DoWorkEventArgs e)
         {
-            try
-            {
-                if (!connect_OLS_client)
-                {
+            try {
+                if (!connect_OLS_client) {
                     //連線成功
                     clientSocket_OLS = Socketserver_OLS.Accept();
                     connect_OLS_client = true;
@@ -2431,60 +2211,51 @@ namespace SPIL
                     byte[] send_data = new byte[send_data_str.Length];
                     for (int i = 0; i < send_data_str.Length; i++)
                         send_data[i] = Convert.ToByte(send_data_str[i]);
-                    logger.Write_Logger("Connect client : " + IPAddress.Parse(((IPEndPoint)clientSocket_OLS.RemoteEndPoint).Address.ToString()) + Environment.NewLine);
+                    logger.WriteLog("Connect client : " + IPAddress.Parse(((IPEndPoint)clientSocket_OLS.RemoteEndPoint).Address.ToString()) + Environment.NewLine);
                     clientSocket_OLS.Send(send_data);
                 }
-                else
-                {
-                    try
-                    {
+                else {
+                    try {
                         byte[] Receive_data = new byte[1024];
                         string receive_data = "";
                         //通過clientSocket接收資料
                         int receiveNumber = clientSocket_OLS.Receive(Receive_data);
-                        for (int i = 0; i < 1024; i++)
-                        {
+                        for (int i = 0; i < 1024; i++) {
                             if (Receive_data[i] == 0)
                                 break;
-                            else
-                            {
+                            else {
                                 receive_data += Convert.ToString(Convert.ToChar(Receive_data[i]));
                             }
                         }
-                        if (receive_data == "hand measurement on")
-                        {
+                        if (receive_data == "hand measurement on") {
                             UpdateTextboxAdd("進入手動量測模式" + "\r\n", textBox_Server_Receive);
                             is_hand_measurement = true;
                         }
                         //從cover_and_init接收資料
                         UpdateTextboxAdd("OLS Recive:" + receive_data + "\r\n", textBox_Server_Receive);
-                        
-                        logger.Write_Logger("OLS Recive:" + receive_data);
+
+                        logger.WriteLog("OLS Recive:" + receive_data);
 
                     }
-                    catch (Exception ex)
-                    {
-                        logger.Write_Error_Logger(ex.ToString());
+                    catch (Exception ex) {
+                        logger.WriteErrorLog(ex.ToString());
                         int aaa = ex.HResult;
-                        if (aaa == -2147467259)
-                        {
+                        if (aaa == -2147467259) {
                             clientSocket_OLS.Shutdown(SocketShutdown.Both);
                             clientSocket_OLS.Close();
                             connect_OLS_client = false;
-                            logger.Write_Error_Logger("OLS Disconnect!");
+                            logger.WriteErrorLog("OLS Disconnect!");
                         }
                     }
                 }
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("OLS error" + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("OLS error" + error.ToString());
             }
         }
         private void button_Send_Client_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 string send_ss = textBox_Server_Send.Text;
                 byte[] send_data = new byte[send_ss.Length];
                 for (int i = 0; i < send_ss.Length; i++)
@@ -2493,16 +2264,14 @@ namespace SPIL
                 textBox_Server_Receive.Text += "Send:" + send_ss + Environment.NewLine;
                 timer_Server.Enabled = true;
             }
-            catch (Exception error)
-            {
+            catch (Exception error) {
                 MessageBox.Show(error.ToString());
             }
         }
         private void button_Start_Server_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.Write_Logger("Create OLS Server");
+            try {
+                logger.WriteLog("Create OLS Server");
                 string ip_address = comboBox_IP.Text;
                 IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Server_Port.Text);
@@ -2513,11 +2282,10 @@ namespace SPIL
                 timer_Server.Enabled = true;
                 timer_connect_client.Enabled = true;
                 timer_Open_Hide.Enabled = true;
-                logger.Write_Logger("Create OLS Server Successful");
+                logger.WriteLog("Create OLS Server Successful");
             }
-            catch (Exception error)
-            {
-                logger.Write_Error_Logger("Create OLS Server Fail ! " + error.ToString());
+            catch (Exception error) {
+                logger.WriteErrorLog("Create OLS Server Fail ! " + error.ToString());
             }
 
 
@@ -2567,18 +2335,15 @@ namespace SPIL
         private void textBox_Mesument_45_KeyDown(object sender, KeyEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (e.KeyCode == Keys.Enter && textBox.Text != "")
-            {
-                try
-                {
-                    double value =Math.Round(Convert.ToDouble(textBox.Text) * Math.Sqrt(2), 5);
+            if (e.KeyCode == Keys.Enter && textBox.Text != "") {
+                try {
+                    double value = Math.Round(Convert.ToDouble(textBox.Text) * Math.Sqrt(2), 5);
                     textBox.Text = value.ToString();
                 }
-                catch(Exception ex)
-                {
+                catch (Exception ex) {
                     MessageBox.Show(ex.Message.ToString());
                 }
-                
+
             }
 
         }
@@ -2596,8 +2361,7 @@ namespace SPIL
         private void numericUpDown_AOI_save_idx1_ValueChanged(object sender, EventArgs e)
         {
             //設定 AOI 存圖 索引
-            if (AOI_Measurement != null)
-            {
+            if (AOI_Measurement != null) {
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
@@ -2605,8 +2369,7 @@ namespace SPIL
                 AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                 AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
             }
-            if(Hand_Measurement != null)
-            {
+            if (Hand_Measurement != null) {
                 Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
                 Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
                 Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
@@ -2628,19 +2391,17 @@ namespace SPIL
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (radioButton7.Checked)
-            {
+            if (radioButton7.Checked) {
                 Receive_Mode("Top");
             }
-            else
-            {
+            else {
                 Receive_Mode("Side");
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Receive_Start(18, "12345678",1);
+            Receive_Start(18, "12345678", 1);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -2657,6 +2418,74 @@ namespace SPIL
         {
             string send_data_str = get_socket_send_data();
             clientSocket_OLS.Send(StringToByteArray(send_data_str));
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                Bitmap image = new Bitmap(dlg.FileName);
+
+                pictureBox1.Image = image;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+
+                var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
+
+                cogGM.EditParameter(image);
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+            var toolBlock = CogSerializer.LoadObjectFromFile("D:\\MStoolblock.vpp") as CogToolBlock;
+
+            //   AlgorithmSetting = AlgorithmSetting.Load<AlgorithmSetting>("D:\\algorithmSet.setting");
+
+            // 新增一個客戶到列表中
+
+
+            AlgorithmSetting.AlgorithmDescribes = new List<AlgorithmDescribe>()
+             {
+                 new AlgorithmDescribe("001", "CogSearchMaxTool2", MethodType.CogSearchMaxTool){ CogAOIMethod =new CogSearchMax()},
+                 new AlgorithmDescribe("002", "CogFindEllipseTool3", MethodType.CogFindEllipseTool){ CogAOIMethod=new CogEllipseCaliper()},
+                 new AlgorithmDescribe("003", "CogImageConvertTool1", MethodType.CogImageConvertTool){ CogAOIMethod=new CogImageConverter()},
+
+             };
+
+            CogSerializer.SaveObjectToFile(toolBlock, "D:\\MStoolblock-2.vpp");
+
+
+            AlgorithmSetting.Save("D:\\algorithmSet.setting");
+            //新增到UI 做顯示
+            foreach (var item in AlgorithmSetting.AlgorithmDescribes) {
+                listBox_AlgorithmList.Items.Add(item);
+            }
+        }
+
+        private void btn_AOIOpenImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                aoiImage = new Bitmap(dlg.FileName);
+
+                pictureBox1.Image = aoiImage;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+
+                //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
+
+                //     cogGM.EditParameter(image);
+            }
         }
 
         private void button_hb_off_Click(object sender, EventArgs e)

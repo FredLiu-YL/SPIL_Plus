@@ -6,16 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Cognex.VisionPro;
 using Cognex.VisionPro.ToolBlock;
-using YuanLi_Logger;
 using System.IO;
 using Cognex.VisionPro.Display;
+using SPIL.model;
 
 namespace SPIL
 {
-    class SPILBumpMeasure
+    public  class SPILBumpMeasure
     {
-        CogToolBlock MeasureToolBlock;
         Logger logger = new Logger("AOI");
+        CogToolBlock MeasureToolBlock;
+
         public CogRecordDisplay cogRecord_save_result_img;
         //toolblock存圖索引
         public int save_AOI_result_idx_1 = 0;
@@ -30,14 +31,14 @@ namespace SPIL
         public CogDisplay CogDisplay_result_3;
         public SPILBumpMeasure(string Vision_Pro_Tool_Block_Address)
         {
-            logger.Write_Logger("Load AOI File");
+            logger.WriteLog("Load AOI File");
             try
             {
                 MeasureToolBlock = CogSerializer.LoadObjectFromFile(Vision_Pro_Tool_Block_Address) as CogToolBlock;
             }
             catch(Exception ex)
             {
-                logger.Write_Error_Logger(ex.ToString());
+                logger.WriteErrorLog(ex.ToString());
             }
         }
 
@@ -45,7 +46,7 @@ namespace SPIL
         //{
         //    try
         //    {
-        //        logger.Write_Logger("Measurement Image! bitmap");
+        //        logger.WriteLog("Measurement Image! bitmap");
         //        CogImage8Grey cogImage8Grey = new CogImage8Grey(Input_Image);
         //        MeasureToolBlock.Inputs["InputImage"].Value = cogImage8Grey;
         //        MeasureToolBlock.Run();
@@ -53,13 +54,13 @@ namespace SPIL
         //        CogToolResultConstants vision_pro_run_result = MeasureToolBlock.RunStatus.Result;
         //        if (vision_pro_run_result != CogToolResultConstants.Accept)
         //            distance = 0;
-        //        logger.Write_Logger("Run Result : " + Convert.ToString(vision_pro_run_result));
-        //        logger.Write_Logger("Measurement Distance : " + Convert.ToString(distance));
+        //        logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
+        //        logger.WriteLog("Measurement Distance : " + Convert.ToString(distance));
         //        return distance;
         //    }
         //    catch (Exception error)
         //    {
-        //        logger.Write_Error_Logger("Measurement Error! " + error.ToString());
+        //        logger.WriteErrorLog("Measurement Error! " + error.ToString());
         //        return -1;
         //    }
         //}
@@ -67,24 +68,24 @@ namespace SPIL
         //{
         //    try
         //    {
-        //        logger.Write_Logger("Measurement Image Address! one");
+        //        logger.WriteLog("Measurement Image Address! one");
         //        Bitmap Input_Image = new Bitmap(Input_Image_Address);
         //        CogImage8Grey cogImage8Grey = new CogImage8Grey(Input_Image);
         //        MeasureToolBlock.Inputs["Image"].Value = cogImage8Grey;
         //        MeasureToolBlock.Run();
         //        double distance = (double)MeasureToolBlock.Outputs["Distance"].Value;
         //        CogToolResultConstants vision_pro_run_result = MeasureToolBlock.RunStatus.Result;
-        //        logger.Write_Logger("Run Result : " + Convert.ToString(vision_pro_run_result));
+        //        logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
         //        if (vision_pro_run_result != CogToolResultConstants.Accept)
         //        {
-        //            logger.Write_Error_Logger("Run Result : " + Convert.ToString(MeasureToolBlock.RunStatus.Message));
+        //            logger.WriteErrorLog("Run Result : " + Convert.ToString(MeasureToolBlock.RunStatus.Message));
         //        }
-        //        logger.Write_Logger("Measurement Distance : " + Convert.ToString(distance));
+        //        logger.WriteLog("Measurement Distance : " + Convert.ToString(distance));
         //        return distance;
         //    }
         //    catch (Exception error)
         //    {
-        //        logger.Write_Error_Logger("Measurement Error! " + error.ToString());
+        //        logger.WriteErrorLog("Measurement Error! " + error.ToString());
         //        return -1;
         //    }
         //}
@@ -93,7 +94,7 @@ namespace SPIL
         {
             try
             {
-                logger.Write_Logger("Measurement for two images!");
+                logger.WriteLog("Measurement for two images!");
                 Bitmap img1 = new Bitmap(Input_Image_Address1);
                 Bitmap img2 = new Bitmap(Input_Image_Address2);
                 Bitmap img3 = new Bitmap(Input_Image_Address3);
@@ -113,13 +114,13 @@ namespace SPIL
                 distance_CuNi = (double)MeasureToolBlock.Outputs["Distance"].Value;
                 distance_Cu = (double)MeasureToolBlock.Outputs["Distance1"].Value;
                 CogToolResultConstants vision_pro_run_result = MeasureToolBlock.RunStatus.Result;
-                logger.Write_Logger("Run Result : " + Convert.ToString(vision_pro_run_result));
+                logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
 
                 
 
                 if (vision_pro_run_result != CogToolResultConstants.Accept)
                 {
-                    logger.Write_Error_Logger("Run Result : " + Convert.ToString(MeasureToolBlock.RunStatus.Message));
+                    logger.WriteErrorLog("Run Result : " + Convert.ToString(MeasureToolBlock.RunStatus.Message));
                     CogImage24PlanarColor error_img =new CogImage24PlanarColor(new Bitmap("X.png"));
                     CogDisplay_result_1.Image = new CogImage24PlanarColor(error_img);
                     CogDisplay_result_1.Fit(true);
@@ -133,7 +134,7 @@ namespace SPIL
                 else
                 {
                     Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
-                    logger.Write_Logger("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
+                    logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }
                 img1.Dispose();
                 img2.Dispose();
@@ -144,7 +145,7 @@ namespace SPIL
             }
             catch (Exception error)
             {
-                logger.Write_Error_Logger("Measurement Error! " + error.ToString());
+                logger.WriteErrorLog("Measurement Error! " + error.ToString());
                 distance_CuNi = -1;
                 distance_Cu = -1;
                 return false;
@@ -168,19 +169,19 @@ namespace SPIL
             }
             // 存圖
             cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx1];
-            logger.Write_Logger("save AOI idx:" + idx1);
+            logger.WriteLog("save AOI idx:" + idx1);
             string save_result_name = Path.ChangeExtension(Input_Image_Address1, null);
             Bitmap save_result_img1 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img1.Save(save_result_name + "_AOI.bmp");
 
             cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx2];
-            logger.Write_Logger("save AOI idx:" + idx2);
+            logger.WriteLog("save AOI idx:" + idx2);
             save_result_name = Path.ChangeExtension(Input_Image_Address2, null);
             Bitmap save_result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img2.Save(save_result_name + "_AOI.bmp");
 
             cogRecord_save_result_img.Record = MeasureToolBlock.CreateLastRunRecord().SubRecords[idx3];
-            logger.Write_Logger("save AOI idx:" + idx3);
+            logger.WriteLog("save AOI idx:" + idx3);
             save_result_name = Path.ChangeExtension(Input_Image_Address3, null);
             Bitmap save_result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
             save_result_img3.Save(save_result_name + "_AOI.bmp");
