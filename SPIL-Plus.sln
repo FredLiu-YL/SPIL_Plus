@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPIL", "SPIL\SPIL.csproj", "{4B8E7383-CA64-4CC2-9686-5ACC48F5468F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuanliCore", "YuanliCore\YuanliCore\YuanliCore.csproj", "{AFC5BB52-03A9-4833-8415-B52DB3B34639}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YuanliCore", "YuanliCore\YuanliCore\YuanliCore.csproj", "{7794CBB3-58F6-4E99-9AB2-C3A257A361A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{4B8E7383-CA64-4CC2-9686-5ACC48F5468F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B8E7383-CA64-4CC2-9686-5ACC48F5468F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B8E7383-CA64-4CC2-9686-5ACC48F5468F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFC5BB52-03A9-4833-8415-B52DB3B34639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFC5BB52-03A9-4833-8415-B52DB3B34639}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFC5BB52-03A9-4833-8415-B52DB3B34639}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFC5BB52-03A9-4833-8415-B52DB3B34639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7794CBB3-58F6-4E99-9AB2-C3A257A361A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7794CBB3-58F6-4E99-9AB2-C3A257A361A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7794CBB3-58F6-4E99-9AB2-C3A257A361A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7794CBB3-58F6-4E99-9AB2-C3A257A361A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
