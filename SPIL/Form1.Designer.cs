@@ -309,6 +309,7 @@ namespace SPIL
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button9 = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
             this.btn_RecipeSave = new System.Windows.Forms.Button();
@@ -339,7 +340,6 @@ namespace SPIL
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_connect_client = new System.Windows.Forms.Timer(this.components);
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.button9 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -3447,6 +3447,16 @@ namespace SPIL
             this.tabPage7.Text = "AlgorithmList";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(47, 99);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(91, 39);
+            this.button9.TabIndex = 23;
+            this.button9.Text = "DrawLIST";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // label56
             // 
             this.label56.AutoSize = true;
@@ -3493,6 +3503,7 @@ namespace SPIL
             this.listBox_SharpnessAlgorithmList.Name = "listBox_SharpnessAlgorithmList";
             this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(353, 292);
             this.listBox_SharpnessAlgorithmList.TabIndex = 18;
+            this.listBox_SharpnessAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_SharpnessAlgorithmList_DoubleClick);
             // 
             // label54
             // 
@@ -3668,16 +3679,6 @@ namespace SPIL
             // 
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(47, 99);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(91, 39);
-            this.button9.TabIndex = 23;
-            this.button9.Text = "DrawLIST";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // Form1
             // 

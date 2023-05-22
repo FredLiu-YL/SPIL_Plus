@@ -82,6 +82,8 @@
     <Compile Include="Model\AOIFlow.cs" />
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\MachineSetting.cs" />
+    <Compile Include="Model\SharpnessFlow.cs" />
+    <Compile Include="Model\VisionProFlow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SPILBumpMeasure.cs" />

@@ -37,7 +37,7 @@ namespace SPIL
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
         private AOIFlow aoIFlow;
-
+        private SharpnessFlow sharpnessFlow;
 
         public Form1()
         {
@@ -280,10 +280,11 @@ namespace SPIL
                     tbx_SharpPath.Text = machineSetting.SharpVppPath;
                     tBx_RecipeName.Text = "Default";
                     aoIFlow = new AOIFlow(machineSetting.AOIVppPath, machineSetting.AOIAlgorithms);
-                
+                    sharpnessFlow = new SharpnessFlow(machineSetting.SharpVppPath, machineSetting.SharpAlgorithms);
                     sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms , machineSetting.SharpAlgorithms);
                     //預設把 toolBlock 的參數先拿來用
-                    sPILRecipe.AOIParams = aoIFlow.CogAOIMethods.Select(m => m.method.RunParams).ToList();
+                    sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
+                    sPILRecipe.ClarityParams = sharpnessFlow.CogMethods.Select(m => m.method.RunParams).ToList();
 
                     //新增到UI 做顯示
                     foreach (var item in machineSetting.AOIAlgorithms) {
@@ -2545,7 +2546,25 @@ namespace SPIL
                 //     cogGM.EditParameter(image);
             }
         }
+        private void listBox_SharpnessAlgorithmList_DoubleClick(object sender, EventArgs e)
+        {
+            try {
+                if (aoiImage == null) throw new Exception($"Image not exist");
+                int index = listBox_SharpnessAlgorithmList.SelectedIndex;
+                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
+                var algorithmItem = sPILRecipe.ClarityParams[index];
+                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
+                sharpnessFlow.CogMethods[index].method.RunParams = algorithmItem;
+                sharpnessFlow.CogMethods[index].method.EditParameter(aoiImage);
+                //參數寫回  sPILRecipe.AOIParams
+                algorithmItem = sharpnessFlow.CogMethods[index].method.RunParams;
 
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void listBox_AlgorithmList_DoubleClick(object sender, EventArgs e)
         {
             try {
@@ -2554,10 +2573,10 @@ namespace SPIL
                 //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
                 var algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
                 //參數塞到  aoIFlow.CogAOIMethods 對應的方法
-                aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
-                aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(aoiImage);
+                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
+                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(aoiImage);
                 //參數寫回  sPILRecipe.AOIParams
-                algorithmItem = aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
+                algorithmItem = aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
 
 
                 //   var a  = aoiImage.ImageToBytes(aoiImage.RawFormat);
@@ -2655,7 +2674,7 @@ namespace SPIL
             tbx_AOIPath.Text = machineSetting.AOIVppPath;
             tbx_SharpPath.Text = machineSetting.SharpVppPath;
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
-
+            sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
 
 
         }
@@ -2719,6 +2738,8 @@ namespace SPIL
                 listBox_SharpnessAlgorithmList.Items.Add(item);
             }
         }
+
+      
 
         private void button_hb_off_Click(object sender, EventArgs e)
         {

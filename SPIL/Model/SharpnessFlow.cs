@@ -12,21 +12,12 @@ using YuanliCore.ImageProcess.Match;
 
 namespace SPIL.Model
 {
-
-    /// <summary>
-    /// AOI 計算 流程
-    /// </summary>
-    public class AOIFlow : VisionProFlow
+    public class SharpnessFlow : VisionProFlow
     {
-
-        public AOIFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes) :base(aoiVppPath, algorithmDescribes,101)
+        public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes) : base(aoiVppPath, algorithmDescribes, 201)
         {
 
 
         }
-
-
     }
-  
-
 }
