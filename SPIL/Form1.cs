@@ -24,8 +24,7 @@ using SPIL.model;
 using YuanliCore.ImageProcess.Match;
 using Cognex.VisionPro;
 using Cognex.VisionPro.ToolBlock;
-
-
+using SPIL.Model;
 
 namespace SPIL
 {
@@ -33,11 +32,22 @@ namespace SPIL
     {
         private Logger logger = new Logger("SPIL");
         private Bitmap aoiImage;
+        private CogToolBlock toolBlock;
+        private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
+        private MachineSetting machineSetting { get; set; } = new MachineSetting();
+        private SPILRecipe sPILRecipe { get; set; }
+        private AOIFlow aoIFlow;
+
+
         public Form1()
         {
             InitializeComponent();
+
+
+
         }
-       public AlgorithmSetting AlgorithmSetting { get; set; } = new AlgorithmSetting();
+
+
 
         #region Var
         string Setup_Data_address = System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml";
@@ -164,6 +174,132 @@ namespace SPIL
             textBoxes_Cu_1_20[18] = textBox_Mesument_18_Cu;
             textBoxes_Cu_1_20[19] = textBox_Mesument_19_Cu;
             textBoxes_Cu_1_20[20] = textBox_Mesument_20_Cu;
+        }
+        //Form Load
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            int counter = 0;
+
+
+            //防止開啟第二次
+            if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1) {
+                this.Close();
+            }
+            else {
+                logger.WriteLog("Start Program");
+                auto_log_out_times = auto_log_out_Delay * 1000 / timer_Log_in_Out.Interval;
+                if (File.Exists(Setup_Data_address)) {
+                    Load_Setup_Data();
+                }
+                else {
+                    Initial_Setup_Data();
+                }
+                //開啟socket server
+                //取得此電腦上ip位置
+                Search_Ethernet_Card();
+                for (int i = 0; i < ethernet_card.Count; i++) {
+                    Search_IP(i);
+                }
+                //選擇一個乙太卡開啟socket server
+                if (comboBox_IP.Items.Count == 0) {
+                    return;
+                }
+                comboBox_IP.SelectedIndex = 0;
+                comboBox_IP_Motion.SelectedIndex = 0;
+                button_Connect_Click(sender, e);
+                button_Start_Server_Click(sender, e);
+                button_Start_Click(sender, e);
+                combine_text_box();
+            }
+
+            //當測試檔案存在時
+            //test mode
+            if (File.Exists("test.txt")) {
+                is_test_mode = true;
+            }
+            if (is_test_mode) {
+                logger.WriteLog("test mode");
+                groupBox_test_item.Visible = true;
+                string vpp_file_test_path = "";
+                StreamReader file = new StreamReader("test.txt");
+                string line;
+                while ((line = file.ReadLine()) != null) {
+                    if (counter == 0) {
+                        if (line == "0") {
+                            radioButton_Degree_0.Checked = true;
+                        }
+                        else if (line == "45") {
+                            radioButton_Degree_45.Checked = true;
+                        }
+                    }
+                    else if (counter == 1) {
+                        vpp_file_test_path = line;
+                    }
+                    logger.WriteLog(line);
+                    counter++;
+                }
+                file.Close();
+
+                AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
+                ////綁定cogRecordDisplay 用來存toolblock結果圖
+                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
+                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
+                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
+                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+                //載入手動量測
+                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
+                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
+                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
+                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+
+
+                // 演算法 模組
+                string configFile = $"{systemPath}\\machineConfig.cfg";
+                if (!File.Exists(configFile)) {
+                    machineSetting.Save(configFile);
+                }
+                else {
+                    machineSetting = MachineSetting.Load(configFile);
+                }
+                if (machineSetting.AOIVppPath != null) {
+
+                    tbx_AOIPath.Text = machineSetting.AOIVppPath;
+                    tbx_SharpPath.Text = machineSetting.SharpVppPath;
+                    tBx_RecipeName.Text = "Default";
+                    aoIFlow = new AOIFlow(machineSetting.AOIVppPath, machineSetting.AOIAlgorithms);
+                
+                    sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms , machineSetting.SharpAlgorithms);
+                    //預設把 toolBlock 的參數先拿來用
+                    sPILRecipe.AOIParams = aoIFlow.CogAOIMethods.Select(m => m.method.RunParams).ToList();
+
+                    //新增到UI 做顯示
+                    foreach (var item in machineSetting.AOIAlgorithms) {
+                        listBox_AOIAlgorithmList.Items.Add(item);
+                    }
+
+                    //新增到UI 做顯示
+                    foreach (var item in machineSetting.SharpAlgorithms) {
+                        listBox_SharpnessAlgorithmList.Items.Add(item);
+                    }
+                }
+
+            }
+            else {
+                groupBox_test_item.Visible = false;
+            }
         }
         private void Load_Setup_Data()
         {
@@ -1061,100 +1197,7 @@ namespace SPIL
         #endregion
 
         #region Icon Function
-        //Form Load
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            int counter = 0;
 
-
-            //防止開啟第二次
-            if (System.Diagnostics.Process.GetProcessesByName(System.Diagnostics.Process.GetCurrentProcess().ProcessName).Length > 1) {
-                this.Close();
-            }
-            else {
-                logger.WriteLog("Start Program");
-                auto_log_out_times = auto_log_out_Delay * 1000 / timer_Log_in_Out.Interval;
-                if (File.Exists(Setup_Data_address)) {
-                    Load_Setup_Data();
-                }
-                else {
-                    Initial_Setup_Data();
-                }
-                //開啟socket server
-                //取得此電腦上ip位置
-                Search_Ethernet_Card();
-                for (int i = 0; i < ethernet_card.Count; i++) {
-                    Search_IP(i);
-                }
-                //選擇一個乙太卡開啟socket server
-                if (comboBox_IP.Items.Count == 0) {
-                    return;
-                }
-                comboBox_IP.SelectedIndex = 0;
-                comboBox_IP_Motion.SelectedIndex = 0;
-                button_Connect_Click(sender, e);
-                button_Start_Server_Click(sender, e);
-                button_Start_Click(sender, e);
-                combine_text_box();
-            }
-
-            //當測試檔案存在時
-            //test mode
-            if (File.Exists("test.txt")) {
-                is_test_mode = true;
-            }
-            if (is_test_mode) {
-                logger.WriteLog("test mode");
-                groupBox_test_item.Visible = true;
-                string vpp_file_test_path = "";
-                StreamReader file = new StreamReader("test.txt");
-                string line;
-                while ((line = file.ReadLine()) != null) {
-                    if (counter == 0) {
-                        if (line == "0") {
-                            radioButton_Degree_0.Checked = true;
-                        }
-                        else if (line == "45") {
-                            radioButton_Degree_45.Checked = true;
-                        }
-                    }
-                    else if (counter == 1) {
-                        vpp_file_test_path = line;
-                    }
-                    logger.WriteLog(line);
-                    counter++;
-                }
-                file.Close();
-
-                AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
-                ////綁定cogRecordDisplay 用來存toolblock結果圖
-                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
-                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
-                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
-                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
-                //載入手動量測
-                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
-                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
-                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
-                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
-                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
-            }
-            else {
-                groupBox_test_item.Visible = false;
-            }
-        }
         //Log In/Out
         private void timer_Log_in_Out_Tick(object sender, EventArgs e)
         {
@@ -2420,6 +2463,50 @@ namespace SPIL
             clientSocket_OLS.Send(StringToByteArray(send_data_str));
         }
 
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            try {
+                OpenFileDialog dlg = new OpenFileDialog();
+                listBox_AOIAlgorithmList.Items.Clear();
+                dlg.Filter = "vpp |*.vpp";
+                var result = dlg.ShowDialog();
+                if (result == DialogResult.OK) {// 載入圖片
+
+
+                    toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+
+                    //   var toolBlock = CogSerializer.LoadObjectFromFile("D:\\MStoolblock.vpp") as CogToolBlock;
+
+                    //   AlgorithmSetting = AlgorithmSetting.Load<AlgorithmSetting>("D:\\algorithmSet.setting");
+
+                    // 新增一個客戶到列表中
+
+
+                    //sPILRecipe.AlgorithmDescribes = new List<AlgorithmDescribe>()
+                    // {
+                    //     new AlgorithmDescribe("001", "CogSearchMaxTool1", MethodType.CogSearchMaxTool){ CogAOIMethod =new CogSearchMax(1)},
+                    //     new AlgorithmDescribe("002", "CogFindEllipseTool2", MethodType.CogFindEllipseTool){ CogAOIMethod=new CogEllipseCaliper(2)},
+                    //     new AlgorithmDescribe("003", "CogImageConvertTool1", MethodType.CogImageConvertTool){ CogAOIMethod=new CogImageConverter(3)},
+
+                    // };
+
+                    //     CogSerializer.SaveObjectToFile(toolBlock, "D:\\MStoolblock-2.vpp");
+                    //    AlgorithmSetting.Save("D:\\algorithmSet.setting");
+
+
+                    //新增到UI 做顯示
+                    foreach (var item in sPILRecipe.AOIParams) {
+                        listBox_AOIAlgorithmList.Items.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show(ex.Message);
+            }
+
+        }
         private void button7_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -2439,35 +2526,6 @@ namespace SPIL
                 cogGM.EditParameter(image);
             }
         }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-            var toolBlock = CogSerializer.LoadObjectFromFile("D:\\MStoolblock.vpp") as CogToolBlock;
-
-            //   AlgorithmSetting = AlgorithmSetting.Load<AlgorithmSetting>("D:\\algorithmSet.setting");
-
-            // 新增一個客戶到列表中
-
-
-            AlgorithmSetting.AlgorithmDescribes = new List<AlgorithmDescribe>()
-             {
-                 new AlgorithmDescribe("001", "CogSearchMaxTool2", MethodType.CogSearchMaxTool){ CogAOIMethod =new CogSearchMax()},
-                 new AlgorithmDescribe("002", "CogFindEllipseTool3", MethodType.CogFindEllipseTool){ CogAOIMethod=new CogEllipseCaliper()},
-                 new AlgorithmDescribe("003", "CogImageConvertTool1", MethodType.CogImageConvertTool){ CogAOIMethod=new CogImageConverter()},
-
-             };
-
-            CogSerializer.SaveObjectToFile(toolBlock, "D:\\MStoolblock-2.vpp");
-
-
-            AlgorithmSetting.Save("D:\\algorithmSet.setting");
-            //新增到UI 做顯示
-            foreach (var item in AlgorithmSetting.AlgorithmDescribes) {
-                listBox_AlgorithmList.Items.Add(item);
-            }
-        }
-
         private void btn_AOIOpenImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -2488,6 +2546,180 @@ namespace SPIL
             }
         }
 
+        private void listBox_AlgorithmList_DoubleClick(object sender, EventArgs e)
+        {
+            try {
+                if (aoiImage == null) throw new Exception($"Image not exist");
+             //   var select = listBox_AOIAlgorithmList.SelectedItem;
+                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
+                var algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
+                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
+                aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
+                aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(aoiImage);
+                //參數寫回  sPILRecipe.AOIParams
+                algorithmItem = aoIFlow.CogAOIMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
+
+
+                //   var a  = aoiImage.ImageToBytes(aoiImage.RawFormat);
+                /*   var tool = toolBlock.Tools[algorithmItem.Name];
+
+
+                   algorithmItem.CogAOIMethod.SetCogToolParameter(tool);
+                   algorithmItem.CogAOIMethod.EditParameter(aoiImage);
+
+                   tool = algorithmItem.CogAOIMethod.GetCogTool();
+                */
+
+
+                /* switch (algorithmItem.CogMethodtype) {
+
+                     case MethodType.CogSearchMaxTool:
+                         CogSearchMax gapCaliper = algorithmItem.CogAOIMethod as CogSearchMax;
+
+                         gapCaliper.EditParameter(aoiImage);
+                         break;
+                     case MethodType.CogImageConvertTool:
+                         CogImageConverter imageConvert = algorithmItem.CogAOIMethod as CogImageConverter;
+                         imageConvert.EditParameter(aoiImage);
+                         break;
+                     case MethodType.CogFindEllipseTool:
+                         CogEllipseCaliper ellipseCaliper = algorithmItem.CogAOIMethod as CogEllipseCaliper;
+
+                         ellipseCaliper.EditParameter(aoiImage);
+                         break;
+                     default:
+                         break;
+                 }*/
+                //  CogSerializer.SaveObjectToFile(toolBlock, "D:\\test-2.vpp");
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
+        private void btn_RecipeSave_Click(object sender, EventArgs e)
+        {
+            try {
+                string name = tBx_RecipeName.Text;
+
+                string path = $"{systemPath}\\Recipe\\{name}";
+                if (!Directory.Exists(path)) 
+                    Directory.CreateDirectory(path);
+                else 
+                {
+                  var result = MessageBox.Show("Do you want to replace the existing file?", "", MessageBoxButtons.OKCancel);
+                    if (result == DialogResult.Cancel) return;
+                }
+                   
+
+                machineSetting.AOIVppPath = tbx_AOIPath.Text;
+                machineSetting.SharpVppPath = tbx_SharpPath.Text;
+                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+
+                SaveRecipe(sPILRecipe, path);
+                MessageBox.Show("存檔完成");
+
+            }
+            catch (Exception ex ) {
+
+                MessageBox.Show(ex.ToString()) ;
+            }
+           
+
+
+        }
+
+        private void CB_RecipeList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try {
+                string name = CB_RecipeList.SelectedItem.ToString();
+                string path = $"{systemPath}\\Recipe\\{name}";
+                LoadRecipe(path);
+                MessageBox.Show("讀取完成");
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
+
+        private void LoadRecipe(string path)
+        {
+            //讀取 料號 實際Cognex參數存在這
+            sPILRecipe.Load(path);
+            tBx_RecipeName.Text = new DirectoryInfo(path).Name;
+            tbx_AOIPath.Text = machineSetting.AOIVppPath;
+            tbx_SharpPath.Text = machineSetting.SharpVppPath;
+            aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
+
+
+
+        }
+        private void SaveRecipe(SPILRecipe recipe, string path)
+        {
+            recipe.Save(path);
+        }
+
+        private void btn_ReadAOIVPP_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            listBox_AOIAlgorithmList.Items.Clear();
+            dlg.Filter = "vpp |*.vpp";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                tbx_AOIPath.Text = dlg.FileName;
+                //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+            }
+        }
+
+        private void btn_ReadSharpVPP_Click(object sender, EventArgs e)
+        {
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            listBox_AOIAlgorithmList.Items.Clear();
+            dlg.Filter = "vpp |*.vpp";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                tbx_SharpPath.Text = dlg.FileName;
+                //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+            }
+        }
+
+        private void CB_RecipeList_Click(object sender, EventArgs e)
+        {
+            string folderPath = $"{systemPath}\\Recipe"; // 資料夾路徑
+
+            // 取得資料夾內所有資料夾的路徑
+            string[] subDirectories = Directory.GetDirectories(folderPath);
+            CB_RecipeList.Items.Clear();
+            var dirNames = subDirectories.Select(d => new DirectoryInfo(d).Name);
+            foreach (var item in dirNames) {
+                CB_RecipeList.Items.Add(item);
+            }
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+
+            //新增到UI 做顯示
+            foreach (var item in machineSetting.AOIAlgorithms) {
+                listBox_AOIAlgorithmList.Items.Add(item);
+            }
+
+            //新增到UI 做顯示
+            foreach (var item in machineSetting.SharpAlgorithms) {
+                listBox_SharpnessAlgorithmList.Items.Add(item);
+            }
+        }
+
         private void button_hb_off_Click(object sender, EventArgs e)
         {
             string send_data_str = get_socket_send_data();
@@ -2496,5 +2728,11 @@ namespace SPIL
             clientSocket_OLS.Send(StringToByteArray("close_hb"));
             Thread.Sleep(100);
         }
+
+
+
     }
+
+
+
 }

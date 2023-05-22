@@ -308,6 +308,25 @@ namespace SPIL
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.label56 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.btn_RecipeSave = new System.Windows.Forms.Button();
+            this.tBx_RecipeName = new System.Windows.Forms.TextBox();
+            this.listBox_SharpnessAlgorithmList = new System.Windows.Forms.ListBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.CB_RecipeList = new System.Windows.Forms.ComboBox();
+            this.btn_ReadSharpVPP = new System.Windows.Forms.Button();
+            this.btn_ReadAOIVPP = new System.Windows.Forms.Button();
+            this.tbx_SharpPath = new System.Windows.Forms.TextBox();
+            this.tbx_AOIPath = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.btn_AOIOpenImage = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.timer_Log_in_Out = new System.Windows.Forms.Timer(this.components);
             this.timer_Server = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_Server = new System.ComponentModel.BackgroundWorker();
@@ -320,12 +339,7 @@ namespace SPIL
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_connect_client = new System.Windows.Forms.Timer(this.components);
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.btn_AOIOpenImage = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.listBox_AlgorithmList = new System.Windows.Forms.ListBox();
+            this.button9 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -3405,6 +3419,201 @@ namespace SPIL
             this.radioButton1.Text = "1m";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.button9);
+            this.tabPage7.Controls.Add(this.label56);
+            this.tabPage7.Controls.Add(this.label55);
+            this.tabPage7.Controls.Add(this.btn_RecipeSave);
+            this.tabPage7.Controls.Add(this.tBx_RecipeName);
+            this.tabPage7.Controls.Add(this.listBox_SharpnessAlgorithmList);
+            this.tabPage7.Controls.Add(this.label54);
+            this.tabPage7.Controls.Add(this.CB_RecipeList);
+            this.tabPage7.Controls.Add(this.btn_ReadSharpVPP);
+            this.tabPage7.Controls.Add(this.btn_ReadAOIVPP);
+            this.tabPage7.Controls.Add(this.tbx_SharpPath);
+            this.tabPage7.Controls.Add(this.tbx_AOIPath);
+            this.tabPage7.Controls.Add(this.label53);
+            this.tabPage7.Controls.Add(this.label52);
+            this.tabPage7.Controls.Add(this.btn_AOIOpenImage);
+            this.tabPage7.Controls.Add(this.button8);
+            this.tabPage7.Controls.Add(this.pictureBox1);
+            this.tabPage7.Controls.Add(this.button7);
+            this.tabPage7.Controls.Add(this.listBox_AOIAlgorithmList);
+            this.tabPage7.Location = new System.Drawing.Point(4, 26);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(785, 1019);
+            this.tabPage7.TabIndex = 2;
+            this.tabPage7.Text = "AlgorithmList";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label56.Location = new System.Drawing.Point(401, 150);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(204, 21);
+            this.label56.TabIndex = 22;
+            this.label56.Text = "Sharpness Method List :";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label55.Location = new System.Drawing.Point(17, 150);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(157, 21);
+            this.label55.TabIndex = 21;
+            this.label55.Text = "AOI Method List :";
+            // 
+            // btn_RecipeSave
+            // 
+            this.btn_RecipeSave.Location = new System.Drawing.Point(182, 10);
+            this.btn_RecipeSave.Name = "btn_RecipeSave";
+            this.btn_RecipeSave.Size = new System.Drawing.Size(75, 31);
+            this.btn_RecipeSave.TabIndex = 20;
+            this.btn_RecipeSave.Text = "Save";
+            this.btn_RecipeSave.UseVisualStyleBackColor = true;
+            this.btn_RecipeSave.Click += new System.EventHandler(this.btn_RecipeSave_Click);
+            // 
+            // tBx_RecipeName
+            // 
+            this.tBx_RecipeName.Location = new System.Drawing.Point(124, 47);
+            this.tBx_RecipeName.Name = "tBx_RecipeName";
+            this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
+            this.tBx_RecipeName.TabIndex = 19;
+            // 
+            // listBox_SharpnessAlgorithmList
+            // 
+            this.listBox_SharpnessAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
+            this.listBox_SharpnessAlgorithmList.FormattingEnabled = true;
+            this.listBox_SharpnessAlgorithmList.ItemHeight = 32;
+            this.listBox_SharpnessAlgorithmList.Location = new System.Drawing.Point(405, 174);
+            this.listBox_SharpnessAlgorithmList.Name = "listBox_SharpnessAlgorithmList";
+            this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(353, 292);
+            this.listBox_SharpnessAlgorithmList.TabIndex = 18;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(18, 50);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(100, 16);
+            this.label54.TabIndex = 17;
+            this.label54.Text = "Recipe Name :";
+            // 
+            // CB_RecipeList
+            // 
+            this.CB_RecipeList.FormattingEnabled = true;
+            this.CB_RecipeList.Location = new System.Drawing.Point(20, 12);
+            this.CB_RecipeList.Name = "CB_RecipeList";
+            this.CB_RecipeList.Size = new System.Drawing.Size(118, 24);
+            this.CB_RecipeList.TabIndex = 16;
+            this.CB_RecipeList.SelectedIndexChanged += new System.EventHandler(this.CB_RecipeList_SelectedIndexChanged);
+            this.CB_RecipeList.Click += new System.EventHandler(this.CB_RecipeList_Click);
+            // 
+            // btn_ReadSharpVPP
+            // 
+            this.btn_ReadSharpVPP.Location = new System.Drawing.Point(712, 45);
+            this.btn_ReadSharpVPP.Name = "btn_ReadSharpVPP";
+            this.btn_ReadSharpVPP.Size = new System.Drawing.Size(59, 27);
+            this.btn_ReadSharpVPP.TabIndex = 15;
+            this.btn_ReadSharpVPP.Text = "Read";
+            this.btn_ReadSharpVPP.UseVisualStyleBackColor = true;
+            this.btn_ReadSharpVPP.Click += new System.EventHandler(this.btn_ReadSharpVPP_Click);
+            // 
+            // btn_ReadAOIVPP
+            // 
+            this.btn_ReadAOIVPP.Location = new System.Drawing.Point(712, 11);
+            this.btn_ReadAOIVPP.Name = "btn_ReadAOIVPP";
+            this.btn_ReadAOIVPP.Size = new System.Drawing.Size(59, 27);
+            this.btn_ReadAOIVPP.TabIndex = 14;
+            this.btn_ReadAOIVPP.Text = "Read";
+            this.btn_ReadAOIVPP.UseVisualStyleBackColor = true;
+            this.btn_ReadAOIVPP.Click += new System.EventHandler(this.btn_ReadAOIVPP_Click);
+            // 
+            // tbx_SharpPath
+            // 
+            this.tbx_SharpPath.Location = new System.Drawing.Point(405, 44);
+            this.tbx_SharpPath.Name = "tbx_SharpPath";
+            this.tbx_SharpPath.Size = new System.Drawing.Size(288, 27);
+            this.tbx_SharpPath.TabIndex = 13;
+            // 
+            // tbx_AOIPath
+            // 
+            this.tbx_AOIPath.Location = new System.Drawing.Point(405, 10);
+            this.tbx_AOIPath.Name = "tbx_AOIPath";
+            this.tbx_AOIPath.Size = new System.Drawing.Size(288, 27);
+            this.tbx_AOIPath.TabIndex = 12;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(268, 47);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(137, 16);
+            this.label53.TabIndex = 11;
+            this.label53.Text = "Sharpness VPP Path:";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(268, 12);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(105, 16);
+            this.label52.TabIndex = 10;
+            this.label52.Text = "AOI VPP Path :";
+            // 
+            // btn_AOIOpenImage
+            // 
+            this.btn_AOIOpenImage.Location = new System.Drawing.Point(529, 81);
+            this.btn_AOIOpenImage.Name = "btn_AOIOpenImage";
+            this.btn_AOIOpenImage.Size = new System.Drawing.Size(91, 42);
+            this.btn_AOIOpenImage.TabIndex = 9;
+            this.btn_AOIOpenImage.Text = "OpenImage";
+            this.btn_AOIOpenImage.UseVisualStyleBackColor = true;
+            this.btn_AOIOpenImage.Click += new System.EventHandler(this.btn_AOIOpenImage_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(271, 100);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(91, 42);
+            this.button8.TabIndex = 8;
+            this.button8.Text = "ADD TEST";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(20, 485);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(726, 443);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(699, 100);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(59, 37);
+            this.button7.TabIndex = 6;
+            this.button7.Text = "TEST";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // listBox_AOIAlgorithmList
+            // 
+            this.listBox_AOIAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
+            this.listBox_AOIAlgorithmList.FormattingEnabled = true;
+            this.listBox_AOIAlgorithmList.ItemHeight = 32;
+            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(20, 174);
+            this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(353, 292);
+            this.listBox_AOIAlgorithmList.TabIndex = 5;
+            this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
+            // 
             // timer_Log_in_Out
             // 
             this.timer_Log_in_Out.Interval = 250;
@@ -3460,67 +3669,15 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // tabPage7
+            // button9
             // 
-            this.tabPage7.Controls.Add(this.btn_AOIOpenImage);
-            this.tabPage7.Controls.Add(this.button8);
-            this.tabPage7.Controls.Add(this.pictureBox1);
-            this.tabPage7.Controls.Add(this.button7);
-            this.tabPage7.Controls.Add(this.listBox_AlgorithmList);
-            this.tabPage7.Location = new System.Drawing.Point(4, 26);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(785, 1019);
-            this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "AlgorithmList";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // btn_AOIOpenImage
-            // 
-            this.btn_AOIOpenImage.Location = new System.Drawing.Point(20, 31);
-            this.btn_AOIOpenImage.Name = "btn_AOIOpenImage";
-            this.btn_AOIOpenImage.Size = new System.Drawing.Size(91, 42);
-            this.btn_AOIOpenImage.TabIndex = 9;
-            this.btn_AOIOpenImage.Text = "OpenImage";
-            this.btn_AOIOpenImage.UseVisualStyleBackColor = true;
-            this.btn_AOIOpenImage.Click += new System.EventHandler(this.btn_AOIOpenImage_Click);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(303, 31);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(91, 42);
-            this.button8.TabIndex = 8;
-            this.button8.Text = "ADD";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(20, 387);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(726, 443);
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(474, 181);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // listBox_AlgorithmList
-            // 
-            this.listBox_AlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
-            this.listBox_AlgorithmList.FormattingEnabled = true;
-            this.listBox_AlgorithmList.ItemHeight = 32;
-            this.listBox_AlgorithmList.Location = new System.Drawing.Point(20, 89);
-            this.listBox_AlgorithmList.Name = "listBox_AlgorithmList";
-            this.listBox_AlgorithmList.Size = new System.Drawing.Size(374, 292);
-            this.listBox_AlgorithmList.TabIndex = 5;
+            this.button9.Location = new System.Drawing.Point(47, 99);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(91, 39);
+            this.button9.TabIndex = 23;
+            this.button9.Text = "DrawLIST";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // Form1
             // 
@@ -3593,6 +3750,7 @@ namespace SPIL
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -3893,7 +4051,21 @@ namespace SPIL
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.ListBox listBox_AlgorithmList;
+        private System.Windows.Forms.ListBox listBox_AOIAlgorithmList;
+        private System.Windows.Forms.ListBox listBox_SharpnessAlgorithmList;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.ComboBox CB_RecipeList;
+        private System.Windows.Forms.Button btn_ReadSharpVPP;
+        private System.Windows.Forms.Button btn_ReadAOIVPP;
+        private System.Windows.Forms.TextBox tbx_SharpPath;
+        private System.Windows.Forms.TextBox tbx_AOIPath;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Button btn_RecipeSave;
+        private System.Windows.Forms.TextBox tBx_RecipeName;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Button button9;
     }
 }
 

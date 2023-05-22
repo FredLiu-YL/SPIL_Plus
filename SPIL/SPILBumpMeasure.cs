@@ -111,7 +111,7 @@ namespace SPIL
                     MeasureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img3);
                 }
                 MeasureToolBlock.Run();
-                distance_CuNi = (double)MeasureToolBlock.Outputs["Distance"].Value;
+                distance_CuNi = (double)MeasureToolBlock.Outputs["Distance"].Value; 
                 distance_Cu = (double)MeasureToolBlock.Outputs["Distance1"].Value;
                 CogToolResultConstants vision_pro_run_result = MeasureToolBlock.RunStatus.Result;
                 logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
