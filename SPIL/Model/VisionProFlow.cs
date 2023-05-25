@@ -15,7 +15,7 @@ namespace SPIL.Model
 
     public class VisionProFlow
     {
-        private CogToolBlock measureToolBlock;
+        protected CogToolBlock measureToolBlock;
 
         /// <summary>
         /// 

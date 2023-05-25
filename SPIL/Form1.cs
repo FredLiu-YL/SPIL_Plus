@@ -31,7 +31,11 @@ namespace SPIL
     public partial class Form1 : Form
     {
         private Logger logger = new Logger("SPIL");
-        private Bitmap aoiImage;
+        private Bitmap sharpnessImage;
+        private Bitmap aoiImage1;
+        private Bitmap aoiImage2;
+        private Bitmap aoiImage3;
+
         private CogToolBlock toolBlock;
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
@@ -210,7 +214,7 @@ namespace SPIL
                 button_Start_Server_Click(sender, e);
                 button_Start_Click(sender, e);
                 combine_text_box();
-            }
+            } 
 
             //當測試檔案存在時
             //test mode
@@ -279,7 +283,7 @@ namespace SPIL
                     tbx_AOIPath.Text = machineSetting.AOIVppPath;
                     tbx_SharpPath.Text = machineSetting.SharpVppPath;
                     tBx_RecipeName.Text = "Default";
-                    aoIFlow = new AOIFlow(machineSetting.AOIVppPath, machineSetting.AOIAlgorithms);
+                    aoIFlow = new AOIFlow(machineSetting.AOIVppPath, machineSetting.AOIAlgorithms,logger );
                     sharpnessFlow = new SharpnessFlow(machineSetting.SharpVppPath, machineSetting.SharpAlgorithms);
                     sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms , machineSetting.SharpAlgorithms);
                     //預設把 toolBlock 的參數先拿來用
@@ -2510,22 +2514,7 @@ namespace SPIL
         }
         private void button7_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
-            var result = dlg.ShowDialog();
-            if (result == DialogResult.OK) {// 載入圖片
-
-                Bitmap image = new Bitmap(dlg.FileName);
-
-                pictureBox1.Image = image;
-                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
-
-                var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
-
-                cogGM.EditParameter(image);
-            }
+          
         }
         private void btn_AOIOpenImage_Click(object sender, EventArgs e)
         {
@@ -2535,10 +2524,10 @@ namespace SPIL
             var result = dlg.ShowDialog();
             if (result == DialogResult.OK) {// 載入圖片
 
-                aoiImage = new Bitmap(dlg.FileName);
+                sharpnessImage = new Bitmap(dlg.FileName);
 
-                pictureBox1.Image = aoiImage;
-                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                pBox_RecipePic1.Image = sharpnessImage;
+                pBox_RecipePic1.SizeMode = PictureBoxSizeMode.Zoom;
 
 
                 //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
@@ -2549,13 +2538,13 @@ namespace SPIL
         private void listBox_SharpnessAlgorithmList_DoubleClick(object sender, EventArgs e)
         {
             try {
-                if (aoiImage == null) throw new Exception($"Image not exist");
+                if (sharpnessImage == null) throw new Exception($"Image not exist");
                 int index = listBox_SharpnessAlgorithmList.SelectedIndex;
                 //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
                 var algorithmItem = sPILRecipe.ClarityParams[index];
                 //參數塞到  aoIFlow.CogAOIMethods 對應的方法
                 sharpnessFlow.CogMethods[index].method.RunParams = algorithmItem;
-                sharpnessFlow.CogMethods[index].method.EditParameter(aoiImage);
+                sharpnessFlow.CogMethods[index].method.EditParameter(sharpnessImage);
                 //參數寫回  sPILRecipe.AOIParams
                 algorithmItem = sharpnessFlow.CogMethods[index].method.RunParams;
 
@@ -2568,13 +2557,13 @@ namespace SPIL
         private void listBox_AlgorithmList_DoubleClick(object sender, EventArgs e)
         {
             try {
-                if (aoiImage == null) throw new Exception($"Image not exist");
+                if (sharpnessImage == null) throw new Exception($"Image not exist");
              //   var select = listBox_AOIAlgorithmList.SelectedItem;
                 //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
                 var algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
                 //參數塞到  aoIFlow.CogAOIMethods 對應的方法
                 aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
-                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(aoiImage);
+                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(sharpnessImage);
                 //參數寫回  sPILRecipe.AOIParams
                 algorithmItem = aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
 
@@ -2724,22 +2713,90 @@ namespace SPIL
 
         }
 
-        private void button9_Click(object sender, EventArgs e)
+
+        private void btn_AOITesting_Click(object sender, EventArgs e)
         {
+            aoIFlow.Measurment(txB_RecipePicName1.Text, txB_RecipePicName2.Text, txB_RecipePicName3.Text, out double distance_CuNi, out double distance_Cu);
 
+            tBx_CuNiValue.Text = distance_CuNi.ToString("0.000");
+            tBx_CuValue.Text = distance_Cu.ToString("0.000");
+        }
 
-            //新增到UI 做顯示
-            foreach (var item in machineSetting.AOIAlgorithms) {
-                listBox_AOIAlgorithmList.Items.Add(item);
-            }
+        private void btn_AOIOpenImage1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
 
-            //新增到UI 做顯示
-            foreach (var item in machineSetting.SharpAlgorithms) {
-                listBox_SharpnessAlgorithmList.Items.Add(item);
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                aoiImage1 = new Bitmap(dlg.FileName);
+
+                pBox_RecipePic1.Image = aoiImage1;
+                pBox_RecipePic1.SizeMode = PictureBoxSizeMode.Zoom;
+                txB_RecipePicName1.Text = dlg.FileName;
+
+    
             }
         }
 
-      
+     
+
+        private void btn_AOIOpenImage2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                aoiImage2 = new Bitmap(dlg.FileName);
+
+                pBox_RecipePic2.Image = aoiImage2;
+                pBox_RecipePic2.SizeMode = PictureBoxSizeMode.Zoom;
+                txB_RecipePicName2.Text = dlg.FileName;
+
+     
+            }
+        }
+
+        private void btn_AOIOpenImage3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                aoiImage3 = new Bitmap(dlg.FileName);
+
+                pBox_RecipePic3.Image = aoiImage3;
+                pBox_RecipePic3.SizeMode = PictureBoxSizeMode.Zoom;
+                txB_RecipePicName1.Text = dlg.FileName;
+
+        
+            }
+        }
+
+        private void btn_OpenSharpnessImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "BMP files (*.bmp)|*.bmp|JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK) {// 載入圖片
+
+                sharpnessImage = new Bitmap(dlg.FileName);
+
+                pBox_SharpnessPic.Image = sharpnessImage;
+                pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
+
+
+                //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
+
+                //     cogGM.EditParameter(image);
+            }
+        }
 
         private void button_hb_off_Click(object sender, EventArgs e)
         {
