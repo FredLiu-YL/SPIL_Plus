@@ -61,9 +61,7 @@ namespace SPIL.Model
                     Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                     logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }*/
-                img1.Dispose();
-                img2.Dispose();
-                img3.Dispose();
+       
                 if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
                    
                 
@@ -77,47 +75,6 @@ namespace SPIL.Model
         }
 
 
-        public ICogImage RunningToolInputImage(string name)
-        {
-            try {
-
-
-                //從 CogMethods 裡面的名字去尋找 對應的tool
-
-                var describe = algorithmDescribes.Where(a => a.Name == name).FirstOrDefault();
-
-                var tool = measureToolBlock.Tools[name];
-
-                ICogImage cogImage = null;
-                switch (describe.CogMethodtype) {
-
-                    case MethodType.CogSearchMaxTool:
-                        var max = tool as CogSearchMaxTool;
-                        cogImage = max.InputImage ;
-
-                        break;
-                    case MethodType.CogImageConvertTool:
-
-                        var cvr = tool as CogImageConvertTool;
-                        cogImage = cvr.InputImage;
-                        break;
-                    case MethodType.CogFindEllipseTool:
-
-                        var ecp = tool as CogFindEllipseTool;
-                        cogImage = ecp.InputImage;
-                        break;
-                    default:
-                        break;
-
-                }
-                return cogImage;
-            }
-            catch (Exception ex) {
-
-                throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
-            }
-
-        }
     }
 
 

@@ -258,7 +258,7 @@ namespace SPIL
             combine_text_box();
 
 
-      
+
             if (is_test_mode) {
                 logger.WriteLog("test mode");
                 groupBox_test_item.Visible = true;
@@ -308,7 +308,7 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
 
-     
+
             }
             else {
                 groupBox_test_item.Visible = false;
@@ -2477,6 +2477,10 @@ namespace SPIL
         }
 
 
+        #region AOI 測量用
+
+
+
         private void button8_Click(object sender, EventArgs e)
         {
             try {
@@ -2520,10 +2524,7 @@ namespace SPIL
             }
 
         }
-        private void button7_Click(object sender, EventArgs e)
-        {
 
-        }
         private void btn_AOIOpenImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -2569,11 +2570,11 @@ namespace SPIL
                 Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
                 Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
                 Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
-    
+
                 //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
                 aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
                 var inputImage = aoIFlow.RunningToolInputImage(machineSetting.AOIAlgorithms[listBox_AOIAlgorithmList.SelectedIndex].Name);
-      
+
                 //   var select = listBox_AOIAlgorithmList.SelectedItem;
                 //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
                 CogParameter algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
@@ -2675,6 +2676,7 @@ namespace SPIL
 
         private void LoadRecipe(string path)
         {
+            
             //讀取 料號 實際Cognex參數存在這
             sPILRecipe.Load(path);
             tBx_RecipeName.Text = new DirectoryInfo(path).Name;
@@ -2802,6 +2804,8 @@ namespace SPIL
 
             }
         }
+        #endregion
+
 
         private void btn_OpenSharpnessImage_Click(object sender, EventArgs e)
         {
@@ -2816,16 +2820,55 @@ namespace SPIL
                 pBox_SharpnessPic.Image = sharpnessImage;
                 pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
 
+                txB_SharpnessPicName.Text = dlg.FileName;
 
                 //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
 
                 //     cogGM.EditParameter(image);
             }
         }
-
         private void btn_SharpnessRun_Click(object sender, EventArgs e)
         {
-            sharpnessFlow.Measurment("");
+            Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
+
+            sharpnessFlow.Measurment(img1);
+
+          
+
+            img1.Dispose();
+            
+        }
+
+
+        private void listBox_SharpnessAlgorithmList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            try {
+                //   if (sharpnessImage == null) throw new Exception($"Image not exist");
+                Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
+
+
+                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
+                sharpnessFlow.Measurment(img1);
+                var inputImage = sharpnessFlow.RunningToolInputImage(machineSetting.AOIAlgorithms[listBox_AOIAlgorithmList.SelectedIndex].Name);
+
+                //   var select = listBox_AOIAlgorithmList.SelectedItem;
+                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
+                CogParameter algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
+
+                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
+                sharpnessFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
+                sharpnessFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(inputImage);
+                //參數寫回  sPILRecipe.AOIParams
+                algorithmItem = sharpnessFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
+
+                img1.Dispose();
+          
+           
+            }
+            catch (Exception ex) {
+
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void button_hb_off_Click(object sender, EventArgs e)
