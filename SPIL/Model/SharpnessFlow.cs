@@ -14,10 +14,14 @@ namespace SPIL.Model
 {
     public class SharpnessFlow : VisionProFlow
     {
-        public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes) : base(aoiVppPath, algorithmDescribes, 201)
+        public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes, Logger logger) : base(aoiVppPath, algorithmDescribes, 201)
         {
 
 
+        }
+
+        public void Measurment(string Input_Image_Address1)
+        {
         }
     }
 }

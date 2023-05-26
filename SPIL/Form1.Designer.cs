@@ -3795,6 +3795,7 @@ namespace SPIL
             this.btn_SharpnessRun.TabIndex = 141;
             this.btn_SharpnessRun.Text = "Run";
             this.btn_SharpnessRun.UseVisualStyleBackColor = true;
+            this.btn_SharpnessRun.Click += new System.EventHandler(this.btn_SharpnessRun_Click);
             // 
             // pBox_SharpnessPic
             // 

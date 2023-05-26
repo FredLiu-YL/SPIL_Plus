@@ -16,6 +16,8 @@ namespace SPIL.Model
     public class VisionProFlow
     {
         protected CogToolBlock measureToolBlock;
+        protected AlgorithmDescribe[] algorithmDescribes;
+
 
         /// <summary>
         /// 
@@ -24,8 +26,9 @@ namespace SPIL.Model
         /// <param name="algorithmDescribes"> config內紀錄 可被編輯的tool</param>
         public VisionProFlow(string vppPath, AlgorithmDescribe[] algorithmDescribes, int paramBeginID )
         {
-            //讀取vpp檔 獲得寫在vpp的完整流程
-            measureToolBlock = CogSerializer.LoadObjectFromFile(vppPath) as CogToolBlock;
+            this.algorithmDescribes = algorithmDescribes;
+               //讀取vpp檔 獲得寫在vpp的完整流程
+               measureToolBlock = CogSerializer.LoadObjectFromFile(vppPath) as CogToolBlock;
 
             CogMethods = CreateMethod(algorithmDescribes);
             ToolBlockToMethodParam(paramBeginID);
@@ -46,6 +49,7 @@ namespace SPIL.Model
                 foreach (var item in CogMethods) {
 
                     var tool = measureToolBlock.Tools[item.name];
+      
                     item.method.SetCogToolParameter(tool);
                     item.method.RunParams.Id = id;
                     id++;
@@ -74,7 +78,7 @@ namespace SPIL.Model
             try {
                 List<(CogMethod method, int id, string name)> coglist = new List<(CogMethod method, int id, string name)>();
                 foreach (var item in algorithmDescribes) {
-
+                   
 
                     switch (item.CogMethodtype) {
 

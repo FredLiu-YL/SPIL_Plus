@@ -1,4 +1,7 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.Caliper;
+using Cognex.VisionPro.ImageProcessing;
+using Cognex.VisionPro.SearchMax;
 using Cognex.VisionPro.ToolBlock;
 using SPIL.model;
 using System;
@@ -25,17 +28,14 @@ namespace SPIL.Model
             this.logger = logger;
 
         }
-        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, out double distance_CuNi, out double distance_Cu)
+        public void Measurment(Bitmap img1, Bitmap img2, Bitmap img3, out double distance_CuNi, out double distance_Cu)
         {
             try {
                 logger.WriteLog("Measurement for two images!");
-                Bitmap img1 = new Bitmap(Input_Image_Address1);
-                Bitmap img2 = new Bitmap(Input_Image_Address2);
-                Bitmap img3 = new Bitmap(Input_Image_Address3);
-
-                measureToolBlock.Inputs["Image"].Value = new CogImage24PlanarColor(img1);
-                measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img2);
-                measureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img3);
+             
+                measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img1);
+                measureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img2);
+                measureToolBlock.Inputs["Input2"].Value = new CogImage24PlanarColor(img3);
 
                 measureToolBlock.Run();
                 distance_CuNi = (double)measureToolBlock.Outputs["Distance"].Value;
@@ -64,18 +64,60 @@ namespace SPIL.Model
                 img1.Dispose();
                 img2.Dispose();
                 img3.Dispose();
-                if (vision_pro_run_result != CogToolResultConstants.Accept)
-                    return false;
-                return true;
+                if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
+                   
+                
             }
             catch (Exception error) {
                 logger.WriteErrorLog("Measurement Error! " + error.ToString());
                 distance_CuNi = -1;
                 distance_Cu = -1;
-                return false;
+                
             }
         }
 
+
+        public ICogImage RunningToolInputImage(string name)
+        {
+            try {
+
+
+                //從 CogMethods 裡面的名字去尋找 對應的tool
+
+                var describe = algorithmDescribes.Where(a => a.Name == name).FirstOrDefault();
+
+                var tool = measureToolBlock.Tools[name];
+
+                ICogImage cogImage = null;
+                switch (describe.CogMethodtype) {
+
+                    case MethodType.CogSearchMaxTool:
+                        var max = tool as CogSearchMaxTool;
+                        cogImage = max.InputImage ;
+
+                        break;
+                    case MethodType.CogImageConvertTool:
+
+                        var cvr = tool as CogImageConvertTool;
+                        cogImage = cvr.InputImage;
+                        break;
+                    case MethodType.CogFindEllipseTool:
+
+                        var ecp = tool as CogFindEllipseTool;
+                        cogImage = ecp.InputImage;
+                        break;
+                    default:
+                        break;
+
+                }
+                return cogImage;
+            }
+            catch (Exception ex) {
+
+                throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
+            }
+
+        }
     }
 
 
