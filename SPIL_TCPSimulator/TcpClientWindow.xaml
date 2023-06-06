@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SPIL_TCPSimulator" xmlns:logger="clr-namespace:YuanliCore.Logger;assembly=YuanliCore"
+        xmlns:local="clr-namespace:SPIL_TCPSimulator" 
+        xmlns:logger="clr-namespace:YuanliCore.Logger;assembly=YuanliCore.Model"
         mc:Ignorable="d"
         Title="TcpClient" Height="600" Width="800"  
         x:Name="SimulatorTcpClient">
@@ -43,7 +44,7 @@
 
 
                 <TextBox Grid.Row="4"   Text="{Binding SendMessage}"  />
-                <Button Grid.Row="5"  Content="傳送" Command="{Binding SendMessageCommand}"   />
+                <Button Grid.Row="5"  Content="傳送" Command="{Binding SendMessageCommand}"  />
                 <logger:LoggerUC  Grid.Row="6"   Message="{Binding SendMessage}" Title="傳送訊息" />
             </Grid>
 

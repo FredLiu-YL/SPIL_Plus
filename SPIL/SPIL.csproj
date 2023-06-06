@@ -137,6 +137,10 @@
       <Project>{b2a8ff00-64c7-4e7c-b565-7cc4ab78c012}</Project>
       <Name>SPIL_TCPSimulator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\YuanliCore\YuanliCore.Model\YuanliCore.Model.csproj">
+      <Project>{14946968-1da0-4f66-abd0-10d45d580e00}</Project>
+      <Name>YuanliCore.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YuanliCore\YuanliCore\YuanliCore.csproj">
       <Project>{afc5bb52-03a9-4833-8415-b52db3b34639}</Project>
       <Name>YuanliCore</Name>
