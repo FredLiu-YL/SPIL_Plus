@@ -28,11 +28,13 @@ namespace SPIL.Model
             this.logger = logger;
 
         }
-        public void Measurment(Bitmap img1, Bitmap img2, Bitmap img3, out double distance_CuNi, out double distance_Cu)
+        public ICogRecord Measurment(Bitmap img1, Bitmap img2, Bitmap img3, out double distance_CuNi, out double distance_Cu)
         {
             try {
+
+
                 logger.WriteLog("Measurement for two images!");
-             
+
                 measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img1);
                 measureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img2);
                 measureToolBlock.Inputs["Input2"].Value = new CogImage24PlanarColor(img3);
@@ -43,6 +45,7 @@ namespace SPIL.Model
                 CogToolResultConstants vision_pro_run_result = measureToolBlock.RunStatus.Result;
                 logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
 
+                var cord = measureToolBlock.CreateLastRunRecord().SubRecords[0];
 
                 /*
                 if (vision_pro_run_result != CogToolResultConstants.Accept) {
@@ -61,16 +64,16 @@ namespace SPIL.Model
                     Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                     logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }*/
-       
+
                 if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
-                   
-                
+
+                return cord;
             }
             catch (Exception error) {
                 logger.WriteErrorLog("Measurement Error! " + error.ToString());
                 distance_CuNi = -1;
                 distance_Cu = -1;
-                
+                throw error;
             }
         }
 

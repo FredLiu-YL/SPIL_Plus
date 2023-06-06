@@ -15,59 +15,89 @@ namespace SPIL.Model
 {
     public class SharpnessFlow : VisionProFlow
     {
-        private Logger logger;
-        public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes, Logger logger) : base(aoiVppPath, algorithmDescribes, 201)
+
+        public event Action<string> WriteLog;
+
+        public string ResultMessage { get; private set; }
+
+        public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes) : base(aoiVppPath, algorithmDescribes, 201)
         {
 
-            this.logger = logger;
+
         }
 
-        public void Measurment(Bitmap img1)
+        public async Task PeakSharpnessAsync(IEnumerable<Bitmap> bitmaps)
+        {
+            List<SharpnessResult> results = new List<SharpnessResult>();
+            
+
+            foreach (var bmp in bitmaps) {
+                SharpnessResult sharpnessResult = await Measurment(bmp);
+                
+                results.Add(sharpnessResult);
+
+            }
+
+       
+
+        }
+        public async Task< SharpnessResult> Measurment(Bitmap img1)
         {
             try {
-                logger.WriteLog("Measurement for two images!");
+                WriteLog?.Invoke($"Sharpness start ");
 
                 measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img1);
-             
+
                 measureToolBlock.Run();
-              var  distance_CuNi = (double)measureToolBlock.Outputs["Results_Item_0_Score"].Value;
-           var     distance_Cu = (double)measureToolBlock.Outputs["Results_Item_0_Score1"].Value;
+
+
+                var r1 = (double)measureToolBlock.Outputs["Results_Item_0_Score"].Value;
+                var r2 = (double)measureToolBlock.Outputs["Results_Item_0_Score1"].Value;
+
                 var s0 = (double)measureToolBlock.Outputs["Score"].Value;
                 var s1 = (double)measureToolBlock.Outputs["Score1"].Value;
                 var s2 = (double)measureToolBlock.Outputs["Score2"].Value;
                 CogToolResultConstants vision_pro_run_result = measureToolBlock.RunStatus.Result;
-                logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
+
+                ResultMessage = $"Run Result : {vision_pro_run_result}   : { measureToolBlock.RunStatus.Message} ";
+                WriteLog?.Invoke(ResultMessage);
+
+                ICogRecord cogRecord = measureToolBlock.CreateLastRunRecord().SubRecords[0];
 
 
-                /*
-                if (vision_pro_run_result != CogToolResultConstants.Accept) {
-                    logger.WriteErrorLog("Run Result : " + Convert.ToString(measureToolBlock.RunStatus.Message));
-                    CogImage24PlanarColor error_img = new CogImage24PlanarColor(new Bitmap("X.png"));
-                    CogDisplay_result_1.Image = new CogImage24PlanarColor(error_img);
-                    CogDisplay_result_1.Fit(true);
-                    CogDisplay_result_2.Image = new CogImage24PlanarColor(error_img);
-                    CogDisplay_result_2.Fit(true);
-                    CogDisplay_result_3.Image = new CogImage24PlanarColor(error_img);
-                    CogDisplay_result_3.Fit(true);
-                    distance_CuNi = -1;
-                    distance_Cu = -1;
-                }
-                else {
-                    Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
-                    logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
-                }*/
-          
-            
-                if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
+                if (vision_pro_run_result != CogToolResultConstants.Accept) return null;
 
+                SharpnessResult result = new SharpnessResult(r1, r2, s0, s1, s2, cogRecord);
+                return result;
 
             }
-            catch (Exception error) 
-            {
-                logger.WriteErrorLog("Measurement Error! " + error.ToString());
-             
+            catch (Exception error) {
+
+                throw error;
 
             }
         }
+    }
+
+
+    public class SharpnessResult
+    {
+        public SharpnessResult(double searchScore1, double searchScore2, double score1, double score2, double score3, ICogRecord cogRecord)
+        {
+            SearchScore1 = searchScore1;
+            SearchScore2 = searchScore2;
+            Score1 = score1;
+            Score2 = score2;
+            Score3 = score3;
+            CogRecord = cogRecord;
+        }
+
+        public double SearchScore1 { get; }
+        public double SearchScore2 { get; }
+        public double Score1 { get; }
+        public double Score2 { get; }
+        public double Score3 { get; }
+        public ICogRecord CogRecord { get; }
+
     }
 }
