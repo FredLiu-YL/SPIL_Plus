@@ -195,6 +195,27 @@ namespace SPIL
             this.label84 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.comboBox_IP_Motion = new System.Windows.Forms.ComboBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox_test_item = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cogRecordDisplay1 = new Cognex.VisionPro.CogRecordDisplay();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button_update_value = new System.Windows.Forms.Button();
             this.button_hb_off = new System.Windows.Forms.Button();
@@ -287,27 +308,6 @@ namespace SPIL
             this.label73 = new System.Windows.Forms.Label();
             this.textBox_Step_1_Y = new System.Windows.Forms.TextBox();
             this.label72 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox_test_item = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton8 = new System.Windows.Forms.RadioButton();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cogRecordDisplay1 = new Cognex.VisionPro.CogRecordDisplay();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.btn_RecipeSave = new System.Windows.Forms.Button();
             this.tBx_RecipeName = new System.Windows.Forms.TextBox();
@@ -321,7 +321,7 @@ namespace SPIL
             this.label52 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
-            this.cogRcdDisp_Distance = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
             this.tBx_CuValue = new System.Windows.Forms.TextBox();
             this.txB_RecipePicName3 = new System.Windows.Forms.TextBox();
             this.tBx_CuNiValue = new System.Windows.Forms.TextBox();
@@ -330,15 +330,15 @@ namespace SPIL
             this.label58 = new System.Windows.Forms.Label();
             this.btn_AOIOpenImage3 = new System.Windows.Forms.Button();
             this.btn_AOITesting = new System.Windows.Forms.Button();
-            this.pBox_RecipePic1 = new System.Windows.Forms.PictureBox();
-            this.pBox_RecipePic3 = new System.Windows.Forms.PictureBox();
             this.txB_RecipePicName2 = new System.Windows.Forms.TextBox();
             this.btn_AOIOpenImage2 = new System.Windows.Forms.Button();
-            this.pBox_RecipePic2 = new System.Windows.Forms.PictureBox();
             this.txB_RecipePicName1 = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
             this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -366,17 +366,15 @@ namespace SPIL
             this.label56 = new System.Windows.Forms.Label();
             this.listBox_SharpnessAlgorithmList = new System.Windows.Forms.ListBox();
             this.timer_Log_in_Out = new System.Windows.Forms.Timer(this.components);
-            this.timer_Server = new System.Windows.Forms.Timer(this.components);
-            this.backgroundWorker_Server = new System.ComponentModel.BackgroundWorker();
             this.timer_OLS_File = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_OLS_File = new System.ComponentModel.BackgroundWorker();
             this.timer_Initial = new System.Windows.Forms.Timer(this.components);
             this.timer_Mouse_Point = new System.Windows.Forms.Timer(this.components);
-            this.bgWorkerServerRun = new System.ComponentModel.BackgroundWorker();
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
-            this.timer_connect_client = new System.Windows.Forms.Timer(this.components);
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -395,6 +393,12 @@ namespace SPIL
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Client_Number)).BeginInit();
             this.groupBox8.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox_test_item.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).BeginInit();
+            this.groupBox10.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -411,23 +415,16 @@ namespace SPIL
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.groupBox_test_item.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).BeginInit();
-            this.groupBox10.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.groupBox18.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).BeginInit();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
             this.groupBox17.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -2063,8 +2060,8 @@ namespace SPIL
             // 
             this.tabControl_Setup.Controls.Add(this.tabPage6);
             this.tabControl_Setup.Controls.Add(this.tabPage4);
-            this.tabControl_Setup.Controls.Add(this.tabPage5);
             this.tabControl_Setup.Controls.Add(this.tabPage3);
+            this.tabControl_Setup.Controls.Add(this.tabPage5);
             this.tabControl_Setup.Enabled = false;
             this.tabControl_Setup.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.tabControl_Setup.Location = new System.Drawing.Point(6, 78);
@@ -2254,6 +2251,246 @@ namespace SPIL
             this.comboBox_IP_Motion.Name = "comboBox_IP_Motion";
             this.comboBox_IP_Motion.Size = new System.Drawing.Size(212, 24);
             this.comboBox_IP_Motion.TabIndex = 23;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.groupBox_test_item);
+            this.tabPage3.Controls.Add(this.cogRecordDisplay1);
+            this.tabPage3.Controls.Add(this.groupBox10);
+            this.tabPage3.Location = new System.Drawing.Point(4, 26);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(740, 601);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "Delete Data";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_test_item
+            // 
+            this.groupBox_test_item.Controls.Add(this.textBox1);
+            this.groupBox_test_item.Controls.Add(this.button6);
+            this.groupBox_test_item.Controls.Add(this.numericUpDown1);
+            this.groupBox_test_item.Controls.Add(this.button5);
+            this.groupBox_test_item.Controls.Add(this.button4);
+            this.groupBox_test_item.Controls.Add(this.groupBox14);
+            this.groupBox_test_item.Controls.Add(this.button3);
+            this.groupBox_test_item.Controls.Add(this.button2);
+            this.groupBox_test_item.Controls.Add(this.button1);
+            this.groupBox_test_item.Location = new System.Drawing.Point(353, 35);
+            this.groupBox_test_item.Name = "groupBox_test_item";
+            this.groupBox_test_item.Size = new System.Drawing.Size(351, 349);
+            this.groupBox_test_item.TabIndex = 2;
+            this.groupBox_test_item.TabStop = false;
+            this.groupBox_test_item.Text = "groupBox14";
+            this.groupBox_test_item.Visible = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(180, 79);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(139, 27);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.Text = "dfdsf0001";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(27, 299);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(101, 34);
+            this.button6.TabIndex = 9;
+            this.button6.Text = "Stop";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(144, 250);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(51, 27);
+            this.numericUpDown1.TabIndex = 8;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(27, 250);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(101, 34);
+            this.button5.TabIndex = 7;
+            this.button5.Text = "Change Point";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(27, 196);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(101, 34);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Start";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.radioButton7);
+            this.groupBox14.Controls.Add(this.radioButton8);
+            this.groupBox14.Location = new System.Drawing.Point(180, 136);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(139, 84);
+            this.groupBox14.TabIndex = 5;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Mode";
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Checked = true;
+            this.radioButton7.Location = new System.Drawing.Point(18, 26);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(51, 20);
+            this.radioButton7.TabIndex = 3;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "Top";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(18, 56);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(53, 20);
+            this.radioButton8.TabIndex = 4;
+            this.radioButton8.TabStop = true;
+            this.radioButton8.Text = "Side";
+            this.radioButton8.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(27, 137);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(101, 34);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Set Mode";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(27, 30);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(101, 34);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Init";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(27, 81);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(101, 34);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Set recipe";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // cogRecordDisplay1
+            // 
+            this.cogRecordDisplay1.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay1.ColorMapLowerRoiLimit = 0D;
+            this.cogRecordDisplay1.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRecordDisplay1.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay1.ColorMapUpperRoiLimit = 1D;
+            this.cogRecordDisplay1.DoubleTapZoomCycleLength = 2;
+            this.cogRecordDisplay1.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRecordDisplay1.Location = new System.Drawing.Point(599, 449);
+            this.cogRecordDisplay1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRecordDisplay1.MouseWheelSensitivity = 1D;
+            this.cogRecordDisplay1.Name = "cogRecordDisplay1";
+            this.cogRecordDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay1.OcxState")));
+            this.cogRecordDisplay1.Size = new System.Drawing.Size(116, 146);
+            this.cogRecordDisplay1.TabIndex = 1;
+            this.cogRecordDisplay1.Visible = false;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.radioButton6);
+            this.groupBox10.Controls.Add(this.radioButton5);
+            this.groupBox10.Controls.Add(this.radioButton4);
+            this.groupBox10.Controls.Add(this.radioButton3);
+            this.groupBox10.Controls.Add(this.radioButton2);
+            this.groupBox10.Controls.Add(this.radioButton1);
+            this.groupBox10.Location = new System.Drawing.Point(29, 23);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(226, 284);
+            this.groupBox10.TabIndex = 0;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "刪除檔案時間設定";
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Location = new System.Drawing.Point(18, 246);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(42, 20);
+            this.radioButton6.TabIndex = 5;
+            this.radioButton6.TabStop = true;
+            this.radioButton6.Text = "2y";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(18, 207);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(42, 20);
+            this.radioButton5.TabIndex = 4;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "1y";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(18, 159);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(46, 20);
+            this.radioButton4.TabIndex = 3;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "9m";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(18, 115);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(46, 20);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "6m";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(18, 74);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(46, 20);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "3m";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(18, 36);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(46, 20);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "1m";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // tabPage5
             // 
@@ -3226,246 +3463,6 @@ namespace SPIL
             this.label72.TabIndex = 32;
             this.label72.Text = "Y";
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.groupBox_test_item);
-            this.tabPage3.Controls.Add(this.cogRecordDisplay1);
-            this.tabPage3.Controls.Add(this.groupBox10);
-            this.tabPage3.Location = new System.Drawing.Point(4, 26);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(740, 601);
-            this.tabPage3.TabIndex = 4;
-            this.tabPage3.Text = "Delete Data";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox_test_item
-            // 
-            this.groupBox_test_item.Controls.Add(this.textBox1);
-            this.groupBox_test_item.Controls.Add(this.button6);
-            this.groupBox_test_item.Controls.Add(this.numericUpDown1);
-            this.groupBox_test_item.Controls.Add(this.button5);
-            this.groupBox_test_item.Controls.Add(this.button4);
-            this.groupBox_test_item.Controls.Add(this.groupBox14);
-            this.groupBox_test_item.Controls.Add(this.button3);
-            this.groupBox_test_item.Controls.Add(this.button2);
-            this.groupBox_test_item.Controls.Add(this.button1);
-            this.groupBox_test_item.Location = new System.Drawing.Point(353, 35);
-            this.groupBox_test_item.Name = "groupBox_test_item";
-            this.groupBox_test_item.Size = new System.Drawing.Size(351, 349);
-            this.groupBox_test_item.TabIndex = 2;
-            this.groupBox_test_item.TabStop = false;
-            this.groupBox_test_item.Text = "groupBox14";
-            this.groupBox_test_item.Visible = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(180, 79);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(139, 27);
-            this.textBox1.TabIndex = 10;
-            this.textBox1.Text = "dfdsf0001";
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(27, 299);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(101, 34);
-            this.button6.TabIndex = 9;
-            this.button6.Text = "Stop";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(144, 250);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(51, 27);
-            this.numericUpDown1.TabIndex = 8;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(27, 250);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(101, 34);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Change Point";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(27, 196);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(101, 34);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Start";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // groupBox14
-            // 
-            this.groupBox14.Controls.Add(this.radioButton7);
-            this.groupBox14.Controls.Add(this.radioButton8);
-            this.groupBox14.Location = new System.Drawing.Point(180, 136);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(139, 84);
-            this.groupBox14.TabIndex = 5;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "Mode";
-            // 
-            // radioButton7
-            // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Checked = true;
-            this.radioButton7.Location = new System.Drawing.Point(18, 26);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(51, 20);
-            this.radioButton7.TabIndex = 3;
-            this.radioButton7.TabStop = true;
-            this.radioButton7.Text = "Top";
-            this.radioButton7.UseVisualStyleBackColor = true;
-            // 
-            // radioButton8
-            // 
-            this.radioButton8.AutoSize = true;
-            this.radioButton8.Location = new System.Drawing.Point(18, 56);
-            this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(53, 20);
-            this.radioButton8.TabIndex = 4;
-            this.radioButton8.TabStop = true;
-            this.radioButton8.Text = "Side";
-            this.radioButton8.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(27, 137);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(101, 34);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Set Mode";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(27, 30);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(101, 34);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Init";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(27, 81);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(101, 34);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Set recipe";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // cogRecordDisplay1
-            // 
-            this.cogRecordDisplay1.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay1.ColorMapLowerRoiLimit = 0D;
-            this.cogRecordDisplay1.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRecordDisplay1.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay1.ColorMapUpperRoiLimit = 1D;
-            this.cogRecordDisplay1.DoubleTapZoomCycleLength = 2;
-            this.cogRecordDisplay1.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRecordDisplay1.Location = new System.Drawing.Point(599, 449);
-            this.cogRecordDisplay1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRecordDisplay1.MouseWheelSensitivity = 1D;
-            this.cogRecordDisplay1.Name = "cogRecordDisplay1";
-            this.cogRecordDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay1.OcxState")));
-            this.cogRecordDisplay1.Size = new System.Drawing.Size(116, 146);
-            this.cogRecordDisplay1.TabIndex = 1;
-            this.cogRecordDisplay1.Visible = false;
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.radioButton6);
-            this.groupBox10.Controls.Add(this.radioButton5);
-            this.groupBox10.Controls.Add(this.radioButton4);
-            this.groupBox10.Controls.Add(this.radioButton3);
-            this.groupBox10.Controls.Add(this.radioButton2);
-            this.groupBox10.Controls.Add(this.radioButton1);
-            this.groupBox10.Location = new System.Drawing.Point(29, 23);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(226, 284);
-            this.groupBox10.TabIndex = 0;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "刪除檔案時間設定";
-            // 
-            // radioButton6
-            // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(18, 246);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(42, 20);
-            this.radioButton6.TabIndex = 5;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "2y";
-            this.radioButton6.UseVisualStyleBackColor = true;
-            // 
-            // radioButton5
-            // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(18, 207);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(42, 20);
-            this.radioButton5.TabIndex = 4;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "1y";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(18, 159);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(46, 20);
-            this.radioButton4.TabIndex = 3;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "9m";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(18, 115);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(46, 20);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "6m";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(18, 74);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(46, 20);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "3m";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(18, 36);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(46, 20);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "1m";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.btn_RecipeSave);
@@ -3590,7 +3587,9 @@ namespace SPIL
             // groupBox18
             // 
             this.groupBox18.BackColor = System.Drawing.Color.Snow;
-            this.groupBox18.Controls.Add(this.cogRcdDisp_Distance);
+            this.groupBox18.Controls.Add(this.cogRcdDisp_Distance3);
+            this.groupBox18.Controls.Add(this.cogRcdDisp_Distance2);
+            this.groupBox18.Controls.Add(this.cogRcdDisp_Distance1);
             this.groupBox18.Controls.Add(this.tBx_CuValue);
             this.groupBox18.Controls.Add(this.txB_RecipePicName3);
             this.groupBox18.Controls.Add(this.tBx_CuNiValue);
@@ -3599,11 +3598,8 @@ namespace SPIL
             this.groupBox18.Controls.Add(this.label58);
             this.groupBox18.Controls.Add(this.btn_AOIOpenImage3);
             this.groupBox18.Controls.Add(this.btn_AOITesting);
-            this.groupBox18.Controls.Add(this.pBox_RecipePic1);
-            this.groupBox18.Controls.Add(this.pBox_RecipePic3);
             this.groupBox18.Controls.Add(this.txB_RecipePicName2);
             this.groupBox18.Controls.Add(this.btn_AOIOpenImage2);
-            this.groupBox18.Controls.Add(this.pBox_RecipePic2);
             this.groupBox18.Controls.Add(this.txB_RecipePicName1);
             this.groupBox18.Controls.Add(this.label55);
             this.groupBox18.Controls.Add(this.listBox_AOIAlgorithmList);
@@ -3615,26 +3611,26 @@ namespace SPIL
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "AOI Distance";
             // 
-            // cogRcdDisp_Distance
+            // cogRcdDisp_Distance1
             // 
-            this.cogRcdDisp_Distance.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance.ColorMapLowerRoiLimit = 0D;
-            this.cogRcdDisp_Distance.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRcdDisp_Distance.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance.ColorMapUpperRoiLimit = 1D;
-            this.cogRcdDisp_Distance.DoubleTapZoomCycleLength = 2;
-            this.cogRcdDisp_Distance.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance.Location = new System.Drawing.Point(384, 377);
-            this.cogRcdDisp_Distance.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRcdDisp_Distance.MouseWheelSensitivity = 1D;
-            this.cogRcdDisp_Distance.Name = "cogRcdDisp_Distance";
-            this.cogRcdDisp_Distance.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance.OcxState")));
-            this.cogRcdDisp_Distance.Size = new System.Drawing.Size(389, 393);
-            this.cogRcdDisp_Distance.TabIndex = 149;
+            this.cogRcdDisp_Distance1.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance1.ColorMapLowerRoiLimit = 0D;
+            this.cogRcdDisp_Distance1.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRcdDisp_Distance1.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance1.ColorMapUpperRoiLimit = 1D;
+            this.cogRcdDisp_Distance1.DoubleTapZoomCycleLength = 2;
+            this.cogRcdDisp_Distance1.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRcdDisp_Distance1.Location = new System.Drawing.Point(17, 112);
+            this.cogRcdDisp_Distance1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRcdDisp_Distance1.MouseWheelSensitivity = 1D;
+            this.cogRcdDisp_Distance1.Name = "cogRcdDisp_Distance1";
+            this.cogRcdDisp_Distance1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance1.OcxState")));
+            this.cogRcdDisp_Distance1.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance1.TabIndex = 149;
             // 
             // tBx_CuValue
             // 
-            this.tBx_CuValue.Location = new System.Drawing.Point(211, 434);
+            this.tBx_CuValue.Location = new System.Drawing.Point(609, 218);
             this.tBx_CuValue.Name = "tBx_CuValue";
             this.tBx_CuValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuValue.TabIndex = 142;
@@ -3642,14 +3638,14 @@ namespace SPIL
             // txB_RecipePicName3
             // 
             this.txB_RecipePicName3.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName3.Location = new System.Drawing.Point(514, 329);
+            this.txB_RecipePicName3.Location = new System.Drawing.Point(523, 83);
             this.txB_RecipePicName3.Name = "txB_RecipePicName3";
             this.txB_RecipePicName3.Size = new System.Drawing.Size(240, 23);
             this.txB_RecipePicName3.TabIndex = 148;
             // 
             // tBx_CuNiValue
             // 
-            this.tBx_CuNiValue.Location = new System.Drawing.Point(105, 434);
+            this.tBx_CuNiValue.Location = new System.Drawing.Point(503, 218);
             this.tBx_CuNiValue.Name = "tBx_CuNiValue";
             this.tBx_CuNiValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuNiValue.TabIndex = 141;
@@ -3657,7 +3653,7 @@ namespace SPIL
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(236, 396);
+            this.label57.Location = new System.Drawing.Point(634, 180);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(36, 24);
             this.label57.TabIndex = 140;
@@ -3676,7 +3672,7 @@ namespace SPIL
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(122, 396);
+            this.label58.Location = new System.Drawing.Point(520, 180);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(83, 24);
             this.label58.TabIndex = 139;
@@ -3694,7 +3690,7 @@ namespace SPIL
             // 
             // btn_AOITesting
             // 
-            this.btn_AOITesting.Location = new System.Drawing.Point(15, 391);
+            this.btn_AOITesting.Location = new System.Drawing.Point(413, 175);
             this.btn_AOITesting.Name = "btn_AOITesting";
             this.btn_AOITesting.Size = new System.Drawing.Size(84, 79);
             this.btn_AOITesting.TabIndex = 138;
@@ -3702,35 +3698,17 @@ namespace SPIL
             this.btn_AOITesting.UseVisualStyleBackColor = true;
             this.btn_AOITesting.Click += new System.EventHandler(this.btn_AOITesting_Click);
             // 
-            // pBox_RecipePic1
-            // 
-            this.pBox_RecipePic1.BackColor = System.Drawing.Color.Black;
-            this.pBox_RecipePic1.Location = new System.Drawing.Point(1, 83);
-            this.pBox_RecipePic1.Name = "pBox_RecipePic1";
-            this.pBox_RecipePic1.Size = new System.Drawing.Size(240, 240);
-            this.pBox_RecipePic1.TabIndex = 7;
-            this.pBox_RecipePic1.TabStop = false;
-            // 
-            // pBox_RecipePic3
-            // 
-            this.pBox_RecipePic3.BackColor = System.Drawing.Color.Black;
-            this.pBox_RecipePic3.Location = new System.Drawing.Point(514, 83);
-            this.pBox_RecipePic3.Name = "pBox_RecipePic3";
-            this.pBox_RecipePic3.Size = new System.Drawing.Size(240, 240);
-            this.pBox_RecipePic3.TabIndex = 143;
-            this.pBox_RecipePic3.TabStop = false;
-            // 
             // txB_RecipePicName2
             // 
             this.txB_RecipePicName2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName2.Location = new System.Drawing.Point(250, 329);
+            this.txB_RecipePicName2.Location = new System.Drawing.Point(270, 83);
             this.txB_RecipePicName2.Name = "txB_RecipePicName2";
             this.txB_RecipePicName2.Size = new System.Drawing.Size(240, 23);
             this.txB_RecipePicName2.TabIndex = 146;
             // 
             // btn_AOIOpenImage2
             // 
-            this.btn_AOIOpenImage2.Location = new System.Drawing.Point(292, 35);
+            this.btn_AOIOpenImage2.Location = new System.Drawing.Point(313, 35);
             this.btn_AOIOpenImage2.Name = "btn_AOIOpenImage2";
             this.btn_AOIOpenImage2.Size = new System.Drawing.Size(157, 42);
             this.btn_AOIOpenImage2.TabIndex = 147;
@@ -3738,19 +3716,10 @@ namespace SPIL
             this.btn_AOIOpenImage2.UseVisualStyleBackColor = true;
             this.btn_AOIOpenImage2.Click += new System.EventHandler(this.btn_AOIOpenImage2_Click);
             // 
-            // pBox_RecipePic2
-            // 
-            this.pBox_RecipePic2.BackColor = System.Drawing.Color.Black;
-            this.pBox_RecipePic2.Location = new System.Drawing.Point(250, 83);
-            this.pBox_RecipePic2.Name = "pBox_RecipePic2";
-            this.pBox_RecipePic2.Size = new System.Drawing.Size(240, 240);
-            this.pBox_RecipePic2.TabIndex = 24;
-            this.pBox_RecipePic2.TabStop = false;
-            // 
             // txB_RecipePicName1
             // 
             this.txB_RecipePicName1.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName1.Location = new System.Drawing.Point(1, 329);
+            this.txB_RecipePicName1.Location = new System.Drawing.Point(17, 83);
             this.txB_RecipePicName1.Name = "txB_RecipePicName1";
             this.txB_RecipePicName1.Size = new System.Drawing.Size(240, 23);
             this.txB_RecipePicName1.TabIndex = 144;
@@ -3759,7 +3728,7 @@ namespace SPIL
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label55.Location = new System.Drawing.Point(11, 483);
+            this.label55.Location = new System.Drawing.Point(409, 280);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(157, 21);
             this.label55.TabIndex = 21;
@@ -3770,7 +3739,7 @@ namespace SPIL
             this.listBox_AOIAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
             this.listBox_AOIAlgorithmList.FormattingEnabled = true;
             this.listBox_AOIAlgorithmList.ItemHeight = 32;
-            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(15, 510);
+            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(413, 307);
             this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
             this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(353, 260);
             this.listBox_AOIAlgorithmList.TabIndex = 5;
@@ -3778,6 +3747,9 @@ namespace SPIL
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.textBox5);
+            this.tabPage8.Controls.Add(this.textBox4);
+            this.tabPage8.Controls.Add(this.textBox3);
             this.tabPage8.Controls.Add(this.dataGrid_Sharpness);
             this.tabPage8.Controls.Add(this.btn_SharpnessMultRun);
             this.tabPage8.Controls.Add(this.groupBox17);
@@ -3787,6 +3759,27 @@ namespace SPIL
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "Sharpness";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(557, 164);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(100, 27);
+            this.textBox5.TabIndex = 150;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(663, 164);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 27);
+            this.textBox4.TabIndex = 149;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(451, 164);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 27);
+            this.textBox3.TabIndex = 148;
             // 
             // dataGrid_Sharpness
             // 
@@ -3873,7 +3866,7 @@ namespace SPIL
             this.groupBox17.Controls.Add(this.label56);
             this.groupBox17.Controls.Add(this.listBox_SharpnessAlgorithmList);
             this.groupBox17.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox17.Location = new System.Drawing.Point(3, 164);
+            this.groupBox17.Location = new System.Drawing.Point(3, 267);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(769, 725);
             this.groupBox17.TabIndex = 0;
@@ -4040,15 +4033,6 @@ namespace SPIL
             this.timer_Log_in_Out.Interval = 250;
             this.timer_Log_in_Out.Tick += new System.EventHandler(this.timer_Log_in_Out_Tick);
             // 
-            // timer_Server
-            // 
-            this.timer_Server.Interval = 200;
-            this.timer_Server.Tick += new System.EventHandler(this.timer_Server_Tick);
-            // 
-            // backgroundWorker_Server
-            // 
-            this.backgroundWorker_Server.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_Server_DoWork);
-            // 
             // timer_OLS_File
             // 
             this.timer_OLS_File.Interval = 500;
@@ -4066,10 +4050,6 @@ namespace SPIL
             // 
             this.timer_Mouse_Point.Tick += new System.EventHandler(this.timer_Mouse_Point_Tick);
             // 
-            // bgWorkerServerRun
-            // 
-            this.bgWorkerServerRun.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorkerServerRun_DoWork);
-            // 
             // timer_check_delete_file
             // 
             this.timer_check_delete_file.Enabled = true;
@@ -4080,15 +4060,44 @@ namespace SPIL
             // 
             this.backgroundWorker_delete_old_file.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_delete_old_file_DoWork);
             // 
-            // timer_connect_client
-            // 
-            this.timer_connect_client.Interval = 1000;
-            this.timer_connect_client.Tick += new System.EventHandler(this.timer_connect_client_Tick);
-            // 
             // timer_Open_Hide
             // 
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
+            // 
+            // cogRcdDisp_Distance2
+            // 
+            this.cogRcdDisp_Distance2.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance2.ColorMapLowerRoiLimit = 0D;
+            this.cogRcdDisp_Distance2.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRcdDisp_Distance2.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance2.ColorMapUpperRoiLimit = 1D;
+            this.cogRcdDisp_Distance2.DoubleTapZoomCycleLength = 2;
+            this.cogRcdDisp_Distance2.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRcdDisp_Distance2.Location = new System.Drawing.Point(17, 368);
+            this.cogRcdDisp_Distance2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRcdDisp_Distance2.MouseWheelSensitivity = 1D;
+            this.cogRcdDisp_Distance2.Name = "cogRcdDisp_Distance2";
+            this.cogRcdDisp_Distance2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance2.OcxState")));
+            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance2.TabIndex = 150;
+            // 
+            // cogRcdDisp_Distance3
+            // 
+            this.cogRcdDisp_Distance3.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance3.ColorMapLowerRoiLimit = 0D;
+            this.cogRcdDisp_Distance3.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRcdDisp_Distance3.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance3.ColorMapUpperRoiLimit = 1D;
+            this.cogRcdDisp_Distance3.DoubleTapZoomCycleLength = 2;
+            this.cogRcdDisp_Distance3.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRcdDisp_Distance3.Location = new System.Drawing.Point(15, 621);
+            this.cogRcdDisp_Distance3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRcdDisp_Distance3.MouseWheelSensitivity = 1D;
+            this.cogRcdDisp_Distance3.Name = "cogRcdDisp_Distance3";
+            this.cogRcdDisp_Distance3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance3.OcxState")));
+            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance3.TabIndex = 151;
             // 
             // Form1
             // 
@@ -4126,6 +4135,15 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Client_Number)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.groupBox_test_item.ResumeLayout(false);
+            this.groupBox_test_item.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).EndInit();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.groupBox13.ResumeLayout(false);
@@ -4151,29 +4169,20 @@ namespace SPIL
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox_test_item.ResumeLayout(false);
-            this.groupBox_test_item.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox14.ResumeLayout(false);
-            this.groupBox14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).EndInit();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_RecipePic2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4248,8 +4257,6 @@ namespace SPIL
         private System.Windows.Forms.Button button_Log_in_out;
         private System.Windows.Forms.TextBox textBox_Password;
         private System.Windows.Forms.Timer timer_Log_in_Out;
-        private System.Windows.Forms.Timer timer_Server;
-        private System.ComponentModel.BackgroundWorker backgroundWorker_Server;
         private System.Windows.Forms.TextBox textBox_OLS_Folder;
         private System.Windows.Forms.Button button_OLS_Folder;
         private System.Windows.Forms.Timer timer_OLS_File;
@@ -4328,7 +4335,6 @@ namespace SPIL
         private System.Windows.Forms.TextBox textBox_Server_Port;
         private System.Windows.Forms.ComboBox comboBox_IP;
         private System.Windows.Forms.Label label84;
-        private System.ComponentModel.BackgroundWorker bgWorkerServerRun;
         private System.Windows.Forms.TextBox textBox_0_degree_height_Num;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.TextBox textBox_0_degree_height_A;
@@ -4338,7 +4344,6 @@ namespace SPIL
         private System.Windows.Forms.Button button_auto_click_Sp1;
         private System.Windows.Forms.Timer timer_check_delete_file;
         private System.ComponentModel.BackgroundWorker backgroundWorker_delete_old_file;
-        private System.Windows.Forms.Timer timer_connect_client;
         private System.Windows.Forms.ComboBox comboBox_IP_Motion;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.Button button_Close_Hide_2;
@@ -4471,7 +4476,6 @@ namespace SPIL
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.Button btn_AOIOpenImage1;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.PictureBox pBox_RecipePic1;
         private System.Windows.Forms.ListBox listBox_AOIAlgorithmList;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.ComboBox CB_RecipeList;
@@ -4493,13 +4497,11 @@ namespace SPIL
         private System.Windows.Forms.TextBox txB_RecipePicName2;
         private System.Windows.Forms.Button btn_AOIOpenImage3;
         private System.Windows.Forms.TextBox txB_RecipePicName1;
-        private System.Windows.Forms.PictureBox pBox_RecipePic3;
         private System.Windows.Forms.TextBox tBx_CuValue;
         private System.Windows.Forms.TextBox tBx_CuNiValue;
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.Button btn_AOITesting;
-        private System.Windows.Forms.PictureBox pBox_RecipePic2;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.ListBox listBox_SharpnessAlgorithmList;
         private System.Windows.Forms.Button btn_SharpnessMultRun;
@@ -4508,7 +4510,7 @@ namespace SPIL
         private System.Windows.Forms.Button btn_SharpnessRun;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.TextBox txB_SharpnessPicName;
-        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance;
+        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance1;
         private Cognex.VisionPro.CogRecordDisplay cogRecordDisplay2;
         private System.Windows.Forms.TextBox tbx_SearchScore2;
         private System.Windows.Forms.Label label63;
@@ -4525,6 +4527,11 @@ namespace SPIL
         private System.Windows.Forms.DataGridViewTextBoxColumn Score1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance3;
+        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance2;
     }
 }
 

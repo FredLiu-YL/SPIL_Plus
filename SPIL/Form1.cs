@@ -36,6 +36,7 @@ namespace SPIL
         private Bitmap aoiImage1;
         private Bitmap aoiImage2;
         private Bitmap aoiImage3;
+        private string password = "11084483";
 
         private HostCommunication hostCommunication;
         private CogToolBlock toolBlock;
@@ -60,9 +61,8 @@ namespace SPIL
         int auto_log_out_times = 10;
         int now_delay = 0;
         bool log_in = false;
-        static string Password = "YuanLi11084483";//Taipei
-        static string Password2 = "YuanLi97285208";//Taichung
-        static string Password3 = "YuanLi97119617";//Kaohsiung
+
+
         char[] can_key_in_data = { 'R', 'D', 'W', '_', '-', '.', 'T', '*', 'F', 'S' };
 
         string Save_File_Address = "";
@@ -73,7 +73,7 @@ namespace SPIL
         static int button_click_Delay = 5;//sec
         int button_click_times = 10;
         int now_button_click_delay = 0;
-        int OLS_Initial_Now_Step = 0;
+        //    int OLS_Initial_Now_Step = 0;
         int[,] point_data_write_0 = new int[2, 9];
         int[,] point_data_write_45 = new int[2, 9];
         int[] recipe_data_Write = new int[2];
@@ -105,10 +105,10 @@ namespace SPIL
 
         #region socket server
         List<string> ethernet_card = new List<string>();
-        Socket Socketserver_OLS;
-        Socket Socketserver_Motion;
-        Socket clientSocket_OLS;
-        Socket clientSocket_Motion;
+        //   Socket Socketserver_OLS;
+        //    Socket Socketserver_Motion;
+        //  Socket clientSocket_OLS;
+        //   Socket clientSocket_Motion;
         bool connect_OLS_client = false;
         bool connect_Motion_client = false;
         #endregion
@@ -245,8 +245,8 @@ namespace SPIL
                 cogRecordDisplay2.AutoFit = true;
                 cogRecordDisplay2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
 
-                cogRcdDisp_Distance.AutoFit = true;
-                cogRcdDisp_Distance.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+                cogRcdDisp_Distance1.AutoFit = true;
+                cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
 
             }
 
@@ -478,11 +478,9 @@ namespace SPIL
         {
             try
             {
-                string send_ss = Send_Data;
-                byte[] send_data = new byte[send_ss.Length];
-                for (int i = 0; i < send_ss.Length; i++)
-                    send_data[i] = Convert.ToByte(send_ss[i]);
-                clientSocket_Motion.Send(send_data);
+
+                hostCommunication.Send(Send_Data);
+                //    clientSocket_Motion.Send(send_data);
                 logger.WriteLog("Send Server : " + Send_Data);
             }
             catch (Exception error)
@@ -935,29 +933,17 @@ namespace SPIL
         #region Motion Server
         private string[] Cal_Recive_Data(string receive_data)
         {
+            //找出結尾座標  ， 目前延後之前的工程師寫法  可能會有問題
             receive_data = receive_data.Replace(">", "");
             string[] sub_string_ = receive_data.Split(',');
-            int total_Length = 0;
-            for (int i = 1; i < sub_string_.Length; i++)
-                total_Length += sub_string_[i].Length;
-            total_Length = total_Length + sub_string_.Length - 1;
-            //20211224-S
-            if (total_Length == Convert.ToInt32(sub_string_[0]))
-            {
-                for (int i = 0; i < sub_string_.Length; i++)
-                    logger.WriteLog("Cal " + Convert.ToString(i) + " = " + sub_string_[i]);
-                return sub_string_;
-            }
-            else
-            {
-                logger.WriteErrorLog("Receive Data Count Error!");
-                return null;
-            }
-            //20211224-E
+
+            
+            return sub_string_;
+ 
         }
         private void Receive_YuanLi()
         {
-            Send_Server("09,Yuani,e>");
+            Send_Server("Yuani,e>");
         }
         private void Receive_Init()
         {
@@ -971,14 +957,18 @@ namespace SPIL
             //
             try
             {
+                Send_Server("SetRecipe,s>");
                 string recipe_name = textBox_Recipe_Name.Text;
                 int recipe_len = recipe_name.Length;
 
-                //
-                DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
-                string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;
-                //AOI_Measurement = new SPILBumpMeasure(variable_data.Vision_Pro_File + "\\" + type_num + ".vpp");
-                AOI_Measurement = new SPILBumpMeasure(vpp_file_name);
+                //這裡要切換 aoIFlow. sharpnessFlow 資料
+
+             
+
+                 /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
+                 string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
+                 AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
+                 AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
                 //綁定cogRecordDisplay 用來存toolblock結果圖
                 AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
@@ -1005,13 +995,13 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
                 if (!is_test_mode)
-                    Send_Server("12,SetRecipe,e>");
+                    Send_Server("SetRecipe,e>");
 
             }
             catch (Exception error)
             {
                 logger.WriteErrorLog("Set Recipe Error! " + error.ToString());
-                Send_Server("12,SetRecipe,x>");
+                Send_Server("SetRecipe,x>");
             }
         }
         private void Receive_Mode(string receive_data)
@@ -1021,7 +1011,8 @@ namespace SPIL
                 UpdateRadioButton(true, radioButton_Degree_0);
                 open_hide_1 = false;
                 open_hide_2 = true;
-                button_hb_off_Click(sender1, e1);
+                HB_off();
+                //  button_hb_off_Click(sender1, e1);
                 if (!is_test_mode)
                     Send_Server("07,Mode,e>");
             }
@@ -1072,22 +1063,24 @@ namespace SPIL
             UpdateTextbox(Convert.ToString(Now_Point), textBox_Point);
             if (!is_test_mode)
             {
-                Send_Server("08,InPos,e>");
+                Send_Server("InPos,e>");
             }
 
         }
-        private void Receive_Stop(string receive_data, object sender, EventArgs e)
+        private void Receive_Stop(string receive_data)
         {
             if (receive_data == "0000")
             {
-                button_Save_Excel_Click(sender, e);
+                Save_Excel();
+                //    button_Save_Excel_Click(sender, e);
                 if (!is_test_mode)
                 {
-                    Send_Server("07,Stop,e>");
+                    Send_Server("Stop,e>");
                 }
                 open_hide_1 = false;
                 open_hide_2 = false;
-                button_hb_off_Click(sender, e);
+                //  button_hb_off_Click(sender, e);
+                HB_off();
             }
         }
         private void Receive_RFID(string receive_RFID, string receive_Wafer_Size)
@@ -1124,13 +1117,15 @@ namespace SPIL
         //
         private void Initial_OLS()
         {
-            button_auto_click_Sp5_Click(sender1, e1); //點擊5倍
+
+            Send_Server("Init,s>");
+            /*button_auto_click_Sp5_Click(sender1, e1); //點擊5倍
             Thread.Sleep(Convert.ToInt32(textBox_step4_Delay.Text));
             if (is_test_mode)
             {
                 return;
-            }
-            Send_Server("07,Init,e>");
+            }*/
+            Send_Server("Init,e>");
         }
         //
         #region mouse
@@ -1321,7 +1316,7 @@ namespace SPIL
         {
             if (!log_in)
             {
-                if (textBox_Password.Text == Password || textBox_Password.Text == Password2 || textBox_Password.Text == Password3)
+                if (textBox_Password.Text == password)
                 {
                     logger.WriteLog("Log In");
                     log_in = true;
@@ -1420,7 +1415,7 @@ namespace SPIL
             {
                 double ratio_ = Convert.ToDouble(textBox_45_Ratio.Text);
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 textBox_45_Ratio.Text = "";
             }
@@ -1626,7 +1621,7 @@ namespace SPIL
             }
             catch (Exception error)
             {
-                logger.WriteLog("Save Parameter Error");
+                logger.WriteLog($"Save Parameter Error {error.Message}");
             }
         }
         //
@@ -1688,6 +1683,20 @@ namespace SPIL
         {
             try
             {
+                Save_Excel();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void Save_Excel()
+        {
+            try
+            {
                 Cal_File_Address();
                 //20211224-S
                 //double[] zero_degree_ = new double[9];
@@ -1742,6 +1751,7 @@ namespace SPIL
                 logger.WriteLog("Save Error!" + error.ToString());
             }
         }
+
         private void textBox_Mesument_1_0_TextChanged(object sender, EventArgs e)
         {
             try
@@ -1916,18 +1926,22 @@ namespace SPIL
             now_delay = 0;
             try
             {
+                if (hostCommunication != null) throw new Exception("Connected");
                 logger.WriteLog("Create Motion Server");
                 string ip_address = comboBox_IP_Motion.Text;
-            //    IPAddress ip = IPAddress.Parse(ip_address);
+                //    IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Port.Text);
 
-           
+                hostCommunication = new HostCommunication("127.0.0.1", 1234);
 
-            //    Socketserver_Motion = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-             //   Socketserver_Motion.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
-             //   Socketserver_Motion.Listen(10);    //設定最多10個排隊連線請求
+                //  hostCommunication = new HostCommunication(ip_address, port);
+                hostCommunication.ReceiverMessage += ReciveMessage;
+                hostCommunication.ReceiverException += ReciveException;
+                //    Socketserver_Motion = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //   Socketserver_Motion.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
+                //   Socketserver_Motion.Listen(10);    //設定最多10個排隊連線請求
                 logger.WriteLog("Create Motion Server Successful");
-                timer_Server.Enabled = true;
+                //        timer_Server.Enabled = true;
                 UpdatePicturebox(I_Green, pictureBox_Connect_Status);
             }
             catch (Exception error)
@@ -1936,17 +1950,18 @@ namespace SPIL
                 logger.WriteErrorLog("Create Motion Server Fail ! " + error.ToString());
             }
         }
+
         private void timer_Server_Tick(object sender, EventArgs e)
         {
-            if (!backgroundWorker_Server.IsBusy)
-            {
-                sender1 = sender;
-                e1 = e;
-                backgroundWorker_Server.RunWorkerAsync();
-            }
+            /* if (!backgroundWorker_Server.IsBusy)
+             {
+                 sender1 = sender;
+                 e1 = e;
+                 backgroundWorker_Server.RunWorkerAsync();
+             }*/
         }
         private void backgroundWorker_Server_DoWork(object sender, DoWorkEventArgs e)
-        {
+        {/*
             try
             {
                 if (!connect_Motion_client)
@@ -1960,6 +1975,7 @@ namespace SPIL
                 {
                     try
                     {
+                        
                         byte[] Receive_data = new byte[256];
                         clientSocket_Motion.Receive(Receive_data);
                         string receive_data = "";
@@ -1991,7 +2007,7 @@ namespace SPIL
                             else if (re_data[1].IndexOf("InPos") >= 0)
                                 Receive_InPos(Convert.ToInt32(re_data[2]));
                             else if (re_data[1].IndexOf("Stop") >= 0)
-                                Receive_Stop(re_data[2], sender, e);
+                                Receive_Stop(re_data[2]);
                             else if (re_data[1].IndexOf("RFID") >= 0)
                                 Receive_RFID(re_data[2], re_data[3]);
                             else
@@ -2022,17 +2038,17 @@ namespace SPIL
             catch (Exception error)
             {
                 logger.WriteErrorLog("Motion error" + error.ToString());
-            }
+            }*/
         }
         #endregion
 
         #region OLS
         private void button_Start_Click(object sender, EventArgs e)
         {
-            if (!timer_OLS_File.Enabled)
-                timer_OLS_File.Enabled = true;
-            else
-                timer_OLS_File.Enabled = false;
+            /* if (!timer_OLS_File.Enabled)
+                 timer_OLS_File.Enabled = true;
+             else
+                 timer_OLS_File.Enabled = false;*/
         }
         private void timer_OLS_File_Tick(object sender, EventArgs e)
         {
@@ -2354,7 +2370,7 @@ namespace SPIL
                         }
                         catch (Exception error)
                         {
-                            logger.WriteErrorLog("Delete poir File Error! ");
+                            logger.WriteErrorLog($"Delete poir File Error!  {error.Message}");
                         }
                     }
                 }
@@ -2364,101 +2380,101 @@ namespace SPIL
         private void timer_Initial_Tick(object sender, EventArgs e)
         {
             //server判斷甚麼時候要做事,再傳給client端,client是按左鍵,座標是server預設好的
-            if (now_button_click_delay >= button_click_times)
-            {
-                now_button_click_delay = 0;
-                if (OLS_Initial_Now_Step == 0 && checkBox_Step_1.Checked)
+            /*    if (now_button_click_delay >= button_click_times)
                 {
-                    Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_1_X), Convert.ToInt32(variable_data.Initial_Step_1_Y));
-                    LeftClick();
-                    OLS_Initial_Now_Step = 2;
+                    now_button_click_delay = 0;
+                    if (OLS_Initial_Now_Step == 0 && checkBox_Step_1.Checked)
+                    {
+                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_1_X), Convert.ToInt32(variable_data.Initial_Step_1_Y));
+                        LeftClick();
+                        OLS_Initial_Now_Step = 2;
+                    }
+                    else if (OLS_Initial_Now_Step == 1 && checkBox_Step_2.Checked)
+                    {
+                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_2_X), Convert.ToInt32(variable_data.Initial_Step_2_Y));
+                        LeftClick();
+                        OLS_Initial_Now_Step = 2;
+                    }
+                    else if (OLS_Initial_Now_Step == 2 && checkBox_Step_3.Checked)
+                    {
+                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_3_X), Convert.ToInt32(variable_data.Initial_Step_3_Y));
+                        LeftClick();
+                        OLS_Initial_Now_Step = 3;
+                    }
+                    else if (checkBox_Step_4.Checked)
+                    {
+                        button_click_times = variable_data.Initial_Step_4_Delay_Time * 1000 / timer_Initial.Interval;
+                        OLS_Initial_Now_Step = 4;
+                    }
+                    else if (OLS_Initial_Now_Step == 4 || (!checkBox_Step_1.Checked && !checkBox_Step_2.Checked && !checkBox_Step_3.Checked && !checkBox_Step_3.Checked))
+                    {
+                        timer_Initial.Enabled = false;
+                        OLS_Initial_Now_Step = 0;
+                        Send_Server("07,Init,e>");
+                    }
                 }
-                else if (OLS_Initial_Now_Step == 1 && checkBox_Step_2.Checked)
+                else
                 {
-                    Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_2_X), Convert.ToInt32(variable_data.Initial_Step_2_Y));
-                    LeftClick();
-                    OLS_Initial_Now_Step = 2;
-                }
-                else if (OLS_Initial_Now_Step == 2 && checkBox_Step_3.Checked)
-                {
-                    Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_3_X), Convert.ToInt32(variable_data.Initial_Step_3_Y));
-                    LeftClick();
-                    OLS_Initial_Now_Step = 3;
-                }
-                else if (checkBox_Step_4.Checked)
-                {
-                    button_click_times = variable_data.Initial_Step_4_Delay_Time * 1000 / timer_Initial.Interval;
-                    OLS_Initial_Now_Step = 4;
-                }
-                else if (OLS_Initial_Now_Step == 4 || (!checkBox_Step_1.Checked && !checkBox_Step_2.Checked && !checkBox_Step_3.Checked && !checkBox_Step_3.Checked))
-                {
-                    timer_Initial.Enabled = false;
-                    OLS_Initial_Now_Step = 0;
-                    Send_Server("07,Init,e>");
-                }
-            }
-            else
-            {
-                now_button_click_delay++;
-            }
+                    now_button_click_delay++;
+                }*/
         }
         private void button_Open_Hide_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.WriteLog("Open Hide 1");
-                string send_data_str = get_socket_send_data();
-                //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-                Thread.Sleep(100);
-                clientSocket_OLS.Send(StringToByteArray("open_1"));
-                Thread.Sleep(100);
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("Open Hide 1 Error! " + error.ToString());
-            }
+            /* try
+             {
+                 logger.WriteLog("Open Hide 1");
+                 string send_data_str = get_socket_send_data();
+                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+                 Thread.Sleep(100);
+                 clientSocket_OLS.Send(StringToByteArray("open_1"));
+                 Thread.Sleep(100);
+             }
+             catch (Exception error)
+             {
+                 logger.WriteErrorLog("Open Hide 1 Error! " + error.ToString());
+             }*/
         }
         private void button_Close_Hide_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.WriteLog("Close Hide 1");
-                clientSocket_OLS.Send(StringToByteArray("close_1"));
-                Thread.Sleep(100);
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("Close Hide 1 Error! " + error.ToString());
-            }
+            /* try
+             {
+                 logger.WriteLog("Close Hide 1");
+                 clientSocket_OLS.Send(StringToByteArray("close_1"));
+                 Thread.Sleep(100);
+             }
+             catch (Exception error)
+             {
+                 logger.WriteErrorLog("Close Hide 1 Error! " + error.ToString());
+             }*/
         }
         private void button_Open_Hide_2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.WriteLog("Open Hide 2");
-                string send_data_str = get_socket_send_data();
-                //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-                Thread.Sleep(100);
-                clientSocket_OLS.Send(StringToByteArray("open_2"));
-                Thread.Sleep(100);
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("Open Hide 2 Error! " + error.ToString());
-            }
+            /* try
+             {
+                 logger.WriteLog("Open Hide 2");
+                 string send_data_str = get_socket_send_data();
+                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+                 Thread.Sleep(100);
+                 clientSocket_OLS.Send(StringToByteArray("open_2"));
+                 Thread.Sleep(100);
+             }
+             catch (Exception error)
+             {
+                 logger.WriteErrorLog("Open Hide 2 Error! " + error.ToString());
+             }*/
         }
         private void button_Close_Hide_2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.WriteLog("Close Hide 2");
-                clientSocket_OLS.Send(StringToByteArray("close_2"));
-                Thread.Sleep(100);
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("Close Hide 2 Error! " + error.ToString());
-            }
+            /* try
+             {
+                 logger.WriteLog("Close Hide 2");
+                 clientSocket_OLS.Send(StringToByteArray("close_2"));
+                 Thread.Sleep(100);
+             }
+             catch (Exception error)
+             {
+                 logger.WriteErrorLog("Close Hide 2 Error! " + error.ToString());
+             }*/
         }
         private void timer_Mouse_Point_Tick(object sender, EventArgs e)
         {
@@ -2489,14 +2505,14 @@ namespace SPIL
         }
         private void timer_connect_client_Tick(object sender, EventArgs e)
         {
-            if (!bgWorkerServerRun.IsBusy)
-            {
-                bgWorkerServerRun.RunWorkerAsync();
-            }
-
+            /* if (!bgWorkerServerRun.IsBusy)
+             {
+                 bgWorkerServerRun.RunWorkerAsync();
+             }
+            */
         }
         private void bgWorkerServerRun_DoWork(object sender, DoWorkEventArgs e)
-        {
+        {/*
             try
             {
                 if (!connect_OLS_client)
@@ -2558,84 +2574,84 @@ namespace SPIL
             catch (Exception error)
             {
                 logger.WriteErrorLog("OLS error" + error.ToString());
-            }
+            }*/
         }
         private void button_Send_Client_Click(object sender, EventArgs e)
         {
-            try
-            {
-                string send_ss = textBox_Server_Send.Text;
-                byte[] send_data = new byte[send_ss.Length];
-                for (int i = 0; i < send_ss.Length; i++)
-                    send_data[i] = Convert.ToByte(send_ss[i]);
-                clientSocket_OLS.Send(send_data);
-                textBox_Server_Receive.Text += "Send:" + send_ss + Environment.NewLine;
-                timer_Server.Enabled = true;
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.ToString());
-            }
+            /* try
+             {
+                 string send_ss = textBox_Server_Send.Text;
+                 byte[] send_data = new byte[send_ss.Length];
+                 for (int i = 0; i < send_ss.Length; i++)
+                     send_data[i] = Convert.ToByte(send_ss[i]);
+                 clientSocket_OLS.Send(send_data);
+                 textBox_Server_Receive.Text += "Send:" + send_ss + Environment.NewLine;
+                 timer_Server.Enabled = true;
+             }
+             catch (Exception error)
+             {
+                 MessageBox.Show(error.ToString());
+             }*/
         }
         private void button_Start_Server_Click(object sender, EventArgs e)
         {
-            try
-            {
-                logger.WriteLog("Create OLS Server");
-                string ip_address = comboBox_IP.Text;
-                IPAddress ip = IPAddress.Parse(ip_address);
-                int port = Convert.ToInt32(textBox_Server_Port.Text);
-                Socketserver_OLS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                Socketserver_OLS.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
-                Socketserver_OLS.Listen(10);    //設定最多10個排隊連線請求
-                textBox_Server_Receive.Text += "socket start" + Environment.NewLine;
-                timer_Server.Enabled = true;
-                timer_connect_client.Enabled = true;
-                timer_Open_Hide.Enabled = true;
-                logger.WriteLog("Create OLS Server Successful");
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("Create OLS Server Fail ! " + error.ToString());
-            }
-
+            /* try
+             {
+                 logger.WriteLog("Create OLS Server");
+                 string ip_address = comboBox_IP.Text;
+                 IPAddress ip = IPAddress.Parse(ip_address);
+                 int port = Convert.ToInt32(textBox_Server_Port.Text);
+                 Socketserver_OLS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                 Socketserver_OLS.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
+                 Socketserver_OLS.Listen(10);    //設定最多10個排隊連線請求
+                 textBox_Server_Receive.Text += "socket start" + Environment.NewLine;
+                 timer_Server.Enabled = true;
+                 timer_connect_client.Enabled = true;
+                 timer_Open_Hide.Enabled = true;
+                 logger.WriteLog("Create OLS Server Successful");
+             }
+             catch (Exception error)
+             {
+                 logger.WriteErrorLog("Create OLS Server Fail ! " + error.ToString());
+             }
+            */
 
         }
         private void button_auto_click_Sp1_Click(object sender, EventArgs e)
         {
-            Thread.Sleep(1000);
-            string send_data_str = get_socket_send_data();
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            //Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("SP1"));
-            Thread.Sleep(100);
+            /* Thread.Sleep(1000);
+             string send_data_str = get_socket_send_data();
+             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+             //Thread.Sleep(100);
+             clientSocket_OLS.Send(StringToByteArray("SP1"));
+             Thread.Sleep(100);*/
 
         }
         private void button_auto_click_Sp2_Click(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            //Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("SP2"));
-            Thread.Sleep(100);
+            /* string send_data_str = get_socket_send_data();
+             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+             //Thread.Sleep(100);
+             clientSocket_OLS.Send(StringToByteArray("SP2"));
+             Thread.Sleep(100);*/
         }
         private void button_auto_click_Sp3_Click(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
+            /*string send_data_str = get_socket_send_data();
             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
             //Thread.Sleep(100);
             clientSocket_OLS.Send(StringToByteArray("SP3"));
-            Thread.Sleep(100);
+            Thread.Sleep(100);*/
         }
         #endregion
 
         private void button_auto_click_Sp5_Click(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            //Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("SP5"));
-            Thread.Sleep(100);
+            /* string send_data_str = get_socket_send_data();
+             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+             //Thread.Sleep(100);
+             clientSocket_OLS.Send(StringToByteArray("SP5"));
+             Thread.Sleep(100);*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -2664,12 +2680,12 @@ namespace SPIL
 
         private void button_hb_on_Click(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
-            is_hand_measurement = false;
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("open_hb"));
-            Thread.Sleep(100);
+            /* string send_data_str = get_socket_send_data();
+             is_hand_measurement = false;
+             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+             Thread.Sleep(100);
+             clientSocket_OLS.Send(StringToByteArray("open_hb"));
+             Thread.Sleep(100);*/
         }
 
         private void numericUpDown_AOI_save_idx1_ValueChanged(object sender, EventArgs e)
@@ -2729,13 +2745,13 @@ namespace SPIL
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Receive_Stop("0000", sender, e);
+            Receive_Stop("0000");
         }
 
         private void button_update_value_Click(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
-            clientSocket_OLS.Send(StringToByteArray(send_data_str));
+            // string send_data_str = get_socket_send_data();
+            //  clientSocket_OLS.Send(StringToByteArray(send_data_str));
         }
 
 
@@ -2746,13 +2762,14 @@ namespace SPIL
         private void button8_Click(object sender, EventArgs e)
         {
 
-            var window =   new SPIL_TCPSimulator.MainWindow();
-    
+            //    var window =   new SPIL_TCPSimulator.MainWindow();
 
 
-            hostCommunication = new HostCommunication("127.0.0.1", 1234);
-           
-            window.ShowDialog();
+            if (hostCommunication == null)
+                hostCommunication = new HostCommunication("127.0.0.1", 1234);
+            else
+                hostCommunication.Open();
+            //      window.ShowDialog();
         }
 
         private void HostException(Exception exception)
@@ -2772,8 +2789,6 @@ namespace SPIL
 
                 sharpnessImage = new Bitmap(dlg.FileName);
 
-                pBox_RecipePic1.Image = sharpnessImage;
-                pBox_RecipePic1.SizeMode = PictureBoxSizeMode.Zoom;
 
 
                 //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
@@ -2990,11 +3005,16 @@ namespace SPIL
             Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
             var cord = aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
 
+
             tBx_CuNiValue.Text = distance_CuNi.ToString("0.000");
             tBx_CuValue.Text = distance_Cu.ToString("0.000");
-            cogRcdDisp_Distance.Record = cord;
 
-
+            cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+            cogRcdDisp_Distance2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+            cogRcdDisp_Distance3.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+            cogRcdDisp_Distance1.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
+            cogRcdDisp_Distance2.Record = cord.SubRecords["CogFixtureTool2.OutputImage"];
+            cogRcdDisp_Distance3.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
 
             img1.Dispose();
             img2.Dispose();
@@ -3012,8 +3032,7 @@ namespace SPIL
 
                 aoiImage1 = new Bitmap(dlg.FileName);
 
-                pBox_RecipePic1.Image = aoiImage1;
-                pBox_RecipePic1.SizeMode = PictureBoxSizeMode.Zoom;
+
                 txB_RecipePicName1.Text = dlg.FileName;
 
 
@@ -3033,8 +3052,6 @@ namespace SPIL
 
                 aoiImage2 = new Bitmap(dlg.FileName);
 
-                pBox_RecipePic2.Image = aoiImage2;
-                pBox_RecipePic2.SizeMode = PictureBoxSizeMode.Zoom;
                 txB_RecipePicName2.Text = dlg.FileName;
 
 
@@ -3052,14 +3069,50 @@ namespace SPIL
 
                 aoiImage3 = new Bitmap(dlg.FileName);
 
-                pBox_RecipePic3.Image = aoiImage3;
-                pBox_RecipePic3.SizeMode = PictureBoxSizeMode.Zoom;
+
                 txB_RecipePicName3.Text = dlg.FileName;
 
 
             }
         }
         #endregion
+        private void ReciveException(Exception exception)
+        {
+            MessageBox.Show(exception.Message);
+
+        }
+
+        private void ReciveMessage(string receiveData)
+        {
+            logger.WriteLog("Receive : " + receiveData);
+
+            string[] re_data = Cal_Recive_Data(receiveData);
+
+            if (re_data != null)
+            {
+
+                if (re_data[0].Contains("YuanLi"))
+                    Receive_YuanLi();
+                else if (re_data[0].Contains("Init"))
+                    Receive_Init();
+                else if (re_data[0].Contains("SetRecipe"))
+                    Receive_SetRecipe(re_data[1]);
+                else if (re_data[0].Contains("Mode"))
+                    Receive_Mode(re_data[1]);
+                else if (re_data[0].Contains("Start"))
+                    Receive_Start(Convert.ToInt32(re_data[1]),re_data[2], Convert.ToInt32(re_data[3]));
+                else if (re_data[0].Contains("InPos"))
+                    Receive_InPos(Convert.ToInt32(re_data[2]));
+                else if (re_data[0].Contains("Stop"))
+                    Receive_Stop(re_data[1]);
+                else if (re_data[0].Contains("RFID"))
+                    Receive_RFID(re_data[1], re_data[2]);
+                else
+                    logger.WriteErrorLog("No Match Data!");
+            }
+            else
+                logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);
+        }
 
 
         private void btn_OpenSharpnessImage_Click(object sender, EventArgs e)
@@ -3197,7 +3250,7 @@ namespace SPIL
                                 dataGrid_Sharpness.Rows.Add(name, -1, -1, -1, -1, -1);
                             else
                             {
-                                dataGrid_Sharpness.Rows.Add(name, sharpResult.SearchScore1.ToString("0.00000"), sharpResult.SearchScore2.ToString("0.00000"), 
+                                dataGrid_Sharpness.Rows.Add(name, sharpResult.SearchScore1.ToString("0.00000"), sharpResult.SearchScore2.ToString("0.00000"),
                                     sharpResult.Score1.ToString("0.00000000"), sharpResult.Score2.ToString("0.00000000"), sharpResult.Score3.ToString("0.00000000"));
                                 cogRecordDisplay2.Record = sharpResult.CogRecord;
                             }
@@ -3214,15 +3267,24 @@ namespace SPIL
 
         }
 
-        private void button_hb_off_Click(object sender, EventArgs e)
+        private void radioButton9_CheckedChanged(object sender, EventArgs e)
         {
-            string send_data_str = get_socket_send_data();
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("close_hb"));
-            Thread.Sleep(100);
+
         }
 
+        private void button_hb_off_Click(object sender, EventArgs e)
+        {
+            HB_off();
+        }
+        private void HB_off()
+        {
+            /* string send_data_str = get_socket_send_data();
+             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+             Thread.Sleep(100);
+             clientSocket_OLS.Send(StringToByteArray("close_hb"));
+             Thread.Sleep(100);*/
+
+        }
 
 
     }

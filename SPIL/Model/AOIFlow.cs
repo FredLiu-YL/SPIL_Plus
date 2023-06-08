@@ -23,6 +23,8 @@ namespace SPIL.Model
     public class AOIFlow : VisionProFlow
     {
         private Logger logger;
+
+        public CogToolBlock MeasureToolBlock => measureToolBlock;
         public AOIFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes, Logger logger) : base(aoiVppPath, algorithmDescribes, 101)
         {
             this.logger = logger;
@@ -45,7 +47,7 @@ namespace SPIL.Model
                 CogToolResultConstants vision_pro_run_result = measureToolBlock.RunStatus.Result;
                 logger.WriteLog("Run Result : " + Convert.ToString(vision_pro_run_result));
 
-                var cord = measureToolBlock.CreateLastRunRecord().SubRecords[0];
+                var cord = measureToolBlock.CreateLastRunRecord();
 
                 /*
                 if (vision_pro_run_result != CogToolResultConstants.Accept) {

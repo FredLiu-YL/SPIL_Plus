@@ -41,7 +41,18 @@ namespace SPIL
                 logger.WriteErrorLog(ex.ToString());
             }
         }
-
+        public SPILBumpMeasure(CogToolBlock cogToolBlock)
+        {
+            logger.WriteLog("Load AOI CogToolBlock");
+            try
+            {
+                MeasureToolBlock = cogToolBlock;
+            }
+            catch (Exception ex)
+            {
+                logger.WriteErrorLog(ex.ToString());
+            }
+        }
         //public double Measurment(Bitmap Input_Image)
         //{
         //    try
