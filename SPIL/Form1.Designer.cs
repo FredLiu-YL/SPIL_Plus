@@ -321,6 +321,8 @@ namespace SPIL
             this.label52 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
             this.tBx_CuValue = new System.Windows.Forms.TextBox();
             this.txB_RecipePicName3 = new System.Windows.Forms.TextBox();
@@ -340,12 +342,6 @@ namespace SPIL
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_SharpnessMultRun = new System.Windows.Forms.Button();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.tbx_SharpnessScore3 = new System.Windows.Forms.TextBox();
@@ -373,8 +369,12 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
-            this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -417,14 +417,14 @@ namespace SPIL
             this.groupBox4.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.groupBox18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).BeginInit();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
             this.groupBox17.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -3611,6 +3611,40 @@ namespace SPIL
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "AOI Distance";
             // 
+            // cogRcdDisp_Distance3
+            // 
+            this.cogRcdDisp_Distance3.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance3.ColorMapLowerRoiLimit = 0D;
+            this.cogRcdDisp_Distance3.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRcdDisp_Distance3.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance3.ColorMapUpperRoiLimit = 1D;
+            this.cogRcdDisp_Distance3.DoubleTapZoomCycleLength = 2;
+            this.cogRcdDisp_Distance3.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRcdDisp_Distance3.Location = new System.Drawing.Point(15, 621);
+            this.cogRcdDisp_Distance3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRcdDisp_Distance3.MouseWheelSensitivity = 1D;
+            this.cogRcdDisp_Distance3.Name = "cogRcdDisp_Distance3";
+            this.cogRcdDisp_Distance3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance3.OcxState")));
+            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance3.TabIndex = 151;
+            // 
+            // cogRcdDisp_Distance2
+            // 
+            this.cogRcdDisp_Distance2.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance2.ColorMapLowerRoiLimit = 0D;
+            this.cogRcdDisp_Distance2.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRcdDisp_Distance2.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRcdDisp_Distance2.ColorMapUpperRoiLimit = 1D;
+            this.cogRcdDisp_Distance2.DoubleTapZoomCycleLength = 2;
+            this.cogRcdDisp_Distance2.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRcdDisp_Distance2.Location = new System.Drawing.Point(17, 368);
+            this.cogRcdDisp_Distance2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRcdDisp_Distance2.MouseWheelSensitivity = 1D;
+            this.cogRcdDisp_Distance2.Name = "cogRcdDisp_Distance2";
+            this.cogRcdDisp_Distance2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance2.OcxState")));
+            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance2.TabIndex = 150;
+            // 
             // cogRcdDisp_Distance1
             // 
             this.cogRcdDisp_Distance1.ColorMapLowerClipColor = System.Drawing.Color.Black;
@@ -3798,42 +3832,6 @@ namespace SPIL
             this.dataGrid_Sharpness.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid_Sharpness.Size = new System.Drawing.Size(652, 145);
             this.dataGrid_Sharpness.TabIndex = 146;
-            // 
-            // FileName
-            // 
-            this.FileName.HeaderText = "FileName";
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            // 
-            // SearchScore1
-            // 
-            this.SearchScore1.HeaderText = "SearchScore1";
-            this.SearchScore1.Name = "SearchScore1";
-            this.SearchScore1.ReadOnly = true;
-            // 
-            // SearchScore2
-            // 
-            this.SearchScore2.HeaderText = "SearchScore1";
-            this.SearchScore2.Name = "SearchScore2";
-            this.SearchScore2.ReadOnly = true;
-            // 
-            // Score1
-            // 
-            this.Score1.HeaderText = "Score1";
-            this.Score1.Name = "Score1";
-            this.Score1.ReadOnly = true;
-            // 
-            // Score2
-            // 
-            this.Score2.HeaderText = "Score2";
-            this.Score2.Name = "Score2";
-            this.Score2.ReadOnly = true;
-            // 
-            // Score3
-            // 
-            this.Score3.HeaderText = "Score3";
-            this.Score3.Name = "Score3";
-            this.Score3.ReadOnly = true;
             // 
             // btn_SharpnessMultRun
             // 
@@ -4065,39 +4063,41 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // cogRcdDisp_Distance2
+            // FileName
             // 
-            this.cogRcdDisp_Distance2.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance2.ColorMapLowerRoiLimit = 0D;
-            this.cogRcdDisp_Distance2.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRcdDisp_Distance2.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance2.ColorMapUpperRoiLimit = 1D;
-            this.cogRcdDisp_Distance2.DoubleTapZoomCycleLength = 2;
-            this.cogRcdDisp_Distance2.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance2.Location = new System.Drawing.Point(17, 368);
-            this.cogRcdDisp_Distance2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRcdDisp_Distance2.MouseWheelSensitivity = 1D;
-            this.cogRcdDisp_Distance2.Name = "cogRcdDisp_Distance2";
-            this.cogRcdDisp_Distance2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance2.OcxState")));
-            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(300, 250);
-            this.cogRcdDisp_Distance2.TabIndex = 150;
+            this.FileName.HeaderText = "FileName";
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
             // 
-            // cogRcdDisp_Distance3
+            // SearchScore1
             // 
-            this.cogRcdDisp_Distance3.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance3.ColorMapLowerRoiLimit = 0D;
-            this.cogRcdDisp_Distance3.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRcdDisp_Distance3.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRcdDisp_Distance3.ColorMapUpperRoiLimit = 1D;
-            this.cogRcdDisp_Distance3.DoubleTapZoomCycleLength = 2;
-            this.cogRcdDisp_Distance3.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance3.Location = new System.Drawing.Point(15, 621);
-            this.cogRcdDisp_Distance3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRcdDisp_Distance3.MouseWheelSensitivity = 1D;
-            this.cogRcdDisp_Distance3.Name = "cogRcdDisp_Distance3";
-            this.cogRcdDisp_Distance3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance3.OcxState")));
-            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(300, 250);
-            this.cogRcdDisp_Distance3.TabIndex = 151;
+            this.SearchScore1.HeaderText = "SearchScore1";
+            this.SearchScore1.Name = "SearchScore1";
+            this.SearchScore1.ReadOnly = true;
+            // 
+            // SearchScore2
+            // 
+            this.SearchScore2.HeaderText = "SearchScore2";
+            this.SearchScore2.Name = "SearchScore2";
+            this.SearchScore2.ReadOnly = true;
+            // 
+            // Score1
+            // 
+            this.Score1.HeaderText = "Score1";
+            this.Score1.Name = "Score1";
+            this.Score1.ReadOnly = true;
+            // 
+            // Score2
+            // 
+            this.Score2.HeaderText = "Score2";
+            this.Score2.Name = "Score2";
+            this.Score2.ReadOnly = true;
+            // 
+            // Score3
+            // 
+            this.Score3.HeaderText = "Score3";
+            this.Score3.Name = "Score3";
+            this.Score3.ReadOnly = true;
             // 
             // Form1
             // 
@@ -4173,6 +4173,8 @@ namespace SPIL
             this.tabPage7.PerformLayout();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
@@ -4181,8 +4183,6 @@ namespace SPIL
             this.groupBox17.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4521,17 +4521,17 @@ namespace SPIL
         private System.Windows.Forms.TextBox tbx_SharpnessScore1;
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.DataGridView dataGrid_Sharpness;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance3;
+        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance2;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SearchScore1;
         private System.Windows.Forms.DataGridViewTextBoxColumn SearchScore2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance3;
-        private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance2;
     }
 }
 

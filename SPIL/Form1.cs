@@ -937,9 +937,9 @@ namespace SPIL
             receive_data = receive_data.Replace(">", "");
             string[] sub_string_ = receive_data.Split(',');
 
-            
+
             return sub_string_;
- 
+
         }
         private void Receive_YuanLi()
         {
@@ -963,12 +963,12 @@ namespace SPIL
 
                 //這裡要切換 aoIFlow. sharpnessFlow 資料
 
-             
 
-                 /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
-                 string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
-                 AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
-                 AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
+
+                /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
+                string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
+                AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
+                AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
                 //綁定cogRecordDisplay 用來存toolblock結果圖
                 AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
@@ -994,8 +994,8 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
-                if (!is_test_mode)
-                    Send_Server("SetRecipe,e>");
+
+                Send_Server("SetRecipe,e>");
 
             }
             catch (Exception error)
@@ -1013,8 +1013,8 @@ namespace SPIL
                 open_hide_2 = true;
                 HB_off();
                 //  button_hb_off_Click(sender1, e1);
-                if (!is_test_mode)
-                    Send_Server("07,Mode,e>");
+
+                Send_Server("Mode,e>");
             }
             else if (receive_data == "Side")
             {
@@ -1022,8 +1022,8 @@ namespace SPIL
                 open_hide_1 = true;
                 open_hide_2 = false;
                 button_hb_on_Click(sender1, e1);
-                if (!is_test_mode)
-                    Send_Server("07,Mode,e>");
+
+                Send_Server("Mode,e>");
             }
         }
         private void Receive_Start(int Totoal_Point, string wafer_ID, int now_Slot)
@@ -1054,17 +1054,16 @@ namespace SPIL
             open_hide_1 = true;
             open_hide_2 = true;
             //
-            if (!is_test_mode)
-                Send_Server("08,Start,e>");
+
+            Send_Server("Start,e>");
         }
         private void Receive_InPos(int Now_Point)
         {
             count = 1;
             UpdateTextbox(Convert.ToString(Now_Point), textBox_Point);
-            if (!is_test_mode)
-            {
-                Send_Server("InPos,e>");
-            }
+
+            Send_Server("InPos,e>");
+
 
         }
         private void Receive_Stop(string receive_data)
@@ -1072,14 +1071,12 @@ namespace SPIL
             if (receive_data == "0000")
             {
                 Save_Excel();
-                //    button_Save_Excel_Click(sender, e);
-                if (!is_test_mode)
-                {
-                    Send_Server("Stop,e>");
-                }
+
+                Send_Server("Stop,e>");
+
                 open_hide_1 = false;
                 open_hide_2 = false;
-                //  button_hb_off_Click(sender, e);
+
                 HB_off();
             }
         }
@@ -1088,7 +1085,7 @@ namespace SPIL
             UpdateTextbox(receive_RFID, textBox_RFID);
             UpdateTextbox(receive_Wafer_Size, textBox_Wafer_Size);
             //20211224-S
-            Send_Server("07,RFID,e>");
+            Send_Server("RFID,e>");
         }
         #endregion
         //
@@ -2377,6 +2374,321 @@ namespace SPIL
             }
 
         }
+
+        private void AoiMeansure()
+        {
+            if (checkBox_bmp.Checked)
+            {
+                if (folder_info.GetFiles("*.bmp").Length > 0)
+                {
+                    FileInfo[] FIle_List = folder_info.GetFiles("*.bmp");
+                    //try
+                    //{
+                    for (int i = 0; i < FIle_List.Length; i++)
+                    {
+                        logger.WriteLog("New File : " + FIle_List[i].FullName);
+                        logger.WriteLog("Move File : " + Save_File_Folder + textBox_Point.Text);
+                        string[] file_list_part_name = FIle_List[i].FullName.Split('_');
+                        logger.WriteLog("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
+
+
+                        if (radioButton_Degree_0.Checked) //0度
+                        {
+                            //使用'_'分割檔名
+                            string save_degree_0_name = "";
+                            logger.WriteLog("split by _ keyword:");
+                            string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                            //foreach(string s in split_input_file_names)
+                            //{
+                            //    logger.Write_Logger(s);
+                            //}
+                            save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                            string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0_" + file_list_part_name[file_list_part_name.Length - 1];
+                            if (File.Exists(save_full_file_name))
+                            {
+                                File.Delete(save_full_file_name);
+                                logger.WriteLog("Delete File : " + save_full_file_name);
+                            }
+                            File.Move(FIle_List[i].FullName, save_full_file_name);
+                            logger.WriteLog("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
+
+                        }
+                        else //45度
+                        {
+
+                            //使用'_'分割檔名
+                            string save_degree_45_name = "";
+                            logger.WriteLog("split by _ keyword:");
+                            string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                            foreach (string s in split_input_file_names)
+                            {
+                                logger.WriteLog(s);
+                            }
+                            save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                            string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + $"_45_{count}_" + file_list_part_name[file_list_part_name.Length - 1];
+
+                            if (File.Exists(save_full_file_name))
+                            {
+                                File.Delete(save_full_file_name);
+                                logger.WriteLog("Delete File : " + save_full_file_name);
+                            }
+                            File.Move(FIle_List[i].FullName, save_full_file_name);
+                            logger.WriteLog("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
+
+                            Save_AOI_file_name[count - 1] = save_full_file_name;
+                            logger.WriteLog("AOI input image " + count.ToString() + ": " + save_full_file_name);
+
+                            count++;
+                            //執行AOI計算
+                            if (is_hand_measurement)
+                            {
+                                if (count > 3)//已經存3張
+                                {
+                                    AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2], is_hand_measurement);
+                                    logger.WriteLog("手動量測");
+                                    count = 1;
+                                    logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
+                                    logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
+                                    logger.WriteLog("Img file 3 : " + Save_AOI_file_name[2]);
+                                    logger.WriteLog("AOI_Calculate");
+                                 //   button_hb_on_Click(sender, e);
+                                }
+
+                            }
+                            else
+                            {
+                                if (count > 2)//已經存2張
+                                {
+                                    AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[0], Save_AOI_file_name[1], is_hand_measurement);
+                                    logger.WriteLog("AOI自動量測");
+                                    count = 1;
+                                    logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
+                                    logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
+                                    logger.WriteLog("AOI_Calculate");
+                                 //   button_hb_on_Click(sender, e);
+                                }
+
+                            }
+
+                            //if (count > 3)//已經存超過兩張
+                            //{
+                            //    //執行AOI計算
+                            //    if (is_hand_measurement)
+                            //    {
+                            //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                            //        logger.Write_Logger("手動量測");
+                            //    }
+                            //    else
+                            //    {
+                            //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                            //        logger.Write_Logger("AOI自動量測");
+                            //    }
+
+                            //    count = 1;
+                            //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                            //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                            //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
+                            //    logger.Write_Logger("AOI_Calculate");
+                            //    button_hb_on_Click(sender, e);
+                            //}
+                        }
+                    }
+
+                }
+            }
+            if (checkBox_xlsx.Checked)
+            {
+                FileInfo[] FIle_List = folder_info.GetFiles("*.xlsx");
+                if (FIle_List.Length > 0)
+                {
+                    try
+                    {
+                        for (int i = 0; i < FIle_List.Length; i++)
+                        {
+                            //取出excel資料
+                            int row = Convert.ToInt32(textBox_0_degree_height_Num.Text);
+                            int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A' + 1;
+                            string value = getExcelValue(FIle_List[i].FullName, row, column);
+                            //顯示在GUI介面中
+                            imshowValueInMeasurementGUI(value);
+                            logger.WriteLog("get measurement value: " + value);
+                            logger.WriteLog("New File : " + FIle_List[i].FullName);
+                            if (radioButton_Degree_0.Checked)
+                            {
+                                if (File.Exists(Save_File_Folder + textBox_Point.Text + "_0.xlsx"))
+                                    File.Delete(Save_File_Folder + textBox_Point.Text + "_0.xlsx");
+                                File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_0.xlsx");
+                            }
+                            else
+                            {
+                                if (File.Exists(Save_File_Folder + textBox_Point.Text + "_45.xlsx"))
+                                    File.Delete(Save_File_Folder + textBox_Point.Text + "_45.xlsx");
+                                File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_45.xlsx");
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        logger.WriteErrorLog("Move xlsx File Error! " + error.ToString());
+                    }
+                }
+            }
+            if (checkBox_csv.Checked)
+            {
+                FileInfo[] FIle_List = folder_info.GetFiles("*.csv");
+                if (FIle_List.Length > 0)
+                {
+                    try
+                    {
+                        for (int i = 0; i < FIle_List.Length; i++)
+                        {
+                            if (radioButton_Degree_0.Checked)
+                            {
+                                //取出csv內所有欄位, 存在2d list中
+                                List<List<string>> csv_arr = new List<List<string>>();
+                                string csv_file = FIle_List[i].FullName;
+                                var reader = new StreamReader(File.OpenRead(csv_file));
+                                List<List<string>> tmp = new List<List<string>>();
+                                while (!reader.EndOfStream)
+                                {
+                                    List<string> tmp1 = new List<string>();
+                                    var line = reader.ReadLine();
+                                    var values = line.Split(',');
+                                    foreach (string value in values)
+                                    {
+                                        tmp1.Add(value);
+                                    }
+                                    tmp.Add(tmp1);
+                                }
+                                reader.Close();
+                                //從GUI介面中0度height 欄位取出對應csv數值
+                                int row = Convert.ToInt32(textBox_0_degree_height_Num.Text) - 1;
+                                int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A';
+                                //顯示在GUI Measurement 對應 point點位中
+                                imshowValueInMeasurementGUI(tmp[row][column]);
+                                logger.WriteLog("get measurement value: " + tmp[row][column]);
+                                //移動檔案
+                                //使用'_'分割檔名
+                                string save_degree_0_name = "";
+                                logger.WriteLog("split by _ keyword:");
+                                string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                                foreach (string s in split_input_file_names)
+                                {
+                                    logger.WriteLog(s);
+                                }
+                                save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                                string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
+                                if (File.Exists(save_full_file_name))
+                                    File.Delete(save_full_file_name);
+                                File.Move(FIle_List[i].FullName, save_full_file_name);
+                                logger.WriteLog("New File : " + FIle_List[i].FullName +
+                                                    " Move to :" + save_full_file_name);
+                            }
+                            else
+                            {
+                                //移動檔案
+                                //使用'_'分割檔名
+                                string save_degree_45_name = "";
+                                logger.WriteLog("split by _ keyword:");
+                                string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                                foreach (string s in split_input_file_names)
+                                {
+                                    logger.WriteLog(s);
+                                }
+                                save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                                string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
+                                if (File.Exists(save_full_file_name))
+                                    File.Delete(save_full_file_name);
+                                File.Move(FIle_List[i].FullName, save_full_file_name);
+                                logger.WriteLog("New File : " + FIle_List[i].FullName +
+                                                    " Move to :" + save_full_file_name);
+                            }
+                        }
+
+                    }
+                    catch (Exception error)
+                    {
+                        logger.WriteErrorLog("Move csv File Error! " + error.ToString());
+                    }
+                }
+            }
+            if (checkBox_poir.Checked && !copy_poir_once)
+            {
+                FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
+                if (FIle_List.Length > 0)
+                {
+                    try
+                    {
+                        for (int i = 0; i < FIle_List.Length; i++)
+                        {
+                            logger.WriteLog("New File : " + FIle_List[i].FullName);
+                            if (radioButton_Degree_0.Checked)
+                            {
+                                //使用'_'分割檔名
+                                string save_degree_0_name = "";
+                                logger.WriteLog("split by _ keyword:");
+                                string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                                foreach (string s in split_input_file_names)
+                                {
+                                    logger.WriteLog(s);
+                                }
+                                save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                                string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
+                                if (File.Exists(save_full_file_name))
+                                    File.Delete(save_full_file_name);
+                                File.Copy(FIle_List[i].FullName, save_full_file_name);
+                                copy_poir_once = true;
+                                Thread.Sleep(15000);
+                            }
+                            else
+                            {
+                                //使用'_'分割檔名
+                                string save_degree_45_name = "";
+                                logger.WriteLog("split by _ keyword:");
+                                string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
+                                foreach (string s in split_input_file_names)
+                                {
+                                    logger.WriteLog(s);
+                                }
+                                save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                                string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
+
+                                if (File.Exists(save_full_file_name))
+                                    File.Delete(save_full_file_name);
+                                File.Copy(FIle_List[i].FullName, save_full_file_name);
+                                copy_poir_once = true;
+                                Thread.Sleep(15000);
+                            }
+                        }
+
+                    }
+                    catch (Exception error)
+                    {
+                        logger.WriteErrorLog("Copy poir File Error! " + error.ToString());
+                    }
+                }
+            }
+            else if (checkBox_poir.Checked && copy_poir_once)
+            {
+                FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
+                if (FIle_List.Length > 0)
+                {
+                    try
+                    {
+                        for (int i = 0; i < FIle_List.Length; i++)
+                        {
+                            File.Delete(FIle_List[i].FullName);
+                            copy_poir_once = false;
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        logger.WriteErrorLog($"Delete poir File Error!  {error.Message}");
+                    }
+                }
+            }
+        }
+
         private void timer_Initial_Tick(object sender, EventArgs e)
         {
             //server判斷甚麼時候要做事,再傳給client端,client是按左鍵,座標是server預設好的
@@ -2680,9 +2992,9 @@ namespace SPIL
 
         private void button_hb_on_Click(object sender, EventArgs e)
         {
-            /* string send_data_str = get_socket_send_data();
+           /* string send_data_str = get_socket_send_data();
              is_hand_measurement = false;
-             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+              //clientSocket_OLS.Send(StringToByteArray(send_data_str));
              Thread.Sleep(100);
              clientSocket_OLS.Send(StringToByteArray("open_hb"));
              Thread.Sleep(100);*/
@@ -3100,9 +3412,9 @@ namespace SPIL
                 else if (re_data[0].Contains("Mode"))
                     Receive_Mode(re_data[1]);
                 else if (re_data[0].Contains("Start"))
-                    Receive_Start(Convert.ToInt32(re_data[1]),re_data[2], Convert.ToInt32(re_data[3]));
+                    Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
                 else if (re_data[0].Contains("InPos"))
-                    Receive_InPos(Convert.ToInt32(re_data[2]));
+                    Receive_InPos(Convert.ToInt32(re_data[1]));
                 else if (re_data[0].Contains("Stop"))
                     Receive_Stop(re_data[1]);
                 else if (re_data[0].Contains("RFID"))

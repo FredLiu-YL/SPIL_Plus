@@ -26,24 +26,60 @@ namespace SPIL.Model
 
         }
 
-        public async Task PeakSharpnessAsync(IEnumerable<Bitmap> bitmaps)
+
+        public async Task SharpnessAsync(IEnumerable<Bitmap> bitmaps)
         {
             List<SharpnessResult> results = new List<SharpnessResult>();
-            
 
-            foreach (var bmp in bitmaps) {
+
+            foreach (var bmp in bitmaps)
+            {
                 SharpnessResult sharpnessResult = await Measurment(bmp);
-                
+
                 results.Add(sharpnessResult);
 
             }
 
-       
+           
+            
+           var searchScore1s = results.Select((r ,i) => (r.SearchScore1,i)).OrderBy(o=>o.SearchScore1);
+            var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2);
+            List<int> max10 = new List<int>();
+            for (int i = 0; i < 10; i++)
+            {
+                searchScore1s.Max();
+            }
+
+
+
+
+
 
         }
-        public async Task< SharpnessResult> Measurment(Bitmap img1)
+
+        public async Task PeakSharpnessAsync(IEnumerable<Bitmap> bitmaps)
         {
-            try {
+            List<SharpnessResult> results = new List<SharpnessResult>();
+
+
+            foreach (var bmp in bitmaps)
+            {
+                SharpnessResult sharpnessResult = await Measurment(bmp);
+
+                results.Add(sharpnessResult);
+
+            }
+
+
+
+        }
+
+
+
+        public async Task<SharpnessResult> Measurment(Bitmap img1)
+        {
+            try
+            {
                 WriteLog?.Invoke($"Sharpness start ");
 
                 measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img1);
@@ -71,7 +107,8 @@ namespace SPIL.Model
                 return result;
 
             }
-            catch (Exception error) {
+            catch (Exception error)
+            {
 
                 throw error;
 
