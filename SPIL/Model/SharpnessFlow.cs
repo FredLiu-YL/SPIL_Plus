@@ -17,7 +17,7 @@ namespace SPIL.Model
     {
 
         public event Action<string> WriteLog;
-
+        public event Action<SharpnessResult> WriteCogResult;
         public string ResultMessage { get; private set; }
 
         public SharpnessFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes) : base(aoiVppPath, algorithmDescribes, 201)
@@ -27,33 +27,42 @@ namespace SPIL.Model
         }
 
 
-        public async Task SharpnessAsync(IEnumerable<Bitmap> bitmaps)
+        public async Task<(int Image1Index, int Image2Index, int Image3Index)> SharpnessAsync(IEnumerable<Bitmap> bitmaps)
         {
             List<SharpnessResult> results = new List<SharpnessResult>();
 
-
+            //計算清晰度
             foreach (var bmp in bitmaps)
             {
                 SharpnessResult sharpnessResult = await Measurment(bmp);
 
                 results.Add(sharpnessResult);
-
+                WriteCogResult.Invoke(sharpnessResult);
             }
 
            
-            
-           var searchScore1s = results.Select((r ,i) => (r.SearchScore1,i)).OrderBy(o=>o.SearchScore1);
-            var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2);
-            List<int> max10 = new List<int>();
-            for (int i = 0; i < 10; i++)
-            {
-                searchScore1s.Max();
-            }
+            //排序後找出最大10張圖
+           var searchScore1s = results.Select((result ,index) =>(result, index)).Where(r => r.result != null).OrderByDescending(o=>o.result.SearchScore1).Take(10).ToList();
+
+          //  var image1 = searchScore1s.OrderByDescending(o => o.result.Score1).First();
+
+            var image2 = searchScore1s.OrderByDescending(o => o.result.Score2).First();
+
+            //Score2  最高那張號碼之前的所有圖片，找Score1最高分
+            var searchImage2 = results.Take(image2.index);
+            var image1 = searchImage2.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.Score1).First();
+
+            //       var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2).Take(10);
+            //排序後找出最大10張圖
+            var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(10).ToList();
+            var image3 = searchScore12s.OrderByDescending(o => o.result.Score3).First();
 
 
+            //      var image2 = searchScore2s.Max(s => s.SearchScore2);
 
+            //     var image1 = searchScore1s.Max(s => s.SearchScore1);
 
-
+            return (image1.index, image2.index, image3.index);
 
         }
 

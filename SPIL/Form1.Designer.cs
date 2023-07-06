@@ -342,6 +342,12 @@ namespace SPIL
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_SharpnessMultRun = new System.Windows.Forms.Button();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.tbx_SharpnessScore3 = new System.Windows.Forms.TextBox();
@@ -369,12 +375,6 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -3481,7 +3481,7 @@ namespace SPIL
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Size = new System.Drawing.Size(785, 1019);
             this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "AlgorithmList";
+            this.tabPage7.Text = "AOIAlgorithm";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // btn_RecipeSave
@@ -3791,7 +3791,7 @@ namespace SPIL
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Size = new System.Drawing.Size(785, 1019);
             this.tabPage8.TabIndex = 3;
-            this.tabPage8.Text = "Sharpness";
+            this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // textBox5
@@ -3833,13 +3833,49 @@ namespace SPIL
             this.dataGrid_Sharpness.Size = new System.Drawing.Size(652, 145);
             this.dataGrid_Sharpness.TabIndex = 146;
             // 
+            // FileName
+            // 
+            this.FileName.HeaderText = "FileName";
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            // 
+            // SearchScore1
+            // 
+            this.SearchScore1.HeaderText = "SearchScore1";
+            this.SearchScore1.Name = "SearchScore1";
+            this.SearchScore1.ReadOnly = true;
+            // 
+            // SearchScore2
+            // 
+            this.SearchScore2.HeaderText = "SearchScore2";
+            this.SearchScore2.Name = "SearchScore2";
+            this.SearchScore2.ReadOnly = true;
+            // 
+            // Score1
+            // 
+            this.Score1.HeaderText = "Score1";
+            this.Score1.Name = "Score1";
+            this.Score1.ReadOnly = true;
+            // 
+            // Score2
+            // 
+            this.Score2.HeaderText = "Score2";
+            this.Score2.Name = "Score2";
+            this.Score2.ReadOnly = true;
+            // 
+            // Score3
+            // 
+            this.Score3.HeaderText = "Score3";
+            this.Score3.Name = "Score3";
+            this.Score3.ReadOnly = true;
+            // 
             // btn_SharpnessMultRun
             // 
-            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(19, 26);
+            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(3, 26);
             this.btn_SharpnessMultRun.Name = "btn_SharpnessMultRun";
-            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(89, 43);
+            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(105, 54);
             this.btn_SharpnessMultRun.TabIndex = 145;
-            this.btn_SharpnessMultRun.Text = "Run";
+            this.btn_SharpnessMultRun.Text = "SharpnessRun";
             this.btn_SharpnessMultRun.UseVisualStyleBackColor = true;
             this.btn_SharpnessMultRun.Click += new System.EventHandler(this.btn_SharpnessMultRun_Click);
             // 
@@ -3869,7 +3905,7 @@ namespace SPIL
             this.groupBox17.Size = new System.Drawing.Size(769, 725);
             this.groupBox17.TabIndex = 0;
             this.groupBox17.TabStop = false;
-            this.groupBox17.Text = "Sharpness";
+            this.groupBox17.Text = "SharpnessTesting";
             // 
             // tbx_SharpnessScore3
             // 
@@ -4062,42 +4098,6 @@ namespace SPIL
             // 
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
-            // 
-            // FileName
-            // 
-            this.FileName.HeaderText = "FileName";
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            // 
-            // SearchScore1
-            // 
-            this.SearchScore1.HeaderText = "SearchScore1";
-            this.SearchScore1.Name = "SearchScore1";
-            this.SearchScore1.ReadOnly = true;
-            // 
-            // SearchScore2
-            // 
-            this.SearchScore2.HeaderText = "SearchScore2";
-            this.SearchScore2.Name = "SearchScore2";
-            this.SearchScore2.ReadOnly = true;
-            // 
-            // Score1
-            // 
-            this.Score1.HeaderText = "Score1";
-            this.Score1.Name = "Score1";
-            this.Score1.ReadOnly = true;
-            // 
-            // Score2
-            // 
-            this.Score2.HeaderText = "Score2";
-            this.Score2.Name = "Score2";
-            this.Score2.ReadOnly = true;
-            // 
-            // Score3
-            // 
-            this.Score3.HeaderText = "Score3";
-            this.Score3.Name = "Score3";
-            this.Score3.ReadOnly = true;
             // 
             // Form1
             // 
