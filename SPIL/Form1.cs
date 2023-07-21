@@ -38,7 +38,7 @@ namespace SPIL
         private Bitmap aoiImage2;
         private Bitmap aoiImage3;
         private string password = "11084483";
-
+        private string sharpnessImagesFolder = "D:\\SharpnessImages";
         private HostCommunication hostCommunication;
         private CogToolBlock toolBlock;
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
@@ -94,7 +94,7 @@ namespace SPIL
         object sender1;
         EventArgs e1;
         bool copy_poir_once = false;
-        int count = 1; //執行toolblock前存圖計數參數
+        //   int count = 1; //執行toolblock前存圖計數參數
         string[] Save_AOI_file_name = new string[3];
         string img_file_last_name = "COLOR2D"; //AOI檢測時讀取檔名檢查
         bool is_hand_measurement = false; //手動模式
@@ -935,7 +935,7 @@ namespace SPIL
         #region Motion Server
         private string[] Cal_Recive_Data(string receive_data)
         {
-            //找出結尾座標  ， 目前延後之前的工程師寫法  可能會有問題
+            //找出結尾座標  ， 目前延用之前的工程師寫法  可能會有問題
             receive_data = receive_data.Replace(">", "");
             string[] sub_string_ = receive_data.Split(',');
 
@@ -965,6 +965,11 @@ namespace SPIL
 
                 //這裡要切換 aoIFlow. sharpnessFlow 資料
 
+                string path = $"{systemPath}\\Recipe\\{receive_data}";
+                if (!File.Exists(path)) throw new Exception("");
+
+
+                LoadRecipe(path);
 
 
                 /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
@@ -1061,7 +1066,7 @@ namespace SPIL
         }
         private void Receive_InPos(int Now_Point)
         {
-            count = 1;
+            // count = 1;
             UpdateTextbox(Convert.ToString(Now_Point), textBox_Point);
 
             Send_Server("InPos,e>");
@@ -1091,19 +1096,19 @@ namespace SPIL
         }
         #endregion
         //
-        private void AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
+        private (double cuNi, double cu) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
             logger.WriteLog("AOI Measurment Point " + textBox_Point.Text);
-            double Measurement_Result, Measurement_Result_2;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out Measurement_Result, out Measurement_Result_2);
-            if (Measurement_Result != -1 && Measurement_Result_2 != -1)
+            double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
+            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out distance_CuNi, out distance_Cu);
+            if (distance_CuNi != -1 && distance_Cu != -1)
             {
-                Measurement_Result = Measurement_Result * variable_data.Degree_Ratio;
-                Measurement_Result_2 = Measurement_Result_2 * variable_data.Degree_Ratio;
-                logger.WriteLog("AOI Measurment Distance" + Convert.ToString(Measurement_Result));
-                logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(Measurement_Result_2));
-                UpdateTextbox(Convert.ToString(Measurement_Result), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
-                UpdateTextbox(Convert.ToString(Measurement_Result_2), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+                cuNi = distance_CuNi * variable_data.Degree_Ratio;
+                cu = distance_Cu * variable_data.Degree_Ratio;
+                logger.WriteLog("AOI Measurment Distance" + Convert.ToString(cuNi));
+                logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
+                UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
+                UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
             }
             else
             {
@@ -1112,6 +1117,8 @@ namespace SPIL
                 UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 logger.WriteErrorLog("AOI Error!");
             }
+
+            return (cuNi, cu);
         }
         //
         private void Initial_OLS()
@@ -2377,13 +2384,11 @@ namespace SPIL
 
         }
 
-        private async void PickClarity(string path)
+        private async Task<string[]> PickClarity(string dirpath)
         {
 
-
-
             // 取得資料夾中的所有檔案
-            string[] files = Directory.GetFiles(path);
+            string[] files = Directory.GetFiles(dirpath);
             List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
             List<Bitmap> images = new List<Bitmap>();
             List<string> imageNames = new List<string>();
@@ -2403,20 +2408,23 @@ namespace SPIL
                 }
 
             }
+            List<string> names = new List<string>();
 
-            var imagesIndex = await sharpnessFlow.SharpnessAsync(images);
-
+            var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
 
 
 
             txB_RecipePicName1.Text = imageNames[imagesIndex.Image1Index];
             txB_RecipePicName2.Text = imageNames[imagesIndex.Image2Index];
             txB_RecipePicName3.Text = imageNames[imagesIndex.Image3Index];
-
-
+            names.Add(imageNames[imagesIndex.Image1Index]);
+            names.Add(imageNames[imagesIndex.Image2Index]);
+            names.Add(imageNames[imagesIndex.Image3Index]);
+            return names.ToArray();
         }
-        private void AoiDegree_0(string fileName, string[] file_list_part_name)
+        private void AoiDegree_0(string fileName)
         {
+            string[] file_list_part_name = fileName.Split('_');
             //使用'_'分割檔名
             string save_degree_0_name = "";
             logger.WriteLog("split by _ keyword:");
@@ -2629,110 +2637,87 @@ namespace SPIL
                 }
             }
         }
-        private void AoiMeansure()
+        private void AoiMeansure(string[] aoiImages)
         {
             if (checkBox_bmp.Checked)
             {
-                if (folder_info.GetFiles("*.bmp").Length > 0)
+
+                FileInfo[] FIle_List = folder_info.GetFiles("*.bmp");
+                //try
+                //{
+                for (int i = 0; i < FIle_List.Length; i++)
                 {
-                    FileInfo[] FIle_List = folder_info.GetFiles("*.bmp");
-                    //try
-                    //{
-                    for (int i = 0; i < FIle_List.Length; i++)
+
+                    string[] file_list_part_name = FIle_List[i].FullName.Split('_');
+                    logger.WriteLog("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
+                }
+
+                if (radioButton_Degree_0.Checked) //0度
+                {
+                    foreach (var imageName in aoiImages)
                     {
-                        logger.WriteLog("New File : " + FIle_List[i].FullName);
-                        logger.WriteLog("Move File : " + Save_File_Folder + textBox_Point.Text);
-                        string[] file_list_part_name = FIle_List[i].FullName.Split('_');
-                        logger.WriteLog("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
-
-
-                        if (radioButton_Degree_0.Checked) //0度
-                        {
-                            AoiDegree_0(FIle_List[i].FullName, file_list_part_name);
-
-                        }
-                        else //45度
-                        {
-
-                            //使用'_'分割檔名
-                            string save_degree_45_name = "";
-                            logger.WriteLog("split by _ keyword:");
-                            string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
-                            foreach (string s in split_input_file_names)
-                            {
-                                logger.WriteLog(s);
-                            }
-                            save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-                            string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + $"_45_{count}_" + file_list_part_name[file_list_part_name.Length - 1];
-
-                            if (File.Exists(save_full_file_name))
-                            {
-                                File.Delete(save_full_file_name);
-                                logger.WriteLog("Delete File : " + save_full_file_name);
-                            }
-                            File.Move(FIle_List[i].FullName, save_full_file_name);
-                            logger.WriteLog("Move File : " + FIle_List[i].FullName + " Move To:" + save_full_file_name);
-
-                            Save_AOI_file_name[count - 1] = save_full_file_name;
-                            logger.WriteLog("AOI input image " + count.ToString() + ": " + save_full_file_name);
-
-                            count++;
-                            //執行AOI計算
-                            if (is_hand_measurement)
-                            {
-                                if (count > 3)//已經存3張
-                                {
-                                    AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2], is_hand_measurement);
-                                    logger.WriteLog("手動量測");
-                                    count = 1;
-                                    logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
-                                    logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
-                                    logger.WriteLog("Img file 3 : " + Save_AOI_file_name[2]);
-                                    logger.WriteLog("AOI_Calculate");
-                                    //   button_hb_on_Click(sender, e);
-                                }
-
-                            }
-                            else
-                            {
-                                if (count > 2)//已經存2張
-                                {
-                                    AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2], is_hand_measurement);
-                                    logger.WriteLog("AOI自動量測");
-                                    count = 1;
-                                    logger.WriteLog("Img file 1 : " + Save_AOI_file_name[0]);
-                                    logger.WriteLog("Img file 2 : " + Save_AOI_file_name[1]);
-                                    logger.WriteLog("AOI_Calculate");
-                                    //   button_hb_on_Click(sender, e);
-                                }
-
-                            }
-
-                            //if (count > 3)//已經存超過兩張
-                            //{
-                            //    //執行AOI計算
-                            //    if (is_hand_measurement)
-                            //    {
-                            //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                            //        logger.Write_Logger("手動量測");
-                            //    }
-                            //    else
-                            //    {
-                            //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                            //        logger.Write_Logger("AOI自動量測");
-                            //    }
-
-                            //    count = 1;
-                            //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                            //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                            //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
-                            //    logger.Write_Logger("AOI_Calculate");
-                            //    button_hb_on_Click(sender, e);
-                            //}
-                        }
+                        AoiDegree_0(imageName);
                     }
 
+
                 }
+                else //45度
+                {
+
+                    //執行AOI計算
+                    if (is_hand_measurement)
+                    {
+
+                        AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+                        logger.WriteLog("手動量測");
+
+                        logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                        logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                        logger.WriteLog("Img file 3 : " + aoiImages[2]);
+                        logger.WriteLog("AOI_Calculate");
+                        //   button_hb_on_Click(sender, e);
+
+
+                    }
+                    else
+                    {
+
+                        AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+                        logger.WriteLog("AOI自動量測");
+
+                        logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                        logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                        logger.WriteLog("AOI_Calculate");
+                        //   button_hb_on_Click(sender, e);
+
+
+                    }
+
+                    //if (count > 3)//已經存超過兩張
+                    //{
+                    //    //執行AOI計算
+                    //    if (is_hand_measurement)
+                    //    {
+                    //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                    //        logger.Write_Logger("手動量測");
+                    //    }
+                    //    else
+                    //    {
+                    //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                    //        logger.Write_Logger("AOI自動量測");
+                    //    }
+
+                    //    count = 1;
+                    //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                    //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                    //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
+                    //    logger.Write_Logger("AOI_Calculate");
+                    //    button_hb_on_Click(sender, e);
+                    //}
+
+                }
+
+
             }
             AoiOutputData();
         }
@@ -3121,15 +3106,15 @@ namespace SPIL
 
         private void button8_Click(object sender, EventArgs e)
         {
-
+ 
             //    var window =   new SPIL_TCPSimulator.MainWindow();
+            CB_RecipeList.SelectedIndex = 3;
 
-
-            if (hostCommunication == null)
-                hostCommunication = new HostCommunication("127.0.0.1", 1234);
-            else
-                hostCommunication.Open();
-            //      window.ShowDialog();
+           // if (hostCommunication == null)
+           //     hostCommunication = new HostCommunication("127.0.0.1", 1234);
+           // else
+           //     hostCommunication.Open();
+             
         }
 
         private void HostException(Exception exception)
@@ -3358,39 +3343,59 @@ namespace SPIL
         }
 
 
-        private void btn_AOITesting_Click(object sender, EventArgs e)
+        private async void btn_AOITesting_Click(object sender, EventArgs e)
         {
             try
             {
 
 
-                Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
-                Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
-                Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
-                var cord = aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+                /* Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
+                 Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
+                 Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
+                 var cord = aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);*/
 
 
-                tBx_CuNiValue.Text = distance_CuNi.ToString("0.000");
-                tBx_CuValue.Text = distance_Cu.ToString("0.000");
 
                 cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
                 cogRcdDisp_Distance2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
                 cogRcdDisp_Distance3.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
-                cogRcdDisp_Distance1.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
-                cogRcdDisp_Distance2.Record = cord.SubRecords["CogFixtureTool2.OutputImage"];
-                cogRcdDisp_Distance3.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
+
+                cogRcdDisp_Distance1.AutoFit = true;
+                cogRcdDisp_Distance2.AutoFit = true;
+                cogRcdDisp_Distance3.AutoFit = true;
+                /*    
+                   cogRcdDisp_Distance1.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
+                   cogRcdDisp_Distance2.Record = cord.SubRecords["CogFixtureTool2.OutputImage"];
+                   cogRcdDisp_Distance3.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
+
+                   img1.Dispose();
+                   img2.Dispose();
+                   img3.Dispose();
+                
+                 */
+
+                AOI_Measurement.ShowRecord += UpdateAOIRecord;
+                AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;
 
 
 
-                img1.Dispose();
-                img2.Dispose();
-                img3.Dispose();
+
+                var result = AOI_Calculate(AOI_Measurement, txB_RecipePicName1.Text, txB_RecipePicName2.Text, txB_RecipePicName3.Text, false);
+                tBx_CuNiValue.Text = result.cuNi.ToString("0.000");
+                tBx_CuValue.Text = result.cu.ToString("0.000");
+                await Task.Delay(1000);
+
+
 
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                AOI_Measurement.ShowRecord -= UpdateAOIRecord;
             }
         }
 
@@ -3449,51 +3454,6 @@ namespace SPIL
             }
         }
         #endregion
-        private void ReciveException(Exception exception)
-        {
-            MessageBox.Show(exception.Message);
-
-        }
-
-        private void ReciveMessage(string receiveData)
-        {
-            logger.WriteLog("Receive : " + receiveData);
-
-            string[] re_data = Cal_Recive_Data(receiveData);
-
-            if (re_data != null)
-            {
-
-                if (re_data[0].Contains("YuanLi"))
-                    Receive_YuanLi();
-                else if (re_data[0].Contains("Init"))
-                    Receive_Init();
-                else if (re_data[0].Contains("SetRecipe"))
-                    Receive_SetRecipe(re_data[1]);
-                else if (re_data[0].Contains("Mode"))
-                    Receive_Mode(re_data[1]);
-                else if (re_data[0].Contains("Start"))
-                    Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
-                else if (re_data[0].Contains("InPos"))
-                    Receive_InPos(Convert.ToInt32(re_data[1]));
-                else if (re_data[0].Contains("Stop"))
-                    Receive_Stop(re_data[1]);
-                else if (re_data[0].Contains("RFID"))
-                    Receive_RFID(re_data[1], re_data[2]);
-                else if (re_data[0].Contains("AOIRun"))
-                {
-                    PickClarity("");
-                    AoiMeansure();
-                }
-
-
-
-                else
-                    logger.WriteErrorLog("No Match Data!");
-            }
-            else
-                logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);
-        }
 
 
         private void btn_OpenSharpnessImage_Click(object sender, EventArgs e)
@@ -3517,24 +3477,24 @@ namespace SPIL
                 //     cogGM.EditParameter(image);
             }
         }
-        private async void btn_SharpnessRun_Click(object sender, EventArgs e)
+        private void btn_SharpnessRun_Click(object sender, EventArgs e)
         {
             try
             {
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
                 //  cogRecordDisplay2.Size = new System.Drawing.Size(img1.Width, img1.Height);
-                var sharpResult = await sharpnessFlow.Measurment(img1);
+                var sharpResult = sharpnessFlow.Measurment(img1);
 
-                if (sharpResult == null) throw new Exception(sharpnessFlow.ResultMessage);
+                if (sharpResult.result == null) throw new Exception(sharpnessFlow.ResultMessage);
 
-                tbx_SearchScore1.Text = sharpResult.SearchScore1.ToString("0.00000");
-                tbx_SearchScore2.Text = sharpResult.SearchScore2.ToString("0.00000");
+                tbx_SearchScore1.Text = sharpResult.result.SearchScore1.ToString("0.00000");
+                tbx_SearchScore2.Text = sharpResult.result.SearchScore2.ToString("0.00000");
 
-                tbx_SharpnessScore1.Text = sharpResult.Score1.ToString("0.00000000");
-                tbx_SharpnessScore2.Text = sharpResult.Score2.ToString("0.00000000");
-                tbx_SharpnessScore3.Text = sharpResult.Score3.ToString("0.00000000");
+                tbx_SharpnessScore1.Text = sharpResult.result.Score1.ToString("0.00000000");
+                tbx_SharpnessScore2.Text = sharpResult.result.Score2.ToString("0.00000000");
+                tbx_SharpnessScore3.Text = sharpResult.result.Score3.ToString("0.00000000");
 
-                cogRecordDisplay2.Record = sharpResult.CogRecord;
+                cogRecordDisplay2.Record = sharpResult.cogRecord;
 
                 img1.Dispose();
 
@@ -3599,10 +3559,14 @@ namespace SPIL
                 dataGrid_Sharpness.Rows.Clear();
                 // 設定對話方塊的標題
                 folderBrowserDialog.Description = "請選取資料夾";
+                var CurrentDirectory = Directory.GetCurrentDirectory() + "\\dir.txt";
+
+                if (File.Exists(CurrentDirectory))
+                    folderBrowserDialog.SelectedPath = File.ReadAllText(CurrentDirectory);
 
                 // 顯示對話方塊並等待使用者選擇資料夾
                 DialogResult result = folderBrowserDialog.ShowDialog();
-
+                File.WriteAllText(CurrentDirectory, folderBrowserDialog.SelectedPath);
                 // 檢查使用者是否選擇了資料夾
                 if (result == DialogResult.OK)
                 {
@@ -3649,7 +3613,9 @@ namespace SPIL
 
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
 
-                    var imagesIndex = await Task.Run(async () => await sharpnessFlow.SharpnessAsync(images));
+                    //   sharpnessFlow.CogResult += UpdateDataGridView;
+
+                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
 
 
                     aoiImage1 = images[imagesIndex.Image1Index];
@@ -3659,7 +3625,13 @@ namespace SPIL
                     txB_RecipePicName1.Text = imageNames[imagesIndex.Image1Index];
                     txB_RecipePicName2.Text = imageNames[imagesIndex.Image2Index];
                     txB_RecipePicName3.Text = imageNames[imagesIndex.Image3Index];
-                    MessageBox.Show($"清晰度計算完成: {imageNames[imagesIndex.Image1Index]}  ， { imageNames[imagesIndex.Image2Index]}  ，{imageNames[imagesIndex.Image3Index]}" );
+                    // MessageBox.Show($"清晰度計算完成: {imageNames[imagesIndex.Image1Index]}  ， { imageNames[imagesIndex.Image2Index]}  ，{imageNames[imagesIndex.Image3Index]}");
+
+                    foreach (var image in images)
+                        image.Dispose();
+
+
+                    MessageBox.Show($"清晰度計算完成:  ");
                 }
             }
             catch (Exception ex)
@@ -3674,41 +3646,39 @@ namespace SPIL
             }
         }
 
-        private void ShowSharpnessResult(SharpnessResult sharpResult)
-        {
-
-
-            var id = Thread.CurrentThread.ManagedThreadId;
-            cogRecordDisplay2.Record = sharpResult.CogRecord;
-            int index = dataGrid_Sharpness.Rows.Count;
-            if (sharpResult == null)
-                dataGrid_Sharpness.Rows.Add(index, -1, -1, -1, -1, -1);
-            else
-            {
-                dataGrid_Sharpness.Rows.Add(index, sharpResult.SearchScore1.ToString("0.00000"), sharpResult.SearchScore2.ToString("0.00000"),
-                    sharpResult.Score1.ToString("0.00000000"), sharpResult.Score2.ToString("0.00000000"), sharpResult.Score3.ToString("0.00000000"));
-                cogRecordDisplay2.Record = sharpResult.CogRecord;
-            }
-
-
-        }
-        private void UpdateDataGridView(SharpnessResult sharpResult)
+        private void UpdateAOIRecord(ICogRecord cogRecord1, ICogRecord cogRecord2, ICogRecord cogRecord3)
         {
             var id = Thread.CurrentThread.ManagedThreadId;
-            cogRecordDisplay2.Record = sharpResult.CogRecord;
             int index = dataGrid_Sharpness.Rows.Count;
 
             if (dataGrid_Sharpness.InvokeRequired)
             {
                 // 如果不在 UI 執行緒，則使用 Control.Invoke 方法在 UI 執行緒上執行程式碼
-                dataGrid_Sharpness.Invoke(new Action<SharpnessResult>(UpdateDataGridView), new object[] { sharpResult });
+                dataGrid_Sharpness.Invoke(new Action<ICogRecord, ICogRecord, ICogRecord>(UpdateAOIRecord), new object[] { cogRecord1, cogRecord2, cogRecord3 });
             }
             else
             {
-                // 如果已經在 UI 執行緒，則直接在此執行程式碼
-                // 在 UI 執行緒中對 DataGridView 控制項進行存取和修改
-                // 可以在此處添加您的程式碼，例如更新資料行或儲存格的值
-                // 請注意，若有多個執行緒存取和修改 DataGridView，可能需要使用鎖定機制來確保同步
+
+                // 在此範例中，將資料新增至 DataGridView
+                cogRcdDisp_Distance1.Record = cogRecord1;
+                cogRcdDisp_Distance2.Record = cogRecord2;
+                cogRcdDisp_Distance3.Record = cogRecord3;
+
+            }
+        }
+        private void UpdateDataGridView(SharpnessResult sharpResult, ICogRecord cogRecord)
+        {
+            var id = Thread.CurrentThread.ManagedThreadId;
+            int index = dataGrid_Sharpness.Rows.Count;
+
+            if (dataGrid_Sharpness.InvokeRequired)
+            {
+                // 如果不在 UI 執行緒，則使用 Control.Invoke 方法在 UI 執行緒上執行程式碼
+                dataGrid_Sharpness.Invoke(new Action<SharpnessResult, ICogRecord>(UpdateDataGridView), new object[] { sharpResult, cogRecord });
+            }
+            else
+            {
+
                 // 在此範例中，將資料新增至 DataGridView
                 if (sharpResult == null)
                     dataGrid_Sharpness.Rows.Add(index, -1, -1, -1, -1, -1);
@@ -3716,10 +3686,58 @@ namespace SPIL
                 {
                     dataGrid_Sharpness.Rows.Add(index, sharpResult.SearchScore1.ToString("0.00000"), sharpResult.SearchScore2.ToString("0.00000"),
                         sharpResult.Score1.ToString("0.00000000"), sharpResult.Score2.ToString("0.00000000"), sharpResult.Score3.ToString("0.00000000"));
-                    cogRecordDisplay2.Record = sharpResult.CogRecord;
+
+                    cogRecordDisplay2.Record = cogRecord;
+                    cogRecordDisplay2.Record.SubRecords.Clear();
                 }
-           //     dataGrid_Sharpness.Rows.Add(sharpResult);
+                //dataGrid_Sharpness.Rows.Add(sharpResult);
             }
+        }
+        private void ReciveException(Exception exception)
+        {
+            MessageBox.Show(exception.Message);
+
+        }
+
+        private async void ReciveMessage(string receiveData)
+        {
+            logger.WriteLog("Receive : " + receiveData);
+
+            string[] re_data = Cal_Recive_Data(receiveData);
+
+            if (re_data != null)
+            {
+
+                if (re_data[0].Contains("YuanLi"))
+                    Receive_YuanLi();
+                else if (re_data[0].Contains("Init"))
+                    Receive_Init();
+                else if (re_data[0].Contains("SetRecipe"))
+                    Receive_SetRecipe(re_data[1]);
+                else if (re_data[0].Contains("Mode"))
+                    Receive_Mode(re_data[1]);
+                else if (re_data[0].Contains("Start"))
+                    Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
+                else if (re_data[0].Contains("InPos"))
+                    Receive_InPos(Convert.ToInt32(re_data[1]));
+                else if (re_data[0].Contains("Stop"))
+                    Receive_Stop(re_data[1]);
+                else if (re_data[0].Contains("RFID"))
+                    Receive_RFID(re_data[1], re_data[2]);
+                else if (re_data[0].Contains("AOIRun"))
+                {
+
+                    string[] images = await PickClarity(sharpnessImagesFolder);
+                    AoiMeansure(images);
+                }
+
+
+
+                else
+                    logger.WriteErrorLog("No Match Data!");
+            }
+            else
+                logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);
         }
 
         private void radioButton9_CheckedChanged(object sender, EventArgs e)

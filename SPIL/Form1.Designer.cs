@@ -338,9 +338,6 @@ namespace SPIL
             this.label55 = new System.Windows.Forms.Label();
             this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -3781,9 +3778,6 @@ namespace SPIL
             // 
             // tabPage8
             // 
-            this.tabPage8.Controls.Add(this.textBox5);
-            this.tabPage8.Controls.Add(this.textBox4);
-            this.tabPage8.Controls.Add(this.textBox3);
             this.tabPage8.Controls.Add(this.dataGrid_Sharpness);
             this.tabPage8.Controls.Add(this.btn_SharpnessMultRun);
             this.tabPage8.Controls.Add(this.groupBox17);
@@ -3793,27 +3787,6 @@ namespace SPIL
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(557, 164);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 27);
-            this.textBox5.TabIndex = 150;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(663, 164);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 27);
-            this.textBox4.TabIndex = 149;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(451, 164);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 27);
-            this.textBox3.TabIndex = 148;
             // 
             // dataGrid_Sharpness
             // 
@@ -4086,7 +4059,7 @@ namespace SPIL
             // 
             // timer_check_delete_file
             // 
-            this.timer_check_delete_file.Enabled = true;
+            this.timer_check_delete_file.Enabled = true ;
             this.timer_check_delete_file.Interval = 1000;
             this.timer_check_delete_file.Tick += new System.EventHandler(this.timer_chek_delete_file_Tick);
             // 
@@ -4177,7 +4150,6 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
             this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
@@ -4521,9 +4493,6 @@ namespace SPIL
         private System.Windows.Forms.TextBox tbx_SharpnessScore1;
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.DataGridView dataGrid_Sharpness;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
         private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance3;
         private Cognex.VisionPro.CogRecordDisplay cogRcdDisp_Distance2;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;

@@ -36,10 +36,12 @@ namespace SPIL.Model
 
 
                 logger.WriteLog("Measurement for two images!");
-
-                measureToolBlock.Inputs["Input"].Value = new CogImage24PlanarColor(img1);
-                measureToolBlock.Inputs["Input1"].Value = new CogImage24PlanarColor(img2);
-                measureToolBlock.Inputs["Input2"].Value = new CogImage24PlanarColor(img3);
+                var cogimg1 = new CogImage24PlanarColor(img1);
+                var cogimg2 = new CogImage24PlanarColor(img2);
+                var cogimg3 = new CogImage24PlanarColor(img3);
+                measureToolBlock.Inputs["Input"].Value = cogimg1;
+                measureToolBlock.Inputs["Input1"].Value = cogimg2;
+                measureToolBlock.Inputs["Input2"].Value = cogimg3;
 
                 measureToolBlock.Run();
                 distance_CuNi = (double)measureToolBlock.Outputs["Distance"].Value;
@@ -66,7 +68,9 @@ namespace SPIL.Model
                     Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                     logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }*/
-
+                cogimg1.Dispose();
+                cogimg2.Dispose();
+                cogimg3.Dispose();
                 if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
 
                 return cord;

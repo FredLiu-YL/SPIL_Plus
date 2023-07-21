@@ -32,7 +32,7 @@ namespace SPIL.Model
             this.algorithmDescribes = algorithmDescribes;
                //讀取vpp檔 獲得寫在vpp的完整流程
                measureToolBlock = CogSerializer.LoadObjectFromFile(vppPath) as CogToolBlock;
-
+            measureToolBlock.GarbageCollectionEnabled = true;
             CogMethods = CreateMethod(algorithmDescribes);
             ToolBlockToMethodParam(paramBeginID);
         }
