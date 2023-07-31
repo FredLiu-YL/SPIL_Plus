@@ -154,7 +154,7 @@ namespace SPIL.model
         CogSearchMaxTool,
         CogImageConvertTool,
         CogFindEllipseTool,
-
+        Error,
 
     }
 }

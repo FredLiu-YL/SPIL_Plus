@@ -27,7 +27,7 @@ namespace SPIL_TCPSimulator
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private string ipAddress = "127.0.0.1";
-        private int port;
+        private int port=1234;
         //  private TcpClient tcpClient;
         ClientCommunication clientCom;
     

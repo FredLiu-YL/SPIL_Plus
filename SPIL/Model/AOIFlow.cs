@@ -34,7 +34,7 @@ namespace SPIL.Model
         {
             try {
 
-
+              //  MethodAssignTool();
                 logger.WriteLog("Measurement for two images!");
                 var cogimg1 = new CogImage24PlanarColor(img1);
                 var cogimg2 = new CogImage24PlanarColor(img2);
@@ -68,9 +68,10 @@ namespace SPIL.Model
                     Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                     logger.WriteLog("Measurement Cu+Ni : " + Convert.ToString(distance_CuNi) + " Cu : " + Convert.ToString(distance_Cu));
                 }*/
-                cogimg1.Dispose();
-                cogimg2.Dispose();
-                cogimg3.Dispose();
+
+            //    cogimg1.Dispose();
+            //    cogimg2.Dispose();
+            //    cogimg3.Dispose();
                 if (vision_pro_run_result != CogToolResultConstants.Accept) throw new Exception($" { measureToolBlock.RunStatus.Message}");
 
                 return cord;

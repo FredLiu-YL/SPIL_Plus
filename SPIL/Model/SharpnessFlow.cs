@@ -30,10 +30,10 @@ namespace SPIL.Model
 
         public (int Image1Index, int Image2Index, int Image3Index) SharpnessAnalyzeAsync(IEnumerable<Bitmap> bitmaps)
         {
+
+
+         //   MethodAssignTool();
             List<SharpnessResult> results = new List<SharpnessResult>();
-
-
-
             //計算清晰度
             foreach (var bmp in bitmaps)
             {

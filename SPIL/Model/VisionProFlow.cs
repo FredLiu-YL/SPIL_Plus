@@ -27,11 +27,11 @@ namespace SPIL.Model
         /// </summary>
         /// <param name="aoiVppPath"> toolblock 的vpp </param>
         /// <param name="algorithmDescribes"> config內紀錄 可被編輯的tool</param>
-        public VisionProFlow(string vppPath, AlgorithmDescribe[] algorithmDescribes, int paramBeginID )
+        public VisionProFlow(string vppPath, AlgorithmDescribe[] algorithmDescribes, int paramBeginID)
         {
             this.algorithmDescribes = algorithmDescribes;
-               //讀取vpp檔 獲得寫在vpp的完整流程
-               measureToolBlock = CogSerializer.LoadObjectFromFile(vppPath) as CogToolBlock;
+            //讀取vpp檔 獲得寫在vpp的完整流程
+            measureToolBlock = CogSerializer.LoadObjectFromFile(vppPath) as CogToolBlock;
             measureToolBlock.GarbageCollectionEnabled = true;
             CogMethods = CreateMethod(algorithmDescribes);
             ToolBlockToMethodParam(paramBeginID);
@@ -47,27 +47,56 @@ namespace SPIL.Model
         /// </summary>
         private void ToolBlockToMethodParam(int id)
         {
-        
-            try {
-                foreach (var item in CogMethods) {
+
+            try
+            {
+                foreach (var item in CogMethods)
+                {
 
                     var tool = measureToolBlock.Tools[item.name];
-      
+                    tool.Name = item.name;
                     item.method.SetCogToolParameter(tool);
                     item.method.RunParams.Id = id;
                     id++;
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
             }
 
         }
+        private void ToolBlockToMethodParam((CogMethod method, int id, string name)[] cogMethods)
+        {
 
+            try
+            {
+                foreach (var item in cogMethods)
+                {
+
+                    var tool = measureToolBlock.Tools[item.name];
+
+                    item.method.SetCogToolParameter(tool);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
+            }
+
+        }
+        /// <summary>
+        /// 找到對應名稱的Tool 輸入圖片
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public ICogImage RunningToolInputImage(string name)
         {
-            try {
+            try
+            {
 
 
                 //從 CogMethods 裡面的名字去尋找 對應的tool
@@ -77,7 +106,8 @@ namespace SPIL.Model
                 var tool = measureToolBlock.Tools[name];
 
                 ICogImage cogImage = null;
-                switch (describe.CogMethodtype) {
+                switch (describe.CogMethodtype)
+                {
 
                     case MethodType.CogSearchMaxTool:
                         var max = tool as CogSearchMaxTool;
@@ -100,18 +130,76 @@ namespace SPIL.Model
                 }
                 return cogImage;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
             }
 
         }
+
+        public void MethodAssignTool()
+        {
+            try
+            {
+                foreach (var method in CogMethods)
+                {
+                    var tool = method.method.GetCogTool();
+
+                    tool.Name = method.name;//Tool 會沒有名字 所以重新給名字
+                    MethodType type = DecideType(tool);
+
+                    //直接塞TOOL 會出錯   改塞參數試試  0727
+
+                    switch (type)
+                    {
+                        case MethodType.CogSearchMaxTool:
+                            CogSearchMaxTool toolBlockMaxTool = measureToolBlock.Tools[method.name] as CogSearchMaxTool;
+                            CogSearchMaxTool methodTool = tool as CogSearchMaxTool;
+                            toolBlockMaxTool.RunParams = methodTool.RunParams;
+                            toolBlockMaxTool.Pattern = methodTool.Pattern;
+                            toolBlockMaxTool.SearchRegion = methodTool.SearchRegion;
+
+                            break;
+                        case MethodType.CogImageConvertTool:
+                            CogImageConvertTool toolBlockConvertTool = measureToolBlock.Tools[method.name] as CogImageConvertTool;
+                            CogImageConvertTool methodConvertTool = tool as CogImageConvertTool;
+                            toolBlockConvertTool.RunParams = methodConvertTool.RunParams;
+                            toolBlockConvertTool.Region = methodConvertTool.Region;
+                            break;
+                        case MethodType.CogFindEllipseTool:
+                            CogFindEllipseTool toolBlockFindEllipseTool = measureToolBlock.Tools[method.name] as CogFindEllipseTool;
+                            CogFindEllipseTool methodFindEllipseTool = tool as CogFindEllipseTool;
+                            toolBlockFindEllipseTool.RunParams = methodFindEllipseTool.RunParams;
+                            
+                            break;
+                        case MethodType.Error:
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"ToolBlock Get Parameter  Fail : {ex.Message}");
+            }
+
+        }
+
+
         public void SetMethodParam(IEnumerable<CogParameter> cogParameters)
         {
             var paramArr = cogParameters.ToArray();
-            for (int i = 0; i < cogParameters.Count(); i++) {
+            for (int i = 0; i < cogParameters.Count(); i++)
+            {
                 CogMethods[i].method.RunParams = paramArr[i];
             }
+            MethodAssignTool();
 
         }
 
@@ -119,24 +207,28 @@ namespace SPIL.Model
         //實體化Vision pro 方法
         private (CogMethod method, int id, string name)[] CreateMethod(AlgorithmDescribe[] algorithmDescribes)
         {
-            try {
+            try
+            {
                 List<(CogMethod method, int id, string name)> coglist = new List<(CogMethod method, int id, string name)>();
-                foreach (var item in algorithmDescribes) {
-                   
+                foreach (var item in algorithmDescribes)
+                {
 
-                    switch (item.CogMethodtype) {
+
+                    switch (item.CogMethodtype)
+                    {
 
                         case MethodType.CogSearchMaxTool:
-                            coglist.Add((new CogSearchMax(), Convert.ToInt32(item.Id), item.Name));
+                            
+                            coglist.Add((new CogSearchMax(item.Name), Convert.ToInt32(item.Id), item.Name));
 
 
                             break;
                         case MethodType.CogImageConvertTool:
-                            coglist.Add((new CogImageConverter(), Convert.ToInt32(item.Id), item.Name));
+                            coglist.Add((new CogImageConverter(item.Name), Convert.ToInt32(item.Id), item.Name));
 
                             break;
                         case MethodType.CogFindEllipseTool:
-                            coglist.Add((new CogEllipseCaliper(), Convert.ToInt32(item.Id), item.Name));
+                            coglist.Add((new CogEllipseCaliper(item.Name), Convert.ToInt32(item.Id), item.Name));
 
 
                             break;
@@ -147,10 +239,24 @@ namespace SPIL.Model
                 }
                 return coglist.ToArray();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 throw ex;
             }
+        }
+
+        private MethodType DecideType(ICogTool tool)
+        {
+ 
+            if (tool is CogSearchMaxTool)
+                return MethodType.CogSearchMaxTool;
+            else if (tool is CogImageConvertTool)
+                return MethodType.CogImageConvertTool;
+            else if (tool is CogFindEllipseTool)
+                return MethodType.CogFindEllipseTool;
+
+            return MethodType.Error;
         }
     }
 

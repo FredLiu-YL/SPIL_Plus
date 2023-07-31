@@ -121,6 +121,7 @@ namespace SPIL
                 var cogImg1 = new CogImage24PlanarColor(img1);
                 var cogImg2 = new CogImage24PlanarColor(img2);
                 var cogImg3 = new CogImage24PlanarColor(img3);
+                if (MeasureToolBlock == null) throw new Exception("Recipe not read");
                 MeasureToolBlock.GarbageCollectionEnabled = true;
                 if (is_maunal)
                 {

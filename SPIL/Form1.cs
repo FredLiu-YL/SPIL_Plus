@@ -966,7 +966,7 @@ namespace SPIL
                 //這裡要切換 aoIFlow. sharpnessFlow 資料
 
                 string path = $"{systemPath}\\Recipe\\{receive_data}";
-                if (!File.Exists(path)) throw new Exception("");
+                if (!Directory.Exists(path)) throw new Exception($"Not Found Recipe : {receive_data}");
 
 
                 LoadRecipe(path);
@@ -1005,10 +1005,11 @@ namespace SPIL
                 Send_Server("SetRecipe,e>");
 
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                logger.WriteErrorLog("Set Recipe Error! " + error.ToString());
+                logger.WriteErrorLog("Set Recipe Error! " + ex.ToString());
                 Send_Server("SetRecipe,x>");
+                throw ex;
             }
         }
         private void Receive_Mode(string receive_data)
@@ -1093,6 +1094,25 @@ namespace SPIL
             UpdateTextbox(receive_Wafer_Size, textBox_Wafer_Size);
             //20211224-S
             Send_Server("RFID,e>");
+        }
+        private async Task Receive_AOI()
+        {
+            try
+            {
+
+
+                Send_Server("AOIRun,s>");
+                string[] images = await PickClarity(sharpnessImagesFolder);
+                AoiMeansure(images);
+
+                //20211224-S
+                Send_Server("AOIRun,e>");
+            }
+            catch (Exception ex)
+            {
+                Send_Server("SetRecipe,x>");
+                throw ex;
+            }
         }
         #endregion
         //
@@ -2386,41 +2406,53 @@ namespace SPIL
 
         private async Task<string[]> PickClarity(string dirpath)
         {
-
-            // 取得資料夾中的所有檔案
-            string[] files = Directory.GetFiles(dirpath);
-            List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
-            List<Bitmap> images = new List<Bitmap>();
-            List<string> imageNames = new List<string>();
-
-            // 遍歷每個檔案，檢查是否為影像檔
-            foreach (string file in files)
+            try
             {
-                string extension = Path.GetExtension(file).ToLower();
-                string name = Path.GetFileName(file);
-                // 檢查副檔名是否為影像檔（可根據需求調整）
-                if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
-                {
 
-                    images.Add(new Bitmap(file));
-                    imageNames.Add(file);
+
+                int id = Thread.CurrentThread.ManagedThreadId;
+                // 取得資料夾中的所有檔案
+                string[] files = Directory.GetFiles(dirpath);
+                List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
+                List<Bitmap> images = new List<Bitmap>();
+                List<string> imageNames = new List<string>();
+
+                // 遍歷每個檔案，檢查是否為影像檔
+                foreach (string file in files)
+                {
+                    string extension = Path.GetExtension(file).ToLower();
+                    string name = Path.GetFileName(file);
+                    // 檢查副檔名是否為影像檔（可根據需求調整）
+                    if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                    {
+
+                        images.Add(new Bitmap(file));
+                        imageNames.Add(file);
+
+                    }
 
                 }
+                List<string> names = new List<string>();
 
+                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
+
+
+                UpdateTextbox(imageNames[imagesIndex.Image1Index], txB_RecipePicName1);
+                UpdateTextbox(imageNames[imagesIndex.Image2Index], txB_RecipePicName2);
+                UpdateTextbox(imageNames[imagesIndex.Image3Index], txB_RecipePicName3);
+                /* txB_RecipePicName1.Text = imageNames[imagesIndex.Image1Index];
+                 txB_RecipePicName2.Text = imageNames[imagesIndex.Image2Index];
+                 txB_RecipePicName3.Text = imageNames[imagesIndex.Image3Index];*/
+                names.Add(imageNames[imagesIndex.Image1Index]);
+                names.Add(imageNames[imagesIndex.Image2Index]);
+                names.Add(imageNames[imagesIndex.Image3Index]);
+                return names.ToArray();
             }
-            List<string> names = new List<string>();
+            catch (Exception ex)
+            {
 
-            var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
-
-
-
-            txB_RecipePicName1.Text = imageNames[imagesIndex.Image1Index];
-            txB_RecipePicName2.Text = imageNames[imagesIndex.Image2Index];
-            txB_RecipePicName3.Text = imageNames[imagesIndex.Image3Index];
-            names.Add(imageNames[imagesIndex.Image1Index]);
-            names.Add(imageNames[imagesIndex.Image2Index]);
-            names.Add(imageNames[imagesIndex.Image3Index]);
-            return names.ToArray();
+                throw ex;
+            }
         }
         private void AoiDegree_0(string fileName)
         {
@@ -3106,15 +3138,15 @@ namespace SPIL
 
         private void button8_Click(object sender, EventArgs e)
         {
- 
+
             //    var window =   new SPIL_TCPSimulator.MainWindow();
             CB_RecipeList.SelectedIndex = 3;
 
-           // if (hostCommunication == null)
-           //     hostCommunication = new HostCommunication("127.0.0.1", 1234);
-           // else
-           //     hostCommunication.Open();
-             
+            // if (hostCommunication == null)
+            //     hostCommunication = new HostCommunication("127.0.0.1", 1234);
+            // else
+            //     hostCommunication.Open();
+
         }
 
         private void HostException(Exception exception)
@@ -3162,72 +3194,6 @@ namespace SPIL
                 MessageBox.Show(ex.Message);
             }
         }
-        private void listBox_AlgorithmList_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                //   if (sharpnessImage == null) throw new Exception($"Image not exist");
-                Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
-                Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
-                Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
-
-                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
-                aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
-                var inputImage = aoIFlow.RunningToolInputImage(machineSetting.AOIAlgorithms[listBox_AOIAlgorithmList.SelectedIndex].Name);
-
-                //   var select = listBox_AOIAlgorithmList.SelectedItem;
-                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
-                CogParameter algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
-
-                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
-                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
-                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(inputImage);
-                //參數寫回  sPILRecipe.AOIParams
-                algorithmItem = aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
-
-                img1.Dispose();
-                img2.Dispose();
-                img3.Dispose();
-                //   var a  = aoiImage.ImageToBytes(aoiImage.RawFormat);
-                /*   var tool = toolBlock.Tools[algorithmItem.Name];
-
-
-                   algorithmItem.CogAOIMethod.SetCogToolParameter(tool);
-                   algorithmItem.CogAOIMethod.EditParameter(aoiImage);
-
-                   tool = algorithmItem.CogAOIMethod.GetCogTool();
-                */
-
-
-                /* switch (algorithmItem.CogMethodtype) {
-
-                     case MethodType.CogSearchMaxTool:
-                         CogSearchMax gapCaliper = algorithmItem.CogAOIMethod as CogSearchMax;
-
-                         gapCaliper.EditParameter(aoiImage);
-                         break;
-                     case MethodType.CogImageConvertTool:
-                         CogImageConverter imageConvert = algorithmItem.CogAOIMethod as CogImageConverter;
-                         imageConvert.EditParameter(aoiImage);
-                         break;
-                     case MethodType.CogFindEllipseTool:
-                         CogEllipseCaliper ellipseCaliper = algorithmItem.CogAOIMethod as CogEllipseCaliper;
-
-                         ellipseCaliper.EditParameter(aoiImage);
-                         break;
-                     default:
-                         break;
-                 }*/
-                //  CogSerializer.SaveObjectToFile(toolBlock, "D:\\test-2.vpp");
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-
-
-        }
         private void btn_RecipeSave_Click(object sender, EventArgs e)
         {
             try
@@ -3244,9 +3210,6 @@ namespace SPIL
                 }
 
 
-                machineSetting.AOIVppPath = tbx_AOIPath.Text;
-                machineSetting.SharpVppPath = tbx_SharpPath.Text;
-                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
 
                 SaveRecipe(sPILRecipe, path);
                 MessageBox.Show("存檔完成");
@@ -3270,6 +3233,8 @@ namespace SPIL
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
                 MessageBox.Show("讀取完成");
+                groupBox18.Enabled = true;
+                groupBox17.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -3285,9 +3250,13 @@ namespace SPIL
 
             //讀取 料號 實際Cognex參數存在這
             sPILRecipe.Load(path);
-            tBx_RecipeName.Text = new DirectoryInfo(path).Name;
-            tbx_AOIPath.Text = machineSetting.AOIVppPath;
-            tbx_SharpPath.Text = machineSetting.SharpVppPath;
+            UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
+
+            //        UpdateTextbox(machineSetting.AOIVppPath, tbx_AOIPath);
+            //        UpdateTextbox(machineSetting.SharpVppPath, tbx_SharpPath);
+            //tBx_RecipeName.Text = new DirectoryInfo(path).Name;
+            //tbx_AOIPath.Text = machineSetting.AOIVppPath;
+            //tbx_SharpPath.Text = machineSetting.SharpVppPath;
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
 
@@ -3303,12 +3272,18 @@ namespace SPIL
             OpenFileDialog dlg = new OpenFileDialog();
             listBox_AOIAlgorithmList.Items.Clear();
             dlg.Filter = "vpp |*.vpp";
+            dlg.FileName = machineSetting.AOIVppPath;
             var result = dlg.ShowDialog();
             if (result == DialogResult.OK)
             {// 載入圖片
 
                 tbx_AOIPath.Text = dlg.FileName;
                 //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+
+
+                machineSetting.AOIVppPath = tbx_AOIPath.Text;
+
+                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
             }
         }
 
@@ -3318,12 +3293,17 @@ namespace SPIL
             OpenFileDialog dlg = new OpenFileDialog();
             listBox_AOIAlgorithmList.Items.Clear();
             dlg.Filter = "vpp |*.vpp";
+            dlg.FileName = machineSetting.SharpVppPath;
             var result = dlg.ShowDialog();
             if (result == DialogResult.OK)
             {// 載入圖片
 
                 tbx_SharpPath.Text = dlg.FileName;
                 //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+
+
+                machineSetting.SharpVppPath = tbx_SharpPath.Text;
+                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
             }
         }
 
@@ -3512,6 +3492,74 @@ namespace SPIL
 
         }
 
+        private void listBox_AlgorithmList_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txB_RecipePicName1.Text == "" || txB_RecipePicName2.Text == "" || txB_RecipePicName3.Text == "")
+                    throw new Exception("picture  not exist");
+                //   if (sharpnessImage == null) throw new Exception($"Image not exist");
+                Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
+                Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
+                Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
+
+                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
+                aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+                var inputImage = aoIFlow.RunningToolInputImage(machineSetting.AOIAlgorithms[listBox_AOIAlgorithmList.SelectedIndex].Name);
+
+                //   var select = listBox_AOIAlgorithmList.SelectedItem;
+                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
+                CogParameter algorithmItem = sPILRecipe.AOIParams[listBox_AOIAlgorithmList.SelectedIndex];
+
+                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
+                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
+                aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.EditParameter(inputImage);
+                //參數寫回  sPILRecipe.AOIParams
+                algorithmItem = aoIFlow.CogMethods[listBox_AOIAlgorithmList.SelectedIndex].method.RunParams;
+
+                img1.Dispose();
+                img2.Dispose();
+                img3.Dispose();
+                //   var a  = aoiImage.ImageToBytes(aoiImage.RawFormat);
+                /*   var tool = toolBlock.Tools[algorithmItem.Name];
+
+
+                   algorithmItem.CogAOIMethod.SetCogToolParameter(tool);
+                   algorithmItem.CogAOIMethod.EditParameter(aoiImage);
+
+                   tool = algorithmItem.CogAOIMethod.GetCogTool();
+                */
+
+
+                /* switch (algorithmItem.CogMethodtype) {
+
+                     case MethodType.CogSearchMaxTool:
+                         CogSearchMax gapCaliper = algorithmItem.CogAOIMethod as CogSearchMax;
+
+                         gapCaliper.EditParameter(aoiImage);
+                         break;
+                     case MethodType.CogImageConvertTool:
+                         CogImageConverter imageConvert = algorithmItem.CogAOIMethod as CogImageConverter;
+                         imageConvert.EditParameter(aoiImage);
+                         break;
+                     case MethodType.CogFindEllipseTool:
+                         CogEllipseCaliper ellipseCaliper = algorithmItem.CogAOIMethod as CogEllipseCaliper;
+
+                         ellipseCaliper.EditParameter(aoiImage);
+                         break;
+                     default:
+                         break;
+                 }*/
+                //  CogSerializer.SaveObjectToFile(toolBlock, "D:\\test-2.vpp");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
 
         private void listBox_SharpnessAlgorithmList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -3614,7 +3662,7 @@ namespace SPIL
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
 
                     //   sharpnessFlow.CogResult += UpdateDataGridView;
-
+                    sharpnessFlow.MethodAssignTool();
                     var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
 
 
@@ -3695,51 +3743,73 @@ namespace SPIL
         }
         private void ReciveException(Exception exception)
         {
+            int id = Thread.CurrentThread.ManagedThreadId;
             MessageBox.Show(exception.Message);
 
         }
 
         private async void ReciveMessage(string receiveData)
         {
-            logger.WriteLog("Receive : " + receiveData);
-
-            string[] re_data = Cal_Recive_Data(receiveData);
-
-            if (re_data != null)
+            try
             {
+                int id = Thread.CurrentThread.ManagedThreadId;
 
-                if (re_data[0].Contains("YuanLi"))
-                    Receive_YuanLi();
-                else if (re_data[0].Contains("Init"))
-                    Receive_Init();
-                else if (re_data[0].Contains("SetRecipe"))
-                    Receive_SetRecipe(re_data[1]);
-                else if (re_data[0].Contains("Mode"))
-                    Receive_Mode(re_data[1]);
-                else if (re_data[0].Contains("Start"))
-                    Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
-                else if (re_data[0].Contains("InPos"))
-                    Receive_InPos(Convert.ToInt32(re_data[1]));
-                else if (re_data[0].Contains("Stop"))
-                    Receive_Stop(re_data[1]);
-                else if (re_data[0].Contains("RFID"))
-                    Receive_RFID(re_data[1], re_data[2]);
-                else if (re_data[0].Contains("AOIRun"))
+                logger.WriteLog("Receive : " + receiveData);
+
+                string[] re_data = Cal_Recive_Data(receiveData);
+
+                if (re_data != null)
                 {
 
-                    string[] images = await PickClarity(sharpnessImagesFolder);
-                    AoiMeansure(images);
+                    if (re_data[0].Contains("YuanLi"))
+                        Receive_YuanLi();
+                    else if (re_data[0].Contains("Init"))
+                        Receive_Init();
+                    else if (re_data[0].Contains("SetRecipe"))
+                        Receive_SetRecipe(re_data[1]);
+                    else if (re_data[0].Contains("Mode"))
+                        Receive_Mode(re_data[1]);
+                    else if (re_data[0].Contains("Start"))
+                        Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
+                    else if (re_data[0].Contains("InPos"))
+                        Receive_InPos(Convert.ToInt32(re_data[1]));
+                    else if (re_data[0].Contains("Stop"))
+                        Receive_Stop(re_data[1]);
+                    else if (re_data[0].Contains("RFID"))
+                        Receive_RFID(re_data[1], re_data[2]);
+                    else if (re_data[0].Contains("AOIRun"))
+                        await Receive_AOI();
+
+
+                    else
+                        logger.WriteErrorLog("No Match Data!");
                 }
-
-
-
                 else
-                    logger.WriteErrorLog("No Match Data!");
+                    logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessageBoxFromThread(ex.Message);
+
+            }
+        }
+        private delegate void ShowMessageBoxDelegate(string message);
+
+        private void ShowMessageBoxFromThread(string message)
+        {
+            // 檢查是否需要進行跨線程調用
+            if (InvokeRequired)
+            {
+                // 使用委託在UI線程上執行顯示消息框的操作
+                Invoke(new ShowMessageBoxDelegate(ShowMessageBoxFromThread), message);
             }
             else
-                logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);
+            {
+                // 在UI線程上顯示消息框
+                MessageBox.Show(message);
+            }
         }
-
         private void radioButton9_CheckedChanged(object sender, EventArgs e)
         {
 
