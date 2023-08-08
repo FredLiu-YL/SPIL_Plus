@@ -314,12 +314,6 @@ namespace SPIL
             this.tBx_RecipeName = new System.Windows.Forms.TextBox();
             this.label54 = new System.Windows.Forms.Label();
             this.CB_RecipeList = new System.Windows.Forms.ComboBox();
-            this.btn_ReadSharpVPP = new System.Windows.Forms.Button();
-            this.btn_ReadAOIVPP = new System.Windows.Forms.Button();
-            this.tbx_SharpPath = new System.Windows.Forms.TextBox();
-            this.tbx_AOIPath = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
@@ -339,6 +333,7 @@ namespace SPIL
             this.label55 = new System.Windows.Forms.Label();
             this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -347,7 +342,6 @@ namespace SPIL
             this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_SharpnessMultRun = new System.Windows.Forms.Button();
-            this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.tbx_SharpnessScore3 = new System.Windows.Forms.TextBox();
             this.label66 = new System.Windows.Forms.Label();
             this.tbx_SharpnessScore2 = new System.Windows.Forms.TextBox();
@@ -373,6 +367,13 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.btn_ReadSharpVPP = new System.Windows.Forms.Button();
+            this.btn_ReadAOIVPP = new System.Windows.Forms.Button();
+            this.tbx_SharpPath = new System.Windows.Forms.TextBox();
+            this.tbx_AOIPath = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -419,10 +420,11 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).BeginInit();
             this.tabPage8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
             this.groupBox17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).BeginInit();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -1979,9 +1981,9 @@ namespace SPIL
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage8);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -2060,6 +2062,7 @@ namespace SPIL
             this.tabControl_Setup.Controls.Add(this.tabPage4);
             this.tabControl_Setup.Controls.Add(this.tabPage3);
             this.tabControl_Setup.Controls.Add(this.tabPage5);
+            this.tabControl_Setup.Controls.Add(this.tabPage9);
             this.tabControl_Setup.Enabled = false;
             this.tabControl_Setup.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.tabControl_Setup.Location = new System.Drawing.Point(6, 78);
@@ -3468,12 +3471,6 @@ namespace SPIL
             this.tabPage7.Controls.Add(this.tBx_RecipeName);
             this.tabPage7.Controls.Add(this.label54);
             this.tabPage7.Controls.Add(this.CB_RecipeList);
-            this.tabPage7.Controls.Add(this.btn_ReadSharpVPP);
-            this.tabPage7.Controls.Add(this.btn_ReadAOIVPP);
-            this.tabPage7.Controls.Add(this.tbx_SharpPath);
-            this.tabPage7.Controls.Add(this.tbx_AOIPath);
-            this.tabPage7.Controls.Add(this.label53);
-            this.tabPage7.Controls.Add(this.label52);
             this.tabPage7.Controls.Add(this.button8);
             this.tabPage7.Controls.Add(this.groupBox18);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
@@ -3508,7 +3505,6 @@ namespace SPIL
             this.tBx_RecipeName.Name = "tBx_RecipeName";
             this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
             this.tBx_RecipeName.TabIndex = 19;
-            this.tBx_RecipeName.Text = "Default";
             // 
             // label54
             // 
@@ -3529,68 +3525,15 @@ namespace SPIL
             this.CB_RecipeList.SelectedIndexChanged += new System.EventHandler(this.CB_RecipeList_SelectedIndexChanged);
             this.CB_RecipeList.Click += new System.EventHandler(this.CB_RecipeList_Click);
             // 
-            // btn_ReadSharpVPP
-            // 
-            this.btn_ReadSharpVPP.Location = new System.Drawing.Point(707, 91);
-            this.btn_ReadSharpVPP.Name = "btn_ReadSharpVPP";
-            this.btn_ReadSharpVPP.Size = new System.Drawing.Size(59, 27);
-            this.btn_ReadSharpVPP.TabIndex = 15;
-            this.btn_ReadSharpVPP.Text = "Read";
-            this.btn_ReadSharpVPP.UseVisualStyleBackColor = true;
-            this.btn_ReadSharpVPP.Click += new System.EventHandler(this.btn_ReadSharpVPP_Click);
-            // 
-            // btn_ReadAOIVPP
-            // 
-            this.btn_ReadAOIVPP.Location = new System.Drawing.Point(707, 57);
-            this.btn_ReadAOIVPP.Name = "btn_ReadAOIVPP";
-            this.btn_ReadAOIVPP.Size = new System.Drawing.Size(59, 27);
-            this.btn_ReadAOIVPP.TabIndex = 14;
-            this.btn_ReadAOIVPP.Text = "Read";
-            this.btn_ReadAOIVPP.UseVisualStyleBackColor = true;
-            this.btn_ReadAOIVPP.Click += new System.EventHandler(this.btn_ReadAOIVPP_Click);
-            // 
-            // tbx_SharpPath
-            // 
-            this.tbx_SharpPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbx_SharpPath.Location = new System.Drawing.Point(301, 90);
-            this.tbx_SharpPath.Name = "tbx_SharpPath";
-            this.tbx_SharpPath.Size = new System.Drawing.Size(387, 23);
-            this.tbx_SharpPath.TabIndex = 13;
-            // 
-            // tbx_AOIPath
-            // 
-            this.tbx_AOIPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbx_AOIPath.Location = new System.Drawing.Point(301, 56);
-            this.tbx_AOIPath.Name = "tbx_AOIPath";
-            this.tbx_AOIPath.Size = new System.Drawing.Size(387, 23);
-            this.tbx_AOIPath.TabIndex = 12;
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(152, 91);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(137, 16);
-            this.label53.TabIndex = 11;
-            this.label53.Text = "Sharpness VPP Path:";
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(152, 56);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(105, 16);
-            this.label52.TabIndex = 10;
-            this.label52.Text = "AOI VPP Path :";
-            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(18, 77);
+            this.button8.Location = new System.Drawing.Point(18, 40);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(91, 30);
             this.button8.TabIndex = 8;
             this.button8.Text = "ADD TEST";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // groupBox18
@@ -3614,9 +3557,9 @@ namespace SPIL
             this.groupBox18.Controls.Add(this.listBox_AOIAlgorithmList);
             this.groupBox18.Enabled = false;
             this.groupBox18.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox18.Location = new System.Drawing.Point(3, 124);
+            this.groupBox18.Location = new System.Drawing.Point(3, 88);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(779, 877);
+            this.groupBox18.Size = new System.Drawing.Size(779, 913);
             this.groupBox18.TabIndex = 149;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "AOI Distance";
@@ -3799,6 +3742,37 @@ namespace SPIL
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // groupBox17
+            // 
+            this.groupBox17.BackColor = System.Drawing.Color.Snow;
+            this.groupBox17.Controls.Add(this.dataGrid_Sharpness);
+            this.groupBox17.Controls.Add(this.btn_SharpnessMultRun);
+            this.groupBox17.Controls.Add(this.tbx_SharpnessScore3);
+            this.groupBox17.Controls.Add(this.label66);
+            this.groupBox17.Controls.Add(this.tbx_SharpnessScore2);
+            this.groupBox17.Controls.Add(this.label65);
+            this.groupBox17.Controls.Add(this.tbx_SharpnessScore1);
+            this.groupBox17.Controls.Add(this.label64);
+            this.groupBox17.Controls.Add(this.tbx_SearchScore2);
+            this.groupBox17.Controls.Add(this.label63);
+            this.groupBox17.Controls.Add(this.cogRecordDisplay2);
+            this.groupBox17.Controls.Add(this.txB_SharpnessPicName);
+            this.groupBox17.Controls.Add(this.tbx_SearchScore1);
+            this.groupBox17.Controls.Add(this.label59);
+            this.groupBox17.Controls.Add(this.btn_SharpnessRun);
+            this.groupBox17.Controls.Add(this.pBox_SharpnessPic);
+            this.groupBox17.Controls.Add(this.btn_OpenSharpnessImage);
+            this.groupBox17.Controls.Add(this.label56);
+            this.groupBox17.Controls.Add(this.listBox_SharpnessAlgorithmList);
+            this.groupBox17.Enabled = false;
+            this.groupBox17.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.groupBox17.Location = new System.Drawing.Point(3, 3);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(779, 989);
+            this.groupBox17.TabIndex = 0;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "SharpnessTesting";
+            // 
             // dataGrid_Sharpness
             // 
             this.dataGrid_Sharpness.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -3862,37 +3836,6 @@ namespace SPIL
             this.btn_SharpnessMultRun.Text = "SharpnessRun";
             this.btn_SharpnessMultRun.UseVisualStyleBackColor = true;
             this.btn_SharpnessMultRun.Click += new System.EventHandler(this.btn_SharpnessMultRun_Click);
-            // 
-            // groupBox17
-            // 
-            this.groupBox17.BackColor = System.Drawing.Color.Snow;
-            this.groupBox17.Controls.Add(this.dataGrid_Sharpness);
-            this.groupBox17.Controls.Add(this.btn_SharpnessMultRun);
-            this.groupBox17.Controls.Add(this.tbx_SharpnessScore3);
-            this.groupBox17.Controls.Add(this.label66);
-            this.groupBox17.Controls.Add(this.tbx_SharpnessScore2);
-            this.groupBox17.Controls.Add(this.label65);
-            this.groupBox17.Controls.Add(this.tbx_SharpnessScore1);
-            this.groupBox17.Controls.Add(this.label64);
-            this.groupBox17.Controls.Add(this.tbx_SearchScore2);
-            this.groupBox17.Controls.Add(this.label63);
-            this.groupBox17.Controls.Add(this.cogRecordDisplay2);
-            this.groupBox17.Controls.Add(this.txB_SharpnessPicName);
-            this.groupBox17.Controls.Add(this.tbx_SearchScore1);
-            this.groupBox17.Controls.Add(this.label59);
-            this.groupBox17.Controls.Add(this.btn_SharpnessRun);
-            this.groupBox17.Controls.Add(this.pBox_SharpnessPic);
-            this.groupBox17.Controls.Add(this.btn_OpenSharpnessImage);
-            this.groupBox17.Controls.Add(this.label56);
-            this.groupBox17.Controls.Add(this.listBox_SharpnessAlgorithmList);
-            this.groupBox17.Enabled = false;
-            this.groupBox17.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox17.Location = new System.Drawing.Point(3, 3);
-            this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(779, 989);
-            this.groupBox17.TabIndex = 0;
-            this.groupBox17.TabStop = false;
-            this.groupBox17.Text = "SharpnessTesting";
             // 
             // tbx_SharpnessScore3
             // 
@@ -4086,6 +4029,73 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.btn_ReadSharpVPP);
+            this.tabPage9.Controls.Add(this.btn_ReadAOIVPP);
+            this.tabPage9.Controls.Add(this.tbx_SharpPath);
+            this.tabPage9.Controls.Add(this.tbx_AOIPath);
+            this.tabPage9.Controls.Add(this.label53);
+            this.tabPage9.Controls.Add(this.label52);
+            this.tabPage9.Location = new System.Drawing.Point(4, 26);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(740, 601);
+            this.tabPage9.TabIndex = 5;
+            this.tabPage9.Text = "AOI Path";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadSharpVPP
+            // 
+            this.btn_ReadSharpVPP.Location = new System.Drawing.Point(586, 89);
+            this.btn_ReadSharpVPP.Name = "btn_ReadSharpVPP";
+            this.btn_ReadSharpVPP.Size = new System.Drawing.Size(59, 27);
+            this.btn_ReadSharpVPP.TabIndex = 21;
+            this.btn_ReadSharpVPP.Text = "Read";
+            this.btn_ReadSharpVPP.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadAOIVPP
+            // 
+            this.btn_ReadAOIVPP.Location = new System.Drawing.Point(586, 55);
+            this.btn_ReadAOIVPP.Name = "btn_ReadAOIVPP";
+            this.btn_ReadAOIVPP.Size = new System.Drawing.Size(59, 27);
+            this.btn_ReadAOIVPP.TabIndex = 20;
+            this.btn_ReadAOIVPP.Text = "Read";
+            this.btn_ReadAOIVPP.UseVisualStyleBackColor = true;
+            // 
+            // tbx_SharpPath
+            // 
+            this.tbx_SharpPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SharpPath.Location = new System.Drawing.Point(180, 88);
+            this.tbx_SharpPath.Name = "tbx_SharpPath";
+            this.tbx_SharpPath.Size = new System.Drawing.Size(387, 23);
+            this.tbx_SharpPath.TabIndex = 19;
+            // 
+            // tbx_AOIPath
+            // 
+            this.tbx_AOIPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_AOIPath.Location = new System.Drawing.Point(180, 54);
+            this.tbx_AOIPath.Name = "tbx_AOIPath";
+            this.tbx_AOIPath.Size = new System.Drawing.Size(387, 23);
+            this.tbx_AOIPath.TabIndex = 18;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(31, 89);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(137, 16);
+            this.label53.TabIndex = 17;
+            this.label53.Text = "Sharpness VPP Path:";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(31, 54);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(105, 16);
+            this.label52.TabIndex = 16;
+            this.label52.Text = "AOI VPP Path :";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4164,11 +4174,13 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
             this.tabPage8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).EndInit();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4465,12 +4477,6 @@ namespace SPIL
         private System.Windows.Forms.ListBox listBox_AOIAlgorithmList;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.ComboBox CB_RecipeList;
-        private System.Windows.Forms.Button btn_ReadSharpVPP;
-        private System.Windows.Forms.Button btn_ReadAOIVPP;
-        private System.Windows.Forms.TextBox tbx_SharpPath;
-        private System.Windows.Forms.TextBox tbx_AOIPath;
-        private System.Windows.Forms.Label label53;
-        private System.Windows.Forms.Label label52;
         private System.Windows.Forms.Button btn_RecipeSave;
         private System.Windows.Forms.TextBox tBx_RecipeName;
         private System.Windows.Forms.Label label55;
@@ -4516,6 +4522,13 @@ namespace SPIL
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
         private System.Windows.Forms.Label label67;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Button btn_ReadSharpVPP;
+        private System.Windows.Forms.Button btn_ReadAOIVPP;
+        private System.Windows.Forms.TextBox tbx_SharpPath;
+        private System.Windows.Forms.TextBox tbx_AOIPath;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label label52;
     }
 }
 

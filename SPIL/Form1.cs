@@ -40,7 +40,7 @@ namespace SPIL
         private string password = "11084483";
         private string sharpnessImagesFolder = "D:\\SharpnessImages";
         private HostCommunication hostCommunication;
-        private CogToolBlock toolBlock;
+    
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
