@@ -1958,7 +1958,7 @@ namespace SPIL
                 //    IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Port.Text);
 
-                hostCommunication = new HostCommunication("127.0.0.1", 1234);
+                hostCommunication = new HostCommunication("192.168.0.3", 1200);
 
                 //  hostCommunication = new HostCommunication(ip_address, port);
                 hostCommunication.ReceiverMessage += ReciveMessage;
