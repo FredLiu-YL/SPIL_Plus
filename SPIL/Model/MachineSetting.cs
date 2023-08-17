@@ -58,8 +58,8 @@ namespace SPIL.Model
                     return recipe;
                 }
             }
-            catch (JsonReaderException) {
-                throw;
+            catch (JsonReaderException ex) {
+                throw ex;
             }
         }
         public void Save(string fileName)

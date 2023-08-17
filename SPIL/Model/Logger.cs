@@ -11,6 +11,9 @@ namespace SPIL.model
     {
         private string path;
         private List<string> logList = new List<string>();
+
+        public Action<string> LogRecord;
+
         /// <summary>
         /// 在我的文件夾內 創建Log資料夾
         /// </summary>
@@ -32,7 +35,7 @@ namespace SPIL.model
                 string str = $"{dateTime.ToString("G")} :{  dateTime.Millisecond}   {logMessage} \r\n";
 
                 var date = dateTime.ToString("yyyy-MM-dd");
-           
+                LogRecord?.Invoke(str);
                 logList.Add(str);
                 File.AppendAllText($"{path}\\{date}.txt", str);
 

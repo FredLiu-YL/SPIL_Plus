@@ -333,7 +333,13 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
 
-
+                logger.LogRecord = (mes) =>
+                {
+                    string str = Log_tBx.Text;
+                   str += mes;
+                    UpdateTextbox(str, Log_tBx);
+                  
+                };
             }
             else
             {
@@ -1101,16 +1107,16 @@ namespace SPIL
             {
 
 
-                Send_Server("AOIRun,s>");
+                Send_Server("Done,s>");
                 string[] images = await PickClarity(sharpnessImagesFolder);
                 AoiMeansure(images);
 
                 //20211224-S
-                Send_Server("AOIRun,e>");
+                Send_Server("Done,e>");
             }
             catch (Exception ex)
             {
-                Send_Server("SetRecipe,x>");
+                Send_Server("Done,x>");
                 throw ex;
             }
         }
@@ -3777,7 +3783,7 @@ namespace SPIL
                         Receive_Stop(re_data[1]);
                     else if (re_data[0].Contains("RFID"))
                         Receive_RFID(re_data[1], re_data[2]);
-                    else if (re_data[0].Contains("AOIRun"))
+                    else if (re_data[0].Contains("Done"))
                         await Receive_AOI();
 
 
