@@ -32,7 +32,7 @@ namespace SPIL.model
             try {
                 //LOG 新增時間  單位到毫秒
                 DateTime dateTime = DateTime.Now;
-                string str = $"{dateTime.ToString("G")} :{  dateTime.Millisecond}   {logMessage} \r\n";
+                string str = $"{dateTime.ToString("yyyy-MM-dd")} :{  dateTime.Millisecond}   {logMessage} \r\n";
 
                 var date = dateTime.ToString("yyyy-MM-dd");
                 LogRecord?.Invoke(str);
@@ -60,8 +60,8 @@ namespace SPIL.model
             try {
                 //LOG 新增時間  單位到毫秒
                 DateTime dateTime = DateTime.Now;
-                string str = $"{dateTime.ToString("G")} :{  dateTime.Millisecond}   {logMessage} \r\n";
-
+                string str = $"{dateTime.ToString("yyyy-MM-dd-HH")} :{  dateTime.Millisecond}   {logMessage} \r\n";
+          
                 var date = dateTime.ToString("yyyy-MM-dd");
 
                 logList.Add(str);

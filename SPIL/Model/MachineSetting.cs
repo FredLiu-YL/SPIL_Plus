@@ -33,7 +33,7 @@ namespace SPIL.Model
 
         public string AOIVppPath { get; set; }
         public string SharpVppPath { get; set; }
-
+        public string SharpnessImagesFolder { get; set; } = "D:\\SharpnessImages";
         public AlgorithmDescribe[] AOIAlgorithms { get; set; }
         public AlgorithmDescribe[] SharpAlgorithms { get; set; }
         public static MachineSetting Load(string filename)  

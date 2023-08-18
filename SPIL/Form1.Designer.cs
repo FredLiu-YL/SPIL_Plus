@@ -180,6 +180,8 @@ namespace SPIL
             this.CB_RecipeList = new System.Windows.Forms.ComboBox();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.label96 = new System.Windows.Forms.Label();
+            this.Log_tBx = new System.Windows.Forms.TextBox();
             this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
@@ -360,6 +362,9 @@ namespace SPIL
             this.textBox_Step_1_Y = new System.Windows.Forms.TextBox();
             this.label72 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.btn_ReadSharpImage = new System.Windows.Forms.Button();
+            this.tBx_SharpImageFolderPath = new System.Windows.Forms.TextBox();
+            this.label68 = new System.Windows.Forms.Label();
             this.btn_ReadSharpVPP = new System.Windows.Forms.Button();
             this.btn_ReadAOIVPP = new System.Windows.Forms.Button();
             this.tbx_SharpPath = new System.Windows.Forms.TextBox();
@@ -374,7 +379,6 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.Log_tBx = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -2077,6 +2081,7 @@ namespace SPIL
             // groupBox18
             // 
             this.groupBox18.BackColor = System.Drawing.Color.Snow;
+            this.groupBox18.Controls.Add(this.label96);
             this.groupBox18.Controls.Add(this.Log_tBx);
             this.groupBox18.Controls.Add(this.cogRcdDisp_Distance3);
             this.groupBox18.Controls.Add(this.cogRcdDisp_Distance2);
@@ -2102,6 +2107,27 @@ namespace SPIL
             this.groupBox18.TabIndex = 149;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "AOI Distance";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label96.Location = new System.Drawing.Point(323, 535);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(92, 21);
+            this.label96.TabIndex = 153;
+            this.label96.Text = "Log  List :";
+            // 
+            // Log_tBx
+            // 
+            this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Log_tBx.Location = new System.Drawing.Point(321, 559);
+            this.Log_tBx.Multiline = true;
+            this.Log_tBx.Name = "Log_tBx";
+            this.Log_tBx.ReadOnly = true;
+            this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Log_tBx.Size = new System.Drawing.Size(452, 312);
+            this.Log_tBx.TabIndex = 152;
             // 
             // cogRcdDisp_Distance3
             // 
@@ -2156,7 +2182,7 @@ namespace SPIL
             // 
             // tBx_CuValue
             // 
-            this.tBx_CuValue.Location = new System.Drawing.Point(609, 218);
+            this.tBx_CuValue.Location = new System.Drawing.Point(540, 168);
             this.tBx_CuValue.Name = "tBx_CuValue";
             this.tBx_CuValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuValue.TabIndex = 142;
@@ -2171,7 +2197,7 @@ namespace SPIL
             // 
             // tBx_CuNiValue
             // 
-            this.tBx_CuNiValue.Location = new System.Drawing.Point(503, 218);
+            this.tBx_CuNiValue.Location = new System.Drawing.Point(434, 168);
             this.tBx_CuNiValue.Name = "tBx_CuNiValue";
             this.tBx_CuNiValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuNiValue.TabIndex = 141;
@@ -2179,7 +2205,7 @@ namespace SPIL
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(634, 180);
+            this.label57.Location = new System.Drawing.Point(565, 130);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(36, 24);
             this.label57.TabIndex = 140;
@@ -2198,7 +2224,7 @@ namespace SPIL
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(520, 180);
+            this.label58.Location = new System.Drawing.Point(451, 130);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(83, 24);
             this.label58.TabIndex = 139;
@@ -2216,7 +2242,7 @@ namespace SPIL
             // 
             // btn_AOITesting
             // 
-            this.btn_AOITesting.Location = new System.Drawing.Point(413, 175);
+            this.btn_AOITesting.Location = new System.Drawing.Point(344, 125);
             this.btn_AOITesting.Name = "btn_AOITesting";
             this.btn_AOITesting.Size = new System.Drawing.Size(84, 79);
             this.btn_AOITesting.TabIndex = 138;
@@ -2254,7 +2280,7 @@ namespace SPIL
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label55.Location = new System.Drawing.Point(409, 280);
+            this.label55.Location = new System.Drawing.Point(323, 227);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(157, 21);
             this.label55.TabIndex = 21;
@@ -2265,9 +2291,10 @@ namespace SPIL
             this.listBox_AOIAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
             this.listBox_AOIAlgorithmList.FormattingEnabled = true;
             this.listBox_AOIAlgorithmList.ItemHeight = 32;
-            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(341, 307);
+            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(323, 251);
             this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
-            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(425, 260);
+            this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(450, 260);
             this.listBox_AOIAlgorithmList.TabIndex = 5;
             this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
             // 
@@ -2650,6 +2677,7 @@ namespace SPIL
             this.groupBox9.Controls.Add(this.textBox_Server_Port);
             this.groupBox9.Controls.Add(this.comboBox_IP);
             this.groupBox9.Controls.Add(this.label84);
+            this.groupBox9.Enabled = false;
             this.groupBox9.Location = new System.Drawing.Point(20, 256);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(562, 279);
@@ -2767,6 +2795,7 @@ namespace SPIL
             this.groupBox8.Controls.Add(this.button_Vision_Pro_File);
             this.groupBox8.Controls.Add(this.textBox_Port);
             this.groupBox8.Controls.Add(this.label2);
+            this.groupBox8.Enabled = false;
             this.groupBox8.Location = new System.Drawing.Point(20, 36);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(562, 181);
@@ -3996,6 +4025,9 @@ namespace SPIL
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.btn_ReadSharpImage);
+            this.tabPage9.Controls.Add(this.tBx_SharpImageFolderPath);
+            this.tabPage9.Controls.Add(this.label68);
             this.tabPage9.Controls.Add(this.btn_ReadSharpVPP);
             this.tabPage9.Controls.Add(this.btn_ReadAOIVPP);
             this.tabPage9.Controls.Add(this.tbx_SharpPath);
@@ -4009,28 +4041,57 @@ namespace SPIL
             this.tabPage9.Text = "AOI Path";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // btn_ReadSharpImage
+            // 
+            this.btn_ReadSharpImage.Location = new System.Drawing.Point(615, 144);
+            this.btn_ReadSharpImage.Name = "btn_ReadSharpImage";
+            this.btn_ReadSharpImage.Size = new System.Drawing.Size(59, 27);
+            this.btn_ReadSharpImage.TabIndex = 24;
+            this.btn_ReadSharpImage.Text = "Read";
+            this.btn_ReadSharpImage.UseVisualStyleBackColor = true;
+            this.btn_ReadSharpImage.Click += new System.EventHandler(this.btn_ReadSharpImage_Click);
+            // 
+            // tBx_SharpImageFolderPath
+            // 
+            this.tBx_SharpImageFolderPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tBx_SharpImageFolderPath.Location = new System.Drawing.Point(217, 144);
+            this.tBx_SharpImageFolderPath.Name = "tBx_SharpImageFolderPath";
+            this.tBx_SharpImageFolderPath.Size = new System.Drawing.Size(387, 23);
+            this.tBx_SharpImageFolderPath.TabIndex = 23;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(13, 144);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(189, 16);
+            this.label68.TabIndex = 22;
+            this.label68.Text = "Sharpness ImageFolder Path:";
+            // 
             // btn_ReadSharpVPP
             // 
-            this.btn_ReadSharpVPP.Location = new System.Drawing.Point(586, 89);
+            this.btn_ReadSharpVPP.Location = new System.Drawing.Point(615, 88);
             this.btn_ReadSharpVPP.Name = "btn_ReadSharpVPP";
             this.btn_ReadSharpVPP.Size = new System.Drawing.Size(59, 27);
             this.btn_ReadSharpVPP.TabIndex = 21;
             this.btn_ReadSharpVPP.Text = "Read";
             this.btn_ReadSharpVPP.UseVisualStyleBackColor = true;
+            this.btn_ReadSharpVPP.Click += new System.EventHandler(this.btn_ReadSharpVPP_Click);
             // 
             // btn_ReadAOIVPP
             // 
-            this.btn_ReadAOIVPP.Location = new System.Drawing.Point(586, 55);
+            this.btn_ReadAOIVPP.Location = new System.Drawing.Point(615, 54);
             this.btn_ReadAOIVPP.Name = "btn_ReadAOIVPP";
             this.btn_ReadAOIVPP.Size = new System.Drawing.Size(59, 27);
             this.btn_ReadAOIVPP.TabIndex = 20;
             this.btn_ReadAOIVPP.Text = "Read";
             this.btn_ReadAOIVPP.UseVisualStyleBackColor = true;
+            this.btn_ReadAOIVPP.Click += new System.EventHandler(this.btn_ReadAOIVPP_Click);
             // 
             // tbx_SharpPath
             // 
             this.tbx_SharpPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbx_SharpPath.Location = new System.Drawing.Point(180, 88);
+            this.tbx_SharpPath.Location = new System.Drawing.Point(217, 88);
             this.tbx_SharpPath.Name = "tbx_SharpPath";
             this.tbx_SharpPath.Size = new System.Drawing.Size(387, 23);
             this.tbx_SharpPath.TabIndex = 19;
@@ -4038,7 +4099,7 @@ namespace SPIL
             // tbx_AOIPath
             // 
             this.tbx_AOIPath.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tbx_AOIPath.Location = new System.Drawing.Point(180, 54);
+            this.tbx_AOIPath.Location = new System.Drawing.Point(217, 54);
             this.tbx_AOIPath.Name = "tbx_AOIPath";
             this.tbx_AOIPath.Size = new System.Drawing.Size(387, 23);
             this.tbx_AOIPath.TabIndex = 18;
@@ -4046,7 +4107,7 @@ namespace SPIL
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(31, 89);
+            this.label53.Location = new System.Drawing.Point(13, 88);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(137, 16);
             this.label53.TabIndex = 17;
@@ -4055,7 +4116,7 @@ namespace SPIL
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(31, 54);
+            this.label52.Location = new System.Drawing.Point(13, 54);
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(105, 16);
             this.label52.TabIndex = 16;
@@ -4098,17 +4159,6 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // Log_tBx
-            // 
-            this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Log_tBx.Location = new System.Drawing.Point(341, 621);
-            this.Log_tBx.Multiline = true;
-            this.Log_tBx.Name = "Log_tBx";
-            this.Log_tBx.ReadOnly = true;
-            this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Log_tBx.Size = new System.Drawing.Size(422, 250);
-            this.Log_tBx.TabIndex = 152;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4119,7 +4169,7 @@ namespace SPIL
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20230531";
+            this.Text = "YuanLi OLS AOI-20230818";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -4543,6 +4593,10 @@ namespace SPIL
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.TextBox Log_tBx;
+        private System.Windows.Forms.Button btn_ReadSharpImage;
+        private System.Windows.Forms.TextBox tBx_SharpImageFolderPath;
+        private System.Windows.Forms.Label label68;
+        private System.Windows.Forms.Label label96;
     }
 }
 
