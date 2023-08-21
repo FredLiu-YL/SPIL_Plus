@@ -39,9 +39,10 @@ namespace SPIL
         private Bitmap aoiImage3;
         private string password = "11084483";
         private string check_path;
-       // private string sharpnessImagesFolder = "D:\\SharpnessImages";
+        private bool isRemote = false;
+        // private string sharpnessImagesFolder = "D:\\SharpnessImages";
         private HostCommunication hostCommunication;
-    
+
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
@@ -339,7 +340,7 @@ namespace SPIL
                 logger.LogRecord = (mes) =>
                 {
                     //string str = Log_tBx.Text;
-                  // str += mes;
+                    // str += mes;
                     UpdateTextboxAdd(mes, Log_tBx);
 
 
@@ -833,6 +834,20 @@ namespace SPIL
         //
         #region Change UI
         //
+
+        private delegate void UpdateGroupBoxEnable(bool value, GroupBox gpCtrl);
+        private void UpdateGroupBox(bool value, GroupBox ctl)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateGroupBoxEnable uu = new UpdateGroupBoxEnable(UpdateGroupBox);
+                this.BeginInvoke(uu, value, ctl);
+            }
+            else
+            {
+                ctl.Enabled = value;
+            }
+        }
         private delegate void UpdateUITextbox(string value, TextBox ctl);
         private void UpdateTextbox(string value, TextBox ctl)
         {
@@ -844,26 +859,36 @@ namespace SPIL
             else
             {
                 ctl.Text = value;
-               
+
             }
         }
         private void UpdateTextboxAdd(string value, TextBox ctl)
         {
+            int id = Thread.CurrentThread.ManagedThreadId;
             if (this.InvokeRequired)
             {
-                UpdateUITextbox uu = new UpdateUITextbox(UpdateTextbox);
+                UpdateUITextbox uu = new UpdateUITextbox(UpdateTextboxAdd);
                 this.BeginInvoke(uu, value, ctl);
             }
             else
             {
-               // ctl.Text += value;
+                int count = ctl.Lines.Count();
+
+                if (count > 300)
+                {
+                    var list = ctl.Lines.ToList();
+                    list.RemoveRange(0, 200);
+                    ctl.Lines = list.ToArray();
+                }
+
+                // ctl.Text += value;
                 ctl.AppendText(value);     // 追加文本，並且使得游標定位到插入地方。
                 ctl.ScrollToCaret();
 
                 ctl.Focus();//擷取焦點
                 ctl.Select(ctl.TextLength, 0);//游標定位到文本最後
                 ctl.ScrollToCaret();//滾動到游標處
-               
+
             }
         }
         private void ClearAndUpdateTextbox(string value, TextBox ctl)
@@ -1082,6 +1107,10 @@ namespace SPIL
             //
 
             Send_Server("Start,e>");
+            UpdateGroupBox(false, groupBox2);
+            UpdateGroupBox(false, gpBox_Sharpness);
+            UpdateGroupBox(false, gpBox_AOI);
+            isRemote = true;
         }
         private void Receive_InPos(int Now_Point)
         {
@@ -1104,6 +1133,13 @@ namespace SPIL
                 open_hide_2 = false;
 
                 HB_off();
+                isRemote = false;
+                UpdateGroupBox(true, groupBox2);
+                UpdateGroupBox(true, gpBox_Sharpness);
+                UpdateGroupBox(true, gpBox_AOI);
+                /* groupBox2.Enabled = true;
+                  gpBox_Sharpness.Enabled = true;
+                  gpBox_AOI.Enabled = true;*/
             }
         }
         private void Receive_RFID(string receive_RFID, string receive_Wafer_Size)
@@ -1120,14 +1156,14 @@ namespace SPIL
 
 
                 Send_Server("Done,s>");
-                if(AOI_Measurement.MeasureToolBlock ==null)
+                if (AOI_Measurement.MeasureToolBlock == null)
                 {
-                    
+
                     Send_Server("Done,x>");
                     logger.WriteLog("Recipe not read");
                     return;
                 }
-        
+
 
 
                 await AoiMeansure();
@@ -1706,7 +1742,7 @@ namespace SPIL
             }
             if (!backgroundWorker_delete_old_file.IsBusy)
             {
-                 check_path = textBox_Excel_File_Path_1.Text + "\\" + textBox_Excel_File_Path_2.Text + "\\" + textBox_Excel_File_Path_3.Text;//要檢查刪除的資料夾位置
+                check_path = textBox_Excel_File_Path_1.Text + "\\" + textBox_Excel_File_Path_2.Text + "\\" + textBox_Excel_File_Path_3.Text;//要檢查刪除的資料夾位置
                 backgroundWorker_delete_old_file.RunWorkerAsync();
             }
         }
@@ -1998,7 +2034,7 @@ namespace SPIL
                 //   Socketserver_Motion.Listen(10);    //設定最多10個排隊連線請求
                 logger.WriteLog("Create Motion Server Successful");
                 //        timer_Server.Enabled = true;
-           //     UpdatePicturebox(I_Green, pictureBox_Connect_Status);
+                //     UpdatePicturebox(I_Green, pictureBox_Connect_Status);
             }
             catch (Exception error)
             {
@@ -2453,7 +2489,7 @@ namespace SPIL
                     string extension = Path.GetExtension(file).ToLower();
                     string name = Path.GetFileName(file);
                     // 檢查副檔名是否為影像檔（可根據需求調整）
-                    if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                    if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
                     {
 
                         images.Add(new Bitmap(file));
@@ -2510,39 +2546,39 @@ namespace SPIL
             if (checkBox_xlsx.Checked)
             {
                 FileInfo[] FIle_List = folder_info.GetFiles("*.xlsx");
-                if (FIle_List.Length > 0)
-                {
-                    try
+                /*    if (FIle_List.Length > 0)
                     {
-                        for (int i = 0; i < FIle_List.Length; i++)
+                        try
                         {
-                            //取出excel資料
-                            int row = Convert.ToInt32(textBox_0_degree_height_Num.Text);
-                            int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A' + 1;
-                            string value = getExcelValue(FIle_List[i].FullName, row, column);
-                            //顯示在GUI介面中
-                            imshowValueInMeasurementGUI(value);
-                            logger.WriteLog("get measurement value: " + value);
-                            logger.WriteLog("New File : " + FIle_List[i].FullName);
-                            if (radioButton_Degree_0.Checked)
+                            for (int i = 0; i < FIle_List.Length; i++)
                             {
-                                if (File.Exists(Save_File_Folder + textBox_Point.Text + "_0.xlsx"))
-                                    File.Delete(Save_File_Folder + textBox_Point.Text + "_0.xlsx");
-                                File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_0.xlsx");
-                            }
-                            else
-                            {
-                                if (File.Exists(Save_File_Folder + textBox_Point.Text + "_45.xlsx"))
-                                    File.Delete(Save_File_Folder + textBox_Point.Text + "_45.xlsx");
-                                File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_45.xlsx");
+                                //取出excel資料
+                                int row = Convert.ToInt32(textBox_0_degree_height_Num.Text);
+                                int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A' + 1;
+                                string value = getExcelValue(FIle_List[i].FullName, row, column);
+                                //顯示在GUI介面中
+                                imshowValueInMeasurementGUI(value);
+                                logger.WriteLog("get measurement value: " + value);
+                                logger.WriteLog("New File : " + FIle_List[i].FullName);
+                                if (radioButton_Degree_0.Checked)
+                                {
+                                    if (File.Exists(Save_File_Folder + textBox_Point.Text + "_0.xlsx"))
+                                        File.Delete(Save_File_Folder + textBox_Point.Text + "_0.xlsx");
+                                    File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_0.xlsx");
+                                }
+                                else
+                                {
+                                    if (File.Exists(Save_File_Folder + textBox_Point.Text + "_45.xlsx"))
+                                        File.Delete(Save_File_Folder + textBox_Point.Text + "_45.xlsx");
+                                    File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_45.xlsx");
+                                }
                             }
                         }
-                    }
-                    catch (Exception error)
-                    {
-                        logger.WriteErrorLog("Move xlsx File Error! " + error.ToString());
-                    }
-                }
+                        catch (Exception error)
+                        {
+                            logger.WriteErrorLog("Move xlsx File Error! " + error.ToString());
+                        }
+                    }*/
             }
             if (checkBox_csv.Checked)
             {
@@ -2649,7 +2685,7 @@ namespace SPIL
                                     File.Delete(save_full_file_name);
                                 File.Copy(FIle_List[i].FullName, save_full_file_name);
                                 copy_poir_once = true;
-                                Thread.Sleep(15000);
+                                Thread.Sleep(1500);
                             }
                             else
                             {
@@ -2668,7 +2704,7 @@ namespace SPIL
                                     File.Delete(save_full_file_name);
                                 File.Copy(FIle_List[i].FullName, save_full_file_name);
                                 copy_poir_once = true;
-                                Thread.Sleep(15000);
+                                Thread.Sleep(1500);
                             }
                         }
 
@@ -2699,20 +2735,21 @@ namespace SPIL
                 }
             }
         }
-        private async Task AoiMeansure( )
+        private async Task AoiMeansure()
         {
             if (checkBox_bmp.Checked)
             {
 
-                FileInfo[] FIle_List = folder_info.GetFiles("*.bmp");
-                string[] file_list_part_name = { };
+                FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                List<string> file_list_part_name = new List<string>();
+
                 //try
                 //{
                 for (int i = 0; i < FIle_List.Length; i++)
                 {
-
-                    file_list_part_name = FIle_List[i].FullName.Split('_');
-                    logger.WriteLog("file last part name:" + file_list_part_name[file_list_part_name.Length - 1]);
+                    file_list_part_name.Add(FIle_List[i].FullName);
+                    //file_list_part_name = FIle_List[i].FullName.Split('_');
+                    logger.WriteLog("file last part name:" + FIle_List[i].FullName);
                 }
 
                 if (radioButton_Degree_0.Checked) //0度
@@ -2745,7 +2782,7 @@ namespace SPIL
                     }
                     else
                     {
-                  
+
                         AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
                         logger.WriteLog("AOI自動量測");
 
@@ -3245,7 +3282,7 @@ namespace SPIL
 
                 SaveRecipe(sPILRecipe, path);
                 MessageBox.Show("存檔完成");
-                logger.WriteLog("存檔完成"+tBx_RecipeName.Text);
+                logger.WriteLog("存檔完成" + tBx_RecipeName.Text);
             }
             catch (Exception ex)
             {
@@ -3264,9 +3301,10 @@ namespace SPIL
                 string name = CB_RecipeList.SelectedItem.ToString();
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
+                UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
                 MessageBox.Show("讀取完成");
-                groupBox18.Enabled = true;
-                groupBox17.Enabled = true;
+                gpBox_AOI.Enabled = true;
+                gpBox_Sharpness.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -3282,7 +3320,7 @@ namespace SPIL
 
             //讀取 料號 實際Cognex參數存在這
             sPILRecipe.Load(path);
-            UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
+
 
             //        UpdateTextbox(machineSetting.AOIVppPath, tbx_AOIPath);
             //        UpdateTextbox(machineSetting.SharpVppPath, tbx_SharpPath);
@@ -3291,7 +3329,7 @@ namespace SPIL
             //tbx_SharpPath.Text = machineSetting.SharpVppPath;
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
-            logger.WriteLog("Read Recipe :"+ tBx_RecipeName.Text);
+            logger.WriteLog("Read Recipe :" + tBx_RecipeName.Text);
 
         }
         private void SaveRecipe(SPILRecipe recipe, string path)
@@ -3343,7 +3381,7 @@ namespace SPIL
         {
             // 建立 FolderBrowserDialog 物件
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
- 
+
             // 設定對話方塊的標題
             folderBrowserDialog.Description = "請選取資料夾";
             folderBrowserDialog.SelectedPath = machineSetting.SharpnessImagesFolder;
@@ -3352,8 +3390,8 @@ namespace SPIL
 
             // 顯示對話方塊並等待使用者選擇資料夾
             DialogResult result = folderBrowserDialog.ShowDialog();
-       
-            
+
+
             if (result == DialogResult.OK)
             {// 載入圖片
 
@@ -3691,7 +3729,7 @@ namespace SPIL
                         string extension = Path.GetExtension(file).ToLower();
                         string name = Path.GetFileName(file);
                         // 檢查副檔名是否為影像檔（可根據需求調整）
-                        if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                        if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
                         {
 
                             images.Add(new Bitmap(file));
@@ -3803,15 +3841,15 @@ namespace SPIL
         private void ReciveException(Exception exception)
         {
             int id = Thread.CurrentThread.ManagedThreadId;
-         
+
             UpdatePicturebox(I_Red, pictureBox_Connect_Status);
-            MessageBox.Show(exception.Message);
+            //MessageBox.Show(exception.Message);
         }
         private void ReciveIsConnect()
         {
-           
+
             UpdatePicturebox(I_Green, pictureBox_Connect_Status);
- 
+
         }
         private async void ReciveMessage(string receiveData)
         {
@@ -3855,7 +3893,8 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-                ShowMessageBoxFromThread(ex.Message);
+                if (!isRemote)
+                    ShowMessageBoxFromThread(ex.Message);
 
             }
         }
@@ -3885,9 +3924,9 @@ namespace SPIL
             HB_off();
         }
 
-       
 
- 
+
+
 
         private void HB_off()
         {

@@ -49,7 +49,7 @@ namespace SPIL.Model
 
             //排序後找出最大10張圖
             var searchScore1s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore1).Take(10).ToList();
-
+            if (searchScore1s.Count < 10) throw new Exception("Sharpness Analyze Error");
             //  var image1 = searchScore1s.OrderByDescending(o => o.result.Score1).First();
 
             var image2 = searchScore1s.OrderByDescending(o => o.result.Score2).First();
