@@ -3386,7 +3386,7 @@ namespace SPIL
             //tbx_SharpPath.Text = machineSetting.SharpVppPath;
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
-            logger.WriteLog("Read Recipe :" + tBx_RecipeName.Text);
+            logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
         }
         private void SaveRecipe(SPILRecipe recipe, string path)
