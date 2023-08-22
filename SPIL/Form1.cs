@@ -219,17 +219,30 @@ namespace SPIL
             else
             {
                 machineSetting = MachineSetting.Load(configFile);
+                //暫時措施 到時候拿掉
+                if(machineSetting.ServerIP==null)
+                {
+                    machineSetting.ServerIP = "192.168.0.3";
+                    machineSetting.ServerPort = 1200;
+                }
+                    
             }
             if (machineSetting.AOIVppPath != null)
             {
 
                 tbx_AOIPath.Text = machineSetting.AOIVppPath;
                 tbx_SharpPath.Text = machineSetting.SharpVppPath;
-                tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
+               
+                var index=machineSetting.AOIVppPath.IndexOf("SPILmachine")+12;
+                var aoi1Name =machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length- index);
+                var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
 
+                tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
+                string aoiVppPath = $"{systemPath}\\{aoi1Name}";
+                string sharpVppPath = $"{systemPath}\\{sharpName}";
                 //tBx_RecipeName.Text = "Default";
-                aoIFlow = new AOIFlow(machineSetting.AOIVppPath, machineSetting.AOIAlgorithms, logger);
-                sharpnessFlow = new SharpnessFlow(machineSetting.SharpVppPath, machineSetting.SharpAlgorithms);
+                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger);
+                sharpnessFlow = new SharpnessFlow(sharpVppPath, machineSetting.SharpAlgorithms);
                 sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms, machineSetting.SharpAlgorithms);
                 //預設把 toolBlock 的參數先拿來用
                 sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
@@ -270,10 +283,16 @@ namespace SPIL
             //選擇一個乙太卡開啟socket server
             if (comboBox_IP.Items.Count == 0)
             {
-                return;
+                //return;
+                logger.WriteLog("Search_IP Error");
             }
-            comboBox_IP.SelectedIndex = 0;
-            comboBox_IP_Motion.SelectedIndex = 0;
+            else
+            {
+
+                comboBox_IP.SelectedIndex = 0;
+                comboBox_IP_Motion.SelectedIndex = 0;
+            }
+           
 
             button_Connect_Click(sender, e);
             button_Start_Server_Click(sender, e);
@@ -1050,6 +1069,7 @@ namespace SPIL
             }
             catch (Exception ex)
             {
+                logger.WriteLog("Set Recipe Error! " + ex.ToString());
                 logger.WriteErrorLog("Set Recipe Error! " + ex.ToString());
                 Send_Server("SetRecipe,x>");
                 throw ex;
@@ -2022,8 +2042,8 @@ namespace SPIL
                 string ip_address = comboBox_IP_Motion.Text;
                 //    IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Port.Text);
-
-                hostCommunication = new HostCommunication("192.168.0.3", 1200);
+              
+                hostCommunication = new HostCommunication(machineSetting.ServerIP, machineSetting.ServerPort);
 
                 //  hostCommunication = new HostCommunication(ip_address, port);
                 hostCommunication.ReceiverMessage += ReciveMessage;
@@ -2470,8 +2490,9 @@ namespace SPIL
 
         }
 
-        private async Task<string[]> PickClarity(string dirpath)
+        private async Task<string[]> PickClarity(string dirpath , string save_Folder)
         {
+            List<Bitmap> images = new List<Bitmap>();
             try
             {
 
@@ -2480,7 +2501,7 @@ namespace SPIL
                 // 取得資料夾中的所有檔案
                 string[] files = Directory.GetFiles(dirpath);
                 List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
-                List<Bitmap> images = new List<Bitmap>();
+             
                 List<string> imageNames = new List<string>();
 
                 // 遍歷每個檔案，檢查是否為影像檔
@@ -2500,8 +2521,26 @@ namespace SPIL
                 }
                 List<string> names = new List<string>();
 
+                logger.WriteLog($"Image Count : {images.Count} ");
+
+
                 var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
 
+             
+                 string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
+                if (!Directory.Exists(imageFolder))
+                {
+                    Directory.CreateDirectory(imageFolder);
+                }
+                //將圖片存到資料夾
+                for (int i = 0; i < images.Count; i++)
+                {
+                    string name = Path.GetFileName(imageNames[i]);
+                    images[i].Save($"{imageFolder}\\{name}");
+                    images[i].Dispose();
+                }
+
+             
 
                 UpdateTextbox(imageNames[imagesIndex.Image1Index], txB_RecipePicName1);
                 UpdateTextbox(imageNames[imagesIndex.Image2Index], txB_RecipePicName2);
@@ -2512,12 +2551,26 @@ namespace SPIL
                 names.Add(imageNames[imagesIndex.Image1Index]);
                 names.Add(imageNames[imagesIndex.Image2Index]);
                 names.Add(imageNames[imagesIndex.Image3Index]);
+
+
+
+
+
+
                 return names.ToArray();
             }
             catch (Exception ex)
             {
 
                 throw ex;
+            }
+            finally
+            {
+                foreach (var image in images)
+                {
+                    image.Dispose();
+                }
+
             }
         }
         private void AoiDegree_0(string fileName)
@@ -2541,7 +2594,7 @@ namespace SPIL
             File.Move(fileName, save_full_file_name);
             logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
         }
-        private void AoiOutputData()
+        private void AoiOutputData(string save_Folder)
         {
             if (checkBox_xlsx.Checked)
             {
@@ -2624,7 +2677,7 @@ namespace SPIL
                                     logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-                                string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
+                                string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
                                 File.Move(FIle_List[i].FullName, save_full_file_name);
@@ -2643,7 +2696,7 @@ namespace SPIL
                                     logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-                                string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
+                                string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
                                 File.Move(FIle_List[i].FullName, save_full_file_name);
@@ -2680,7 +2733,7 @@ namespace SPIL
                                     logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-                                string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
+                                string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
                                 File.Copy(FIle_List[i].FullName, save_full_file_name);
@@ -2698,7 +2751,7 @@ namespace SPIL
                                     logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-                                string save_full_file_name = Save_File_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
+                                string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
 
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
@@ -2741,6 +2794,10 @@ namespace SPIL
             {
 
                 FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                if(FIle_List.Length==0)
+                {
+                    FIle_List = folder_info.GetFiles("*.bmp");
+                }
                 List<string> file_list_part_name = new List<string>();
 
                 //try
@@ -2764,7 +2821,7 @@ namespace SPIL
                 else //45度
                 {
                     //45度才執行 圖像計算
-                    string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder);
+                    string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder , Save_File_Folder);
                     //執行AOI計算
                     if (is_hand_measurement)
                     {
@@ -2782,7 +2839,7 @@ namespace SPIL
                     }
                     else
                     {
-
+                        //AOI 計算
                         AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
                         logger.WriteLog("AOI自動量測");
 
@@ -2820,7 +2877,7 @@ namespace SPIL
 
 
             }
-            AoiOutputData();
+            AoiOutputData(Save_File_Folder);
         }
 
         private void timer_Initial_Tick(object sender, EventArgs e)

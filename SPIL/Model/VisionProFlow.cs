@@ -124,6 +124,12 @@ namespace SPIL.Model
                         var ecp = tool as CogFindEllipseTool;
                         cogImage = ecp.InputImage;
                         break;
+
+                    case MethodType.CogImageSharpnessTool:
+
+                        var cis = tool as CogImageSharpnessTool;
+                        cogImage = cis.InputImage;
+                        break;
                     default:
                         break;
 
@@ -147,10 +153,10 @@ namespace SPIL.Model
                     var tool = method.method.GetCogTool();
 
                     tool.Name = method.name;//Tool 會沒有名字 所以重新給名字
+                    //判斷 Icogtool 的實際工具種類
                     MethodType type = DecideType(tool);
 
-                    //直接塞TOOL 會出錯   改塞參數試試  0727
-
+                    //將元利實體化的tool參數  塞回vpp流程裡面的工具  
                     switch (type)
                     {
                         case MethodType.CogSearchMaxTool:
@@ -172,6 +178,14 @@ namespace SPIL.Model
                             CogFindEllipseTool methodFindEllipseTool = tool as CogFindEllipseTool;
                             toolBlockFindEllipseTool.RunParams = methodFindEllipseTool.RunParams;
                             
+                            break;
+                        case MethodType.CogImageSharpnessTool:
+                         
+                            CogImageSharpnessTool toolBlockFindSharpnessTool = measureToolBlock.Tools[method.name] as CogImageSharpnessTool;
+                           
+                            CogImageSharpnessTool methodFindSharpnessTool = tool as CogImageSharpnessTool;
+                            toolBlockFindSharpnessTool.RunParams = methodFindSharpnessTool.RunParams;
+                            toolBlockFindSharpnessTool.Region = methodFindSharpnessTool.Region;
                             break;
                         case MethodType.Error:
                             break;
@@ -229,6 +243,9 @@ namespace SPIL.Model
                             break;
                         case MethodType.CogFindEllipseTool:
                             coglist.Add((new CogEllipseCaliper(item.Name), Convert.ToInt32(item.Id), item.Name));
+                            break;
+                        case MethodType.CogImageSharpnessTool:
+                            coglist.Add((new CogFindImageSharpness(item.Name), Convert.ToInt32(item.Id), item.Name));
 
 
                             break;
@@ -255,7 +272,8 @@ namespace SPIL.Model
                 return MethodType.CogImageConvertTool;
             else if (tool is CogFindEllipseTool)
                 return MethodType.CogFindEllipseTool;
-
+            else if (tool is CogImageSharpnessTool)
+                return MethodType.CogImageSharpnessTool;
             return MethodType.Error;
         }
     }

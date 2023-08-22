@@ -13,6 +13,7 @@ namespace SPIL.Model
     {
         public MachineSetting()
         {
+            //先隨便給個預設數值
             AOIAlgorithms = new AlgorithmDescribe[]
                      {
                          new AlgorithmDescribe("001", "CogSearchMaxTool1", MethodType.CogSearchMaxTool) ,
@@ -30,8 +31,15 @@ namespace SPIL.Model
 
         }
 
-
+        public string ServerIP { get; set; }
+        public int ServerPort { get; set; }
+        /// <summary>
+        /// 放置 距離計算算法的vpp的檔案名稱 (圓形)
+        /// </summary>
         public string AOIVppPath { get; set; }
+        /// <summary>
+        /// 放置 距離清晰度算法的vpp的檔案名稱  
+        /// </summary>
         public string SharpVppPath { get; set; }
         public string SharpnessImagesFolder { get; set; } = "D:\\SharpnessImages";
         public AlgorithmDescribe[] AOIAlgorithms { get; set; }

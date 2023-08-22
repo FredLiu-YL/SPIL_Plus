@@ -173,6 +173,7 @@ namespace SPIL
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.Log_tBx = new System.Windows.Forms.TextBox();
             this.label67 = new System.Windows.Forms.Label();
             this.btn_RecipeSave = new System.Windows.Forms.Button();
             this.tBx_RecipeName = new System.Windows.Forms.TextBox();
@@ -181,7 +182,6 @@ namespace SPIL
             this.button8 = new System.Windows.Forms.Button();
             this.gpBox_AOI = new System.Windows.Forms.GroupBox();
             this.label96 = new System.Windows.Forms.Label();
-            this.Log_tBx = new System.Windows.Forms.TextBox();
             this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
@@ -2023,6 +2023,17 @@ namespace SPIL
             this.tabPage7.Text = "AOIAlgorithm";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // Log_tBx
+            // 
+            this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Log_tBx.Location = new System.Drawing.Point(324, 606);
+            this.Log_tBx.Multiline = true;
+            this.Log_tBx.Name = "Log_tBx";
+            this.Log_tBx.ReadOnly = true;
+            this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Log_tBx.Size = new System.Drawing.Size(452, 376);
+            this.Log_tBx.TabIndex = 152;
+            // 
             // label67
             // 
             this.label67.AutoSize = true;
@@ -2117,17 +2128,6 @@ namespace SPIL
             this.label96.Size = new System.Drawing.Size(92, 21);
             this.label96.TabIndex = 153;
             this.label96.Text = "Log  List :";
-            // 
-            // Log_tBx
-            // 
-            this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Log_tBx.Location = new System.Drawing.Point(324, 606);
-            this.Log_tBx.Multiline = true;
-            this.Log_tBx.Name = "Log_tBx";
-            this.Log_tBx.ReadOnly = true;
-            this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Log_tBx.Size = new System.Drawing.Size(452, 376);
-            this.Log_tBx.TabIndex = 152;
             // 
             // cogRcdDisp_Distance3
             // 
@@ -4169,7 +4169,7 @@ namespace SPIL
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20230820";
+            this.Text = "YuanLi OLS AOI-20230821";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
