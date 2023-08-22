@@ -37,7 +37,7 @@ namespace SPIL
         private Bitmap aoiImage1;
         private Bitmap aoiImage2;
         private Bitmap aoiImage3;
-        private string password = "11084483";
+        private string password = "123";
         private string check_path;
         private bool isRemote = false;
         // private string sharpnessImagesFolder = "D:\\SharpnessImages";
@@ -220,21 +220,21 @@ namespace SPIL
             {
                 machineSetting = MachineSetting.Load(configFile);
                 //暫時措施 到時候拿掉
-                if(machineSetting.ServerIP==null)
+                if (machineSetting.ServerIP == null)
                 {
                     machineSetting.ServerIP = "192.168.0.3";
                     machineSetting.ServerPort = 1200;
                 }
-                    
+
             }
             if (machineSetting.AOIVppPath != null)
             {
 
                 tbx_AOIPath.Text = machineSetting.AOIVppPath;
                 tbx_SharpPath.Text = machineSetting.SharpVppPath;
-               
-                var index=machineSetting.AOIVppPath.IndexOf("SPILmachine")+12;
-                var aoi1Name =machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length- index);
+
+                var index = machineSetting.AOIVppPath.IndexOf("SPILmachine") + 12;
+                var aoi1Name = machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length - index);
                 var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
 
                 tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
@@ -292,7 +292,7 @@ namespace SPIL
                 comboBox_IP.SelectedIndex = 0;
                 comboBox_IP_Motion.SelectedIndex = 0;
             }
-           
+
 
             button_Connect_Click(sender, e);
             button_Start_Server_Click(sender, e);
@@ -2042,7 +2042,7 @@ namespace SPIL
                 string ip_address = comboBox_IP_Motion.Text;
                 //    IPAddress ip = IPAddress.Parse(ip_address);
                 int port = Convert.ToInt32(textBox_Port.Text);
-              
+
                 hostCommunication = new HostCommunication(machineSetting.ServerIP, machineSetting.ServerPort);
 
                 //  hostCommunication = new HostCommunication(ip_address, port);
@@ -2490,7 +2490,7 @@ namespace SPIL
 
         }
 
-        private async Task<string[]> PickClarity(string dirpath , string save_Folder)
+        private async Task<string[]> PickClarity(string dirpath, string save_Folder)
         {
             List<Bitmap> images = new List<Bitmap>();
             try
@@ -2501,7 +2501,7 @@ namespace SPIL
                 // 取得資料夾中的所有檔案
                 string[] files = Directory.GetFiles(dirpath);
                 List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
-             
+
                 List<string> imageNames = new List<string>();
 
                 // 遍歷每個檔案，檢查是否為影像檔
@@ -2526,8 +2526,8 @@ namespace SPIL
 
                 var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
 
-             
-                 string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
+
+                string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
                 if (!Directory.Exists(imageFolder))
                 {
                     Directory.CreateDirectory(imageFolder);
@@ -2540,7 +2540,7 @@ namespace SPIL
                     images[i].Dispose();
                 }
 
-             
+
 
                 UpdateTextbox(imageNames[imagesIndex.Image1Index], txB_RecipePicName1);
                 UpdateTextbox(imageNames[imagesIndex.Image2Index], txB_RecipePicName2);
@@ -2794,7 +2794,7 @@ namespace SPIL
             {
 
                 FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
-                if(FIle_List.Length==0)
+                if (FIle_List.Length == 0)
                 {
                     FIle_List = folder_info.GetFiles("*.bmp");
                 }
@@ -2821,7 +2821,7 @@ namespace SPIL
                 else //45度
                 {
                     //45度才執行 圖像計算
-                    string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder , Save_File_Folder);
+                    string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder, Save_File_Folder);
                     //執行AOI計算
                     if (is_hand_measurement)
                     {
@@ -3899,14 +3899,22 @@ namespace SPIL
         {
             int id = Thread.CurrentThread.ManagedThreadId;
 
-            UpdatePicturebox(I_Red, pictureBox_Connect_Status);
-            //MessageBox.Show(exception.Message);
         }
-        private void ReciveIsConnect()
+        private void ReciveIsConnect(bool isConnect)
         {
+            if (isConnect)
+                UpdatePicturebox(I_Green, pictureBox_Connect_Status);
+            else
+            {
+                //出錯的時候
+                UpdatePicturebox(I_Red, pictureBox_Connect_Status);
+                //MessageBox.Show(exception.Message);
+                UpdateGroupBox(true, groupBox2);
+                UpdateGroupBox(true, gpBox_Sharpness);
+                UpdateGroupBox(true, gpBox_AOI);
 
-            UpdatePicturebox(I_Green, pictureBox_Connect_Status);
 
+            }
         }
         private async void ReciveMessage(string receiveData)
         {
@@ -3942,7 +3950,7 @@ namespace SPIL
 
 
                     else
-                        logger.WriteErrorLog("No Match Data!");
+                        logger.WriteLog($"No Match Data!  {receiveData}");
                 }
                 else
                     logger.WriteErrorLog("Motion Client Receive Error : " + receiveData);

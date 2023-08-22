@@ -6,20 +6,21 @@
         xmlns:local="clr-namespace:SPIL_TCPSimulator" 
         xmlns:logger="clr-namespace:YuanliCore.Logger;assembly=YuanliCore.Model"
         mc:Ignorable="d"
-        Title="TcpClient" Height="600" Width="800"  
+        Title="TcpClient" Height="600" Width="850"  
         x:Name="SimulatorTcpClient">
     <Grid   DataContext="{Binding ElementName=SimulatorTcpClient}" >
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.2*"/>
-            <ColumnDefinition  Width="1.3*"/>
-            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="1.0*"/>
+            <ColumnDefinition  Width="1.0*"/>
+            <ColumnDefinition Width="0.02*"/>
         </Grid.ColumnDefinitions>
         <GroupItem  Grid.Column="0"  FontSize="28">
-            <Grid Height="550"  >
+            <Grid Height="570"  >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*"/>
                     <RowDefinition  Height="0.3*"/>
+                    <RowDefinition  Height="0.05*"/>
                     <RowDefinition  Height="0.3*"/>
                     <RowDefinition  Height="0.3*"/>
                     <RowDefinition  Height="0.3*"/>
@@ -31,21 +32,30 @@
                     <TextBox  Width="170"   Text="{Binding IpAddress}"  />
                     <TextBox  Width="90"  Text="{Binding Port}"  />
                 </StackPanel>
-                <StackPanel  Grid.Row="1" Orientation="Horizontal">
-                    <Button  Width="140" Content="連線" Command="{Binding ConnectCommand}" Click="Button_Click"  />
-                    <Button  Margin="20,0" Width="140" Content="結束連線" Command="{Binding SendMessageCommand}"   />
+                <StackPanel  Grid.Row="1" Orientation="Horizontal" Background="Azure"   >
+                    <Button  Width="100" Content="連線" Command="{Binding ConnectCommand}"  Background="Bisque"   />
+                    <Button  Margin="5,0" Width="120" Content="結束連線" Command="{Binding DisConnectCommand}" Background="Bisque"  />
+                    <Button  Margin="5,0" Width="80"  Content="Open" Command="{Binding OpeneCommand}"   />
+                    <Button   Width="80"  Content="close" Command="{Binding CloseCommand}"   />
                 </StackPanel>
                    
-                <StackPanel  Grid.Row="2" Orientation="Horizontal">
-                    <Button  Width="140"  Content="Open" Command="{Binding OpeneCommand}"   />
-                    <Button  Margin="20,0" Width="140"  Content="close" Command="{Binding CloseCommand}"   />
-                  
+               
+                <StackPanel  Grid.Row="3" Orientation="Horizontal">
+                    <Button  Width="120"  Content="YuanLi" Command="{Binding SendCommand}" CommandParameter="YuanLi>" />
+                    <Button Margin="5,0" Width="140"  Content="Mode,Top" Command="{Binding SendCommand}"  CommandParameter="Mode,Top>" />
+                    <Button  Width="145"  Content="Mode,Side" Command="{Binding SendCommand}" CommandParameter="Mode,Side>"  />
+                </StackPanel>
+                <StackPanel  Grid.Row="4" Orientation="Horizontal">
+                    <Button  Width="120"  Content="Done" Command="{Binding SendCommand}" CommandParameter="Done>" />
+                    <Button   Margin="5,0" Width="100"  Content="Start" Command="{Binding SendCommand}"  CommandParameter="Start,5,123456,6>" />
+                    <Button   Margin="5,0" Width="100"  Content="Stop" Command="{Binding SendCommand}"  CommandParameter="Stop,0000>" />
+
+
                 </StackPanel>
 
-
-                <TextBox Grid.Row="4"   Text="{Binding SendMessage}"  />
-                <Button Grid.Row="5"  Content="傳送" Command="{Binding SendMessageCommand}"  />
-                <logger:LoggerUC  Grid.Row="6"   Message="{Binding SendMessage}" Title="傳送訊息" />
+                <TextBox Grid.Row="5"   Text="{Binding SendMessage}"  />
+                <Button Grid.Row="6"  Content="傳送" Command="{Binding SendMessageCommand}"  />
+                <logger:LoggerUC  Grid.Row="7"   Message="{Binding SendMessage}" Title="傳送訊息" />
             </Grid>
 
         </GroupItem>

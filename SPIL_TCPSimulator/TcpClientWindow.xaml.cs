@@ -27,7 +27,7 @@ namespace SPIL_TCPSimulator
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private string ipAddress = "127.0.0.1";
-        private int port=1234;
+        private int port=1200;
         //  private TcpClient tcpClient;
         ClientCommunication clientCom;
     
@@ -63,11 +63,19 @@ namespace SPIL_TCPSimulator
 
 
         });
+        public ICommand DisConnectCommand => new RelayCommand(() =>
+        {
+
+            clientCom.Dispose();
+            clientCom.ReceiverMessage -= ReceiverMessage;
+            clientCom.ReceiverException -= ReceiverException;
+
+        });
         public ICommand SendMessageCommand => new RelayCommand(() =>
         {
             try
             {
-        
+                if (clientCom == null || clientCom.IsReceiver == false) throw new Exception("沒有連線");
                 // 傳送指定的 Home 訊息給 B 機器             
                 clientCom.Send(SendMessage);
 
@@ -78,6 +86,13 @@ namespace SPIL_TCPSimulator
 
                 MessageBox.Show(ex.Message);
             }
+        });
+        public ICommand SendCommand => new RelayCommand<string>(param =>
+        {
+            SendMessage = param;
+            clientCom.Send(param);
+            SendMessage="";
+            ReMessage = "";
         });
         public ICommand OpeneCommand => new RelayCommand(() =>
         {
@@ -134,10 +149,7 @@ namespace SPIL_TCPSimulator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 
 
