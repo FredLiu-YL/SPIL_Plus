@@ -1964,6 +1964,7 @@ namespace SPIL
             // 
             // textBox_Mesument_1_0
             // 
+            
             this.textBox_Mesument_1_0.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox_Mesument_1_0.Location = new System.Drawing.Point(95, 229);
             this.textBox_Mesument_1_0.Margin = new System.Windows.Forms.Padding(4);

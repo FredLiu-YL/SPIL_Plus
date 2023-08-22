@@ -961,7 +961,11 @@ namespace SPIL
             }
             else
             {
-                ctl.Enabled = value; ;
+                ctl.Enabled = value; 
+                if(value)
+                    ctl.BackColor = System.Drawing.Color.MintCream;
+                else
+                    ctl.BackColor = System.Drawing.Color.White;
             }
         }
         #endregion
