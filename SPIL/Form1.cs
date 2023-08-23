@@ -46,7 +46,10 @@ namespace SPIL
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
-        private AOIFlow aoIFlow;
+        //距離算法 (圓形)
+        private AOIFlow aoIFlow { get; set; }
+        //距離算法(八角形)
+        private AOIFlow aoIFlow2 { get; set; }
         private SharpnessFlow sharpnessFlow;
 
         public Form1()
@@ -232,26 +235,37 @@ namespace SPIL
 
                 tbx_AOIPath.Text = machineSetting.AOIVppPath;
                 tbx_SharpPath.Text = machineSetting.SharpVppPath;
-
+                //找出在我的文件的路徑
                 var index = machineSetting.AOIVppPath.IndexOf("SPILmachine") + 12;
                 var aoi1Name = machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length - index);
+                var aoi1Name2 = machineSetting.AOIVppPath2.Substring(index, machineSetting.AOIVppPath2.Length - index);
                 var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
 
                 tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
                 string aoiVppPath = $"{systemPath}\\{aoi1Name}";
+                string aoi2VppPath = $"{systemPath}\\{aoi1Name2}";
                 string sharpVppPath = $"{systemPath}\\{sharpName}";
+
                 //tBx_RecipeName.Text = "Default";
-                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger);
+                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger,101);
+                aoIFlow2 = new AOIFlow(aoi2VppPath, machineSetting.AOIAlgorithms_2, logger,301);
                 sharpnessFlow = new SharpnessFlow(sharpVppPath, machineSetting.SharpAlgorithms);
+
                 sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms, machineSetting.SharpAlgorithms);
                 //預設把 toolBlock 的參數先拿來用
                 sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
+                sPILRecipe.AOIParams2 = aoIFlow2.CogMethods.Select(m => m.method.RunParams).ToList();
                 sPILRecipe.ClarityParams = sharpnessFlow.CogMethods.Select(m => m.method.RunParams).ToList();
 
                 //新增到UI 做顯示
                 foreach (var item in machineSetting.AOIAlgorithms)
                 {
                     listBox_AOIAlgorithmList.Items.Add(item);
+                }
+                //新增到UI 做顯示
+                foreach (var item in machineSetting.AOIAlgorithms_2)
+                {
+                    listBox_AOI2AlgorithmList.Items.Add(item);
                 }
 
                 //新增到UI 做顯示
@@ -364,6 +378,9 @@ namespace SPIL
 
 
                 };
+
+                tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
+                tabCtrl_AlgorithmList.ItemSize = new Size(0, 1);
             }
             else
             {
@@ -961,8 +978,8 @@ namespace SPIL
             }
             else
             {
-                ctl.Enabled = value; 
-                if(value)
+                ctl.Enabled = value;
+                if (value)
                     ctl.BackColor = System.Drawing.Color.MintCream;
                 else
                     ctl.BackColor = System.Drawing.Color.White;
@@ -3344,6 +3361,9 @@ namespace SPIL
                 SaveRecipe(sPILRecipe, path);
                 MessageBox.Show("存檔完成");
                 logger.WriteLog("存檔完成" + tBx_RecipeName.Text);
+
+                gpBox_AOI.Enabled = true;
+                gpBox_Sharpness.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -3364,6 +3384,22 @@ namespace SPIL
                 LoadRecipe(path);
                 UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
                 MessageBox.Show("讀取完成");
+
+                switch (sPILRecipe.AOIAlgorithmFunction)
+                {
+                    case AOIFunction.Circle:
+                        rdBtn_circle.Checked =true;
+                        break;
+                    case AOIFunction.Octagon:
+                        rdBtn_Octagon.Checked = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                //sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
+             
+
                 gpBox_AOI.Enabled = true;
                 gpBox_Sharpness.Enabled = true;
             }
@@ -3389,19 +3425,22 @@ namespace SPIL
             //tbx_AOIPath.Text = machineSetting.AOIVppPath;
             //tbx_SharpPath.Text = machineSetting.SharpVppPath;
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
+            aoIFlow2.SetMethodParam(sPILRecipe.AOIParams2);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
+          
             logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
         }
         private void SaveRecipe(SPILRecipe recipe, string path)
         {
-            recipe.Save(path);
+            recipe.RecipeSave(path);
         }
 
         private void btn_ReadAOIVPP_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
             listBox_AOIAlgorithmList.Items.Clear();
+            listBox_AOI2AlgorithmList.Items.Clear();
             dlg.Filter = "vpp |*.vpp";
             dlg.FileName = machineSetting.AOIVppPath;
             var result = dlg.ShowDialog();
@@ -3423,6 +3462,7 @@ namespace SPIL
 
             OpenFileDialog dlg = new OpenFileDialog();
             listBox_AOIAlgorithmList.Items.Clear();
+            listBox_AOI2AlgorithmList.Items.Clear();
             dlg.Filter = "vpp |*.vpp";
             dlg.FileName = machineSetting.SharpVppPath;
             var result = dlg.ShowDialog();
@@ -3718,7 +3758,42 @@ namespace SPIL
 
 
         }
+        private void listBox_AOI2AlgorithmList_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txB_RecipePicName1.Text == "" || txB_RecipePicName2.Text == "" || txB_RecipePicName3.Text == "")
+                    throw new Exception("picture  not exist");
+                //   if (sharpnessImage == null) throw new Exception($"Image not exist");
+                Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
+                Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
+                Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
 
+                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
+                aoIFlow2.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+                var inputImage = aoIFlow2.RunningToolInputImage(machineSetting.AOIAlgorithms_2[listBox_AOI2AlgorithmList.SelectedIndex].Name);
+
+                //   var select = listBox_AOIAlgorithmList.SelectedItem;
+                //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
+                CogParameter algorithmItem = sPILRecipe.AOIParams2[listBox_AOI2AlgorithmList.SelectedIndex];
+
+                //參數塞到  aoIFlow.CogAOIMethods 對應的方法
+                aoIFlow2.CogMethods[listBox_AOI2AlgorithmList.SelectedIndex].method.RunParams = algorithmItem;
+                aoIFlow2.CogMethods[listBox_AOI2AlgorithmList.SelectedIndex].method.EditParameter(inputImage);
+                //參數寫回  sPILRecipe.AOIParams
+                algorithmItem = aoIFlow2.CogMethods[listBox_AOI2AlgorithmList.SelectedIndex].method.RunParams;
+
+                img1.Dispose();
+                img2.Dispose();
+                img3.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void listBox_SharpnessAlgorithmList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             try
@@ -3993,7 +4068,27 @@ namespace SPIL
             HB_off();
         }
 
+        private void rdBtn_Octagon_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdBtn_Octagon.Checked)
+                tabCtrl_AlgorithmList.SelectedIndex = 1;
+            else
+                tabCtrl_AlgorithmList.SelectedIndex = 0;
 
+            sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
+        }
+
+        private void rdBtn_circle_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdBtn_circle.Checked)
+                tabCtrl_AlgorithmList.SelectedIndex = 0;
+            else
+                tabCtrl_AlgorithmList.SelectedIndex = 1;
+
+            sPILRecipe.AOIAlgorithmFunction = (AOIFunction) tabCtrl_AlgorithmList.SelectedIndex;
+
+
+        }
 
 
 

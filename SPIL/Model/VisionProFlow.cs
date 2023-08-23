@@ -27,6 +27,7 @@ namespace SPIL.Model
         /// </summary>
         /// <param name="aoiVppPath"> toolblock 的vpp </param>
         /// <param name="algorithmDescribes"> config內紀錄 可被編輯的tool</param>
+        /// <param name="paramBeginID">存到硬碟用於區分檔案  避免讀取到同一個檔案</param>
         public VisionProFlow(string vppPath, AlgorithmDescribe[] algorithmDescribes, int paramBeginID)
         {
             this.algorithmDescribes = algorithmDescribes;

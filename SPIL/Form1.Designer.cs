@@ -181,6 +181,13 @@ namespace SPIL
             this.CB_RecipeList = new System.Windows.Forms.ComboBox();
             this.button8 = new System.Windows.Forms.Button();
             this.gpBox_AOI = new System.Windows.Forms.GroupBox();
+            this.rdBtn_Octagon = new System.Windows.Forms.RadioButton();
+            this.rdBtn_circle = new System.Windows.Forms.RadioButton();
+            this.tabCtrl_AlgorithmList = new System.Windows.Forms.TabControl();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.listBox_AOI2AlgorithmList = new System.Windows.Forms.ListBox();
             this.label96 = new System.Windows.Forms.Label();
             this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
@@ -197,7 +204,6 @@ namespace SPIL
             this.btn_AOIOpenImage2 = new System.Windows.Forms.Button();
             this.txB_RecipePicName1 = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
-            this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.gpBox_Sharpness = new System.Windows.Forms.GroupBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
@@ -390,6 +396,9 @@ namespace SPIL
             this.tabPage1.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.gpBox_AOI.SuspendLayout();
+            this.tabCtrl_AlgorithmList.SuspendLayout();
+            this.tabPage10.SuspendLayout();
+            this.tabPage11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).BeginInit();
@@ -1964,7 +1973,6 @@ namespace SPIL
             // 
             // textBox_Mesument_1_0
             // 
-            
             this.textBox_Mesument_1_0.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox_Mesument_1_0.Location = new System.Drawing.Point(95, 229);
             this.textBox_Mesument_1_0.Margin = new System.Windows.Forms.Padding(4);
@@ -1993,7 +2001,7 @@ namespace SPIL
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(793, 1049);
+            this.tabControl1.Size = new System.Drawing.Size(801, 1049);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
@@ -2002,7 +2010,7 @@ namespace SPIL
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(785, 1019);
+            this.tabPage1.Size = new System.Drawing.Size(793, 1019);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Measurement";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -2019,7 +2027,7 @@ namespace SPIL
             this.tabPage7.Controls.Add(this.gpBox_AOI);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(785, 1019);
+            this.tabPage7.Size = new System.Drawing.Size(793, 1019);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "AOIAlgorithm";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -2027,12 +2035,12 @@ namespace SPIL
             // Log_tBx
             // 
             this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Log_tBx.Location = new System.Drawing.Point(324, 606);
+            this.Log_tBx.Location = new System.Drawing.Point(324, 604);
             this.Log_tBx.Multiline = true;
             this.Log_tBx.Name = "Log_tBx";
             this.Log_tBx.ReadOnly = true;
             this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Log_tBx.Size = new System.Drawing.Size(452, 376);
+            this.Log_tBx.Size = new System.Drawing.Size(456, 378);
             this.Log_tBx.TabIndex = 152;
             // 
             // label67
@@ -2094,6 +2102,9 @@ namespace SPIL
             // gpBox_AOI
             // 
             this.gpBox_AOI.BackColor = System.Drawing.Color.Snow;
+            this.gpBox_AOI.Controls.Add(this.rdBtn_Octagon);
+            this.gpBox_AOI.Controls.Add(this.rdBtn_circle);
+            this.gpBox_AOI.Controls.Add(this.tabCtrl_AlgorithmList);
             this.gpBox_AOI.Controls.Add(this.label96);
             this.gpBox_AOI.Controls.Add(this.cogRcdDisp_Distance3);
             this.gpBox_AOI.Controls.Add(this.cogRcdDisp_Distance2);
@@ -2110,15 +2121,95 @@ namespace SPIL
             this.gpBox_AOI.Controls.Add(this.btn_AOIOpenImage2);
             this.gpBox_AOI.Controls.Add(this.txB_RecipePicName1);
             this.gpBox_AOI.Controls.Add(this.label55);
-            this.gpBox_AOI.Controls.Add(this.listBox_AOIAlgorithmList);
             this.gpBox_AOI.Enabled = false;
             this.gpBox_AOI.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.gpBox_AOI.Location = new System.Drawing.Point(3, 88);
             this.gpBox_AOI.Name = "gpBox_AOI";
-            this.gpBox_AOI.Size = new System.Drawing.Size(779, 913);
+            this.gpBox_AOI.Size = new System.Drawing.Size(786, 913);
             this.gpBox_AOI.TabIndex = 149;
             this.gpBox_AOI.TabStop = false;
             this.gpBox_AOI.Text = "AOI Distance";
+            // 
+            // rdBtn_Octagon
+            // 
+            this.rdBtn_Octagon.AutoSize = true;
+            this.rdBtn_Octagon.Location = new System.Drawing.Point(640, 196);
+            this.rdBtn_Octagon.Name = "rdBtn_Octagon";
+            this.rdBtn_Octagon.Size = new System.Drawing.Size(103, 28);
+            this.rdBtn_Octagon.TabIndex = 156;
+            this.rdBtn_Octagon.Text = "Octagon";
+            this.rdBtn_Octagon.UseVisualStyleBackColor = true;
+            this.rdBtn_Octagon.CheckedChanged += new System.EventHandler(this.rdBtn_Octagon_CheckedChanged);
+            // 
+            // rdBtn_circle
+            // 
+            this.rdBtn_circle.AutoSize = true;
+            this.rdBtn_circle.Checked = true;
+            this.rdBtn_circle.Location = new System.Drawing.Point(536, 196);
+            this.rdBtn_circle.Name = "rdBtn_circle";
+            this.rdBtn_circle.Size = new System.Drawing.Size(83, 28);
+            this.rdBtn_circle.TabIndex = 155;
+            this.rdBtn_circle.TabStop = true;
+            this.rdBtn_circle.Text = "Circle";
+            this.rdBtn_circle.UseVisualStyleBackColor = true;
+            this.rdBtn_circle.CheckedChanged += new System.EventHandler(this.rdBtn_circle_CheckedChanged);
+            // 
+            // tabCtrl_AlgorithmList
+            // 
+            this.tabCtrl_AlgorithmList.Controls.Add(this.tabPage10);
+            this.tabCtrl_AlgorithmList.Controls.Add(this.tabPage11);
+            this.tabCtrl_AlgorithmList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tabCtrl_AlgorithmList.Location = new System.Drawing.Point(321, 230);
+            this.tabCtrl_AlgorithmList.Name = "tabCtrl_AlgorithmList";
+            this.tabCtrl_AlgorithmList.SelectedIndex = 0;
+            this.tabCtrl_AlgorithmList.Size = new System.Drawing.Size(460, 251);
+            this.tabCtrl_AlgorithmList.TabIndex = 154;
+            // 
+            // tabPage10
+            // 
+            this.tabPage10.BackColor = System.Drawing.Color.Snow;
+            this.tabPage10.Controls.Add(this.listBox_AOIAlgorithmList);
+            this.tabPage10.Location = new System.Drawing.Point(4, 34);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(452, 213);
+            this.tabPage10.TabIndex = 0;
+            this.tabPage10.Text = "tabPage10";
+            // 
+            // listBox_AOIAlgorithmList
+            // 
+            this.listBox_AOIAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
+            this.listBox_AOIAlgorithmList.FormattingEnabled = true;
+            this.listBox_AOIAlgorithmList.ItemHeight = 32;
+            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(2, 6);
+            this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
+            this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 228);
+            this.listBox_AOIAlgorithmList.TabIndex = 5;
+            this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
+            // 
+            // tabPage11
+            // 
+            this.tabPage11.BackColor = System.Drawing.Color.Snow;
+            this.tabPage11.Controls.Add(this.listBox_AOI2AlgorithmList);
+            this.tabPage11.Location = new System.Drawing.Point(4, 34);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage11.Size = new System.Drawing.Size(452, 213);
+            this.tabPage11.TabIndex = 1;
+            this.tabPage11.Text = "tabPage11";
+            // 
+            // listBox_AOI2AlgorithmList
+            // 
+            this.listBox_AOI2AlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
+            this.listBox_AOI2AlgorithmList.FormattingEnabled = true;
+            this.listBox_AOI2AlgorithmList.ItemHeight = 32;
+            this.listBox_AOI2AlgorithmList.Location = new System.Drawing.Point(2, 6);
+            this.listBox_AOI2AlgorithmList.Name = "listBox_AOI2AlgorithmList";
+            this.listBox_AOI2AlgorithmList.ScrollAlwaysVisible = true;
+            this.listBox_AOI2AlgorithmList.Size = new System.Drawing.Size(447, 228);
+            this.listBox_AOI2AlgorithmList.TabIndex = 6;
+            this.listBox_AOI2AlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AOI2AlgorithmList_DoubleClick);
             // 
             // label96
             // 
@@ -2183,7 +2274,7 @@ namespace SPIL
             // 
             // tBx_CuValue
             // 
-            this.tBx_CuValue.Location = new System.Drawing.Point(540, 168);
+            this.tBx_CuValue.Location = new System.Drawing.Point(536, 143);
             this.tBx_CuValue.Name = "tBx_CuValue";
             this.tBx_CuValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuValue.TabIndex = 142;
@@ -2198,7 +2289,7 @@ namespace SPIL
             // 
             // tBx_CuNiValue
             // 
-            this.tBx_CuNiValue.Location = new System.Drawing.Point(434, 168);
+            this.tBx_CuNiValue.Location = new System.Drawing.Point(430, 143);
             this.tBx_CuNiValue.Name = "tBx_CuNiValue";
             this.tBx_CuNiValue.Size = new System.Drawing.Size(100, 36);
             this.tBx_CuNiValue.TabIndex = 141;
@@ -2206,7 +2297,7 @@ namespace SPIL
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(565, 130);
+            this.label57.Location = new System.Drawing.Point(561, 116);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(36, 24);
             this.label57.TabIndex = 140;
@@ -2225,7 +2316,7 @@ namespace SPIL
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(451, 130);
+            this.label58.Location = new System.Drawing.Point(447, 116);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(83, 24);
             this.label58.TabIndex = 139;
@@ -2243,9 +2334,9 @@ namespace SPIL
             // 
             // btn_AOITesting
             // 
-            this.btn_AOITesting.Location = new System.Drawing.Point(344, 125);
+            this.btn_AOITesting.Location = new System.Drawing.Point(331, 130);
             this.btn_AOITesting.Name = "btn_AOITesting";
-            this.btn_AOITesting.Size = new System.Drawing.Size(84, 79);
+            this.btn_AOITesting.Size = new System.Drawing.Size(84, 56);
             this.btn_AOITesting.TabIndex = 138;
             this.btn_AOITesting.Text = "Run";
             this.btn_AOITesting.UseVisualStyleBackColor = true;
@@ -2281,30 +2372,18 @@ namespace SPIL
             // 
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label55.Location = new System.Drawing.Point(323, 227);
+            this.label55.Location = new System.Drawing.Point(327, 200);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(157, 21);
             this.label55.TabIndex = 21;
             this.label55.Text = "AOI Method List :";
-            // 
-            // listBox_AOIAlgorithmList
-            // 
-            this.listBox_AOIAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
-            this.listBox_AOIAlgorithmList.FormattingEnabled = true;
-            this.listBox_AOIAlgorithmList.ItemHeight = 32;
-            this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(323, 251);
-            this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
-            this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
-            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(450, 260);
-            this.listBox_AOIAlgorithmList.TabIndex = 5;
-            this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
             // 
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.gpBox_Sharpness);
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(785, 1019);
+            this.tabPage8.Size = new System.Drawing.Size(793, 1019);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -2567,7 +2646,7 @@ namespace SPIL
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(785, 1019);
+            this.tabPage2.Size = new System.Drawing.Size(793, 1019);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Setup";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -4187,6 +4266,9 @@ namespace SPIL
             this.tabPage7.PerformLayout();
             this.gpBox_AOI.ResumeLayout(false);
             this.gpBox_AOI.PerformLayout();
+            this.tabCtrl_AlgorithmList.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
@@ -4598,6 +4680,12 @@ namespace SPIL
         private System.Windows.Forms.TextBox tBx_SharpImageFolderPath;
         private System.Windows.Forms.Label label68;
         private System.Windows.Forms.Label label96;
+        private System.Windows.Forms.TabControl tabCtrl_AlgorithmList;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TabPage tabPage11;
+        private System.Windows.Forms.RadioButton rdBtn_Octagon;
+        private System.Windows.Forms.RadioButton rdBtn_circle;
+        private System.Windows.Forms.ListBox listBox_AOI2AlgorithmList;
     }
 }
 

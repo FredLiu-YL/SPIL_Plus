@@ -38,11 +38,16 @@ namespace SPIL.Model
         /// </summary>
         public string AOIVppPath { get; set; }
         /// <summary>
+        /// 放置 距離計算算法的vpp的檔案名稱 (八角)
+        /// </summary>
+        public string AOIVppPath2 { get; set; }
+        /// <summary>
         /// 放置 距離清晰度算法的vpp的檔案名稱  
         /// </summary>
         public string SharpVppPath { get; set; }
         public string SharpnessImagesFolder { get; set; } = "D:\\SharpnessImages";
         public AlgorithmDescribe[] AOIAlgorithms { get; set; }
+        public AlgorithmDescribe[] AOIAlgorithms_2 { get; set; }
         public AlgorithmDescribe[] SharpAlgorithms { get; set; }
         public static MachineSetting Load(string filename)  
         {

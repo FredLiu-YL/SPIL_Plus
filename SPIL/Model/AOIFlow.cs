@@ -25,7 +25,7 @@ namespace SPIL.Model
         private Logger logger;
 
         public CogToolBlock MeasureToolBlock => measureToolBlock;
-        public AOIFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes, Logger logger) : base(aoiVppPath, algorithmDescribes, 101)
+        public AOIFlow(string aoiVppPath, AlgorithmDescribe[] algorithmDescribes, Logger logger, int paramBeginID) : base(aoiVppPath, algorithmDescribes, paramBeginID)
         {
             this.logger = logger;
 

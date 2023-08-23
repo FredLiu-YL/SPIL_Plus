@@ -17,11 +17,15 @@ namespace SPIL.model
         public SPILRecipe(AlgorithmDescribe[] aOIAlgorithms, AlgorithmDescribe[] sharpAlgorithms)
         {
             AOIParams = new List<CogParameter>();
+            AOIParams2 = new List<CogParameter>();
             //foreach (var algorithms in aOIAlgorithms) {
             //    AOIParams.Add(null);
             //}
 
         }
+
+        public AOIFunction AOIAlgorithmFunction { get; set; }
+
 
         /// <summary>
         /// 清晰度演算法
@@ -29,18 +33,22 @@ namespace SPIL.model
         public List<CogParameter> ClarityParams { get; set; }
 
         /// <summary>
-        /// AOI 驗算法
+        /// AOI 算法 (圓形)
         /// </summary>
         public List<CogParameter> AOIParams { get; set; }
 
 
+        /// <summary>
+        /// AOI 算法(八角)
+        /// </summary>
+        public List<CogParameter> AOIParams2 { get; set; }
 
 
         /// <summary>
         /// 因某些元件無法被正常序列化 所以另外做存檔功能
         /// </summary>
         /// <param name="Path"></param>
-        public new void Save(string path)
+        public  void RecipeSave(string path)
         {
             //刪除所有Vistiontool 的檔案避免 id重複 寫錯，或是 原先檔案數量5個  後來變更成3個  讀檔會錯誤
             string[] files = Directory.GetFiles(path, "*VsTool_*");
@@ -51,9 +59,18 @@ namespace SPIL.model
                     File.Delete(file); // 删除该文件
                 }
             }
+
             //RunParams  id 在100-199  用於檔案區隔
             if (AOIParams != null) {
                 foreach (CogParameter param in AOIParams) {
+                    param.Save(path);
+                }
+            }
+            //RunParams  id 在301-399  用於檔案區隔
+            if (AOIParams2 != null)
+            {
+                foreach (CogParameter param in AOIParams2)
+                {
                     param.Save(path);
                 }
             }
@@ -75,21 +92,26 @@ namespace SPIL.model
         {
             if (ClarityParams == null)
                 ClarityParams = new List<CogParameter>();
+
             if (AOIParams == null)
                 AOIParams = new List<CogParameter>();
+
+            if (AOIParams2 == null)
+                AOIParams2 = new List<CogParameter>();
             //不知道 直接清除會不會有問題  可能要Dispose
             AOIParams.Clear();
+            AOIParams2.Clear();
             ClarityParams.Clear();
             //想不到好方法做序列化 ， 如果需要修改 就要用JsonConvert 把不能序列化的屬性都改掉  這樣就能正常做load
             var mRecipe = AbstractRecipe.Load<SPILRecipe>($"{path}\\Recipe.json");
 
             //未來新增不同屬性  這裡都要不斷新增
-    
-            //AOIVppPath = mRecipe.AOIVppPath;
+
+            AOIAlgorithmFunction = mRecipe.AOIAlgorithmFunction ;
             //SharpVppPath = mRecipe.SharpVppPath;
 
 
-            // AOI
+            // AOI圓形
             string[] algorithmfiles = Directory.GetFiles(path, "*VsTool_1*");
             foreach (var file in algorithmfiles) {
 
@@ -99,6 +121,20 @@ namespace SPIL.model
                 if (id[0] == "0") continue; // 0 是定位用的樣本 所以排除
                 CogParameter param = CogParameter.Load(path, Convert.ToInt32(id[0]));
                 AOIParams.Add(param);
+
+
+            }
+            // AOI 八角形
+            string[] algorithmfiles2 = Directory.GetFiles(path, "*VsTool_3*");
+            foreach (var file in algorithmfiles2)
+            {
+
+                string fileName = Path.GetFileName(file);
+
+                string[] id = fileName.Split(new string[] { "VsTool_", ".tool" }, StringSplitOptions.RemoveEmptyEntries);
+                if (id[0] == "0") continue; // 0 是定位用的樣本 所以排除
+                CogParameter param = CogParameter.Load(path, Convert.ToInt32(id[0]));
+                AOIParams2.Add(param);
 
 
             }
@@ -157,5 +193,11 @@ namespace SPIL.model
         CogImageSharpnessTool,
         Error,
 
+    }
+
+    public enum AOIFunction
+    {
+        Circle,
+        Octagon
     }
 }
