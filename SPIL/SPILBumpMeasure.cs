@@ -17,9 +17,6 @@ namespace SPIL
         Logger logger = new Logger("AOI");
 
 
-    
-
-
         public SPILBumpMeasure(string Vision_Pro_Tool_Block_Address)
         {
             logger.WriteLog("Load AOI File");

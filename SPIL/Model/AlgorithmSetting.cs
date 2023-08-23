@@ -191,6 +191,7 @@ namespace SPIL.model
         CogImageConvertTool,
         CogFindEllipseTool,
         CogImageSharpnessTool,
+        CogFindLineTool,
         Error,
 
     }

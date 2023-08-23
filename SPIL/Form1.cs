@@ -247,8 +247,8 @@ namespace SPIL
                 string sharpVppPath = $"{systemPath}\\{sharpName}";
 
                 //tBx_RecipeName.Text = "Default";
-                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger,101);
-                aoIFlow2 = new AOIFlow(aoi2VppPath, machineSetting.AOIAlgorithms_2, logger,301);
+                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger, 101);
+                aoIFlow2 = new AOIFlow(aoi2VppPath, machineSetting.AOIAlgorithms_2, logger, 301);
                 sharpnessFlow = new SharpnessFlow(sharpVppPath, machineSetting.SharpAlgorithms);
 
                 sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms, machineSetting.SharpAlgorithms);
@@ -1058,7 +1058,13 @@ namespace SPIL
                 /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
                 string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
                 AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
-                AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
+
+                // AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
+                if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
+                    AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
+                else
+                    AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
+
                 //綁定cogRecordDisplay 用來存toolblock結果圖
                 AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
@@ -3341,6 +3347,41 @@ namespace SPIL
                 MessageBox.Show(ex.Message);
             }
         }
+        private void btn_ReadRecipe_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string name = CB_RecipeList.SelectedItem.ToString();
+                string name = CB_RecipeList.Text;
+                string path = $"{systemPath}\\Recipe\\{name}";
+                LoadRecipe(path);
+                UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
+                MessageBox.Show("讀取完成");
+
+                switch (sPILRecipe.AOIAlgorithmFunction)
+                {
+                    case AOIFunction.Circle:
+                        rdBtn_circle.Checked = true;
+                        break;
+                    case AOIFunction.Octagon:
+                        rdBtn_Octagon.Checked = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                //sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
+
+
+                gpBox_AOI.Enabled = true;
+                gpBox_Sharpness.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void btn_RecipeSave_Click(object sender, EventArgs e)
         {
             try
@@ -3377,37 +3418,7 @@ namespace SPIL
 
         private void CB_RecipeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                string name = CB_RecipeList.SelectedItem.ToString();
-                string path = $"{systemPath}\\Recipe\\{name}";
-                LoadRecipe(path);
-                UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
-                MessageBox.Show("讀取完成");
-
-                switch (sPILRecipe.AOIAlgorithmFunction)
-                {
-                    case AOIFunction.Circle:
-                        rdBtn_circle.Checked =true;
-                        break;
-                    case AOIFunction.Octagon:
-                        rdBtn_Octagon.Checked = true;
-                        break;
-                    default:
-                        break;
-                }
-
-                //sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
-             
-
-                gpBox_AOI.Enabled = true;
-                gpBox_Sharpness.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
+            
 
 
         }
@@ -3427,7 +3438,7 @@ namespace SPIL
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
             aoIFlow2.SetMethodParam(sPILRecipe.AOIParams2);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
-          
+
             logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
         }
@@ -3553,9 +3564,10 @@ namespace SPIL
                  */
 
                 AOI_Measurement.ShowRecord += UpdateAOIRecord;
-                AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;
-
-
+                if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
+                    AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;
+                else
+                    AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;
 
 
                 var result = AOI_Calculate(AOI_Measurement, txB_RecipePicName1.Text, txB_RecipePicName2.Text, txB_RecipePicName3.Text, false);
@@ -4085,12 +4097,12 @@ namespace SPIL
             else
                 tabCtrl_AlgorithmList.SelectedIndex = 1;
 
-            sPILRecipe.AOIAlgorithmFunction = (AOIFunction) tabCtrl_AlgorithmList.SelectedIndex;
+            sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
 
 
         }
 
-
+        
 
         private void HB_off()
         {

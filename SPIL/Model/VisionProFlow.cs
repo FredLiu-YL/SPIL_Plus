@@ -131,6 +131,11 @@ namespace SPIL.Model
                         var cis = tool as CogImageSharpnessTool;
                         cogImage = cis.InputImage;
                         break;
+
+                    case MethodType.CogFindLineTool:
+                        var cls = tool as CogFindLineTool;
+                        cogImage = cls.InputImage;
+                        break;
                     default:
                         break;
 
@@ -188,6 +193,16 @@ namespace SPIL.Model
                             toolBlockFindSharpnessTool.RunParams = methodFindSharpnessTool.RunParams;
                             toolBlockFindSharpnessTool.Region = methodFindSharpnessTool.Region;
                             break;
+                        case MethodType.CogFindLineTool:
+                            CogFindLineTool toolBlockFindLineTool = measureToolBlock.Tools[method.name] as CogFindLineTool;
+
+                            CogFindLineTool methodFindLineTool = tool as CogFindLineTool;
+                            toolBlockFindLineTool.RunParams = methodFindLineTool.RunParams;
+                            
+
+
+                            break;
+                            
                         case MethodType.Error:
                             break;
                         default:
@@ -247,8 +262,10 @@ namespace SPIL.Model
                             break;
                         case MethodType.CogImageSharpnessTool:
                             coglist.Add((new CogFindImageSharpness(item.Name), Convert.ToInt32(item.Id), item.Name));
-
-
+                            break;
+                        case MethodType.CogFindLineTool:
+                            coglist.Add((new CogLineCaliper(item.Name), Convert.ToInt32(item.Id), item.Name));
+                            
                             break;
                         default:
                             break;
@@ -275,6 +292,9 @@ namespace SPIL.Model
                 return MethodType.CogFindEllipseTool;
             else if (tool is CogImageSharpnessTool)
                 return MethodType.CogImageSharpnessTool;
+            else if (tool is CogFindLineTool)
+                return MethodType.CogFindLineTool;
+            
             return MethodType.Error;
         }
     }

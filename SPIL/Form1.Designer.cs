@@ -385,6 +385,7 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.btn_ReadRecipe = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1995,8 +1996,8 @@ namespace SPIL
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage8);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
@@ -2018,11 +2019,6 @@ namespace SPIL
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.Log_tBx);
-            this.tabPage7.Controls.Add(this.label67);
-            this.tabPage7.Controls.Add(this.btn_RecipeSave);
-            this.tabPage7.Controls.Add(this.tBx_RecipeName);
-            this.tabPage7.Controls.Add(this.label54);
-            this.tabPage7.Controls.Add(this.CB_RecipeList);
             this.tabPage7.Controls.Add(this.button8);
             this.tabPage7.Controls.Add(this.gpBox_AOI);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
@@ -2046,7 +2042,7 @@ namespace SPIL
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(492, 10);
+            this.label67.Location = new System.Drawing.Point(535, 7);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(104, 16);
             this.label67.TabIndex = 150;
@@ -2054,7 +2050,7 @@ namespace SPIL
             // 
             // btn_RecipeSave
             // 
-            this.btn_RecipeSave.Location = new System.Drawing.Point(273, 6);
+            this.btn_RecipeSave.Location = new System.Drawing.Point(275, 15);
             this.btn_RecipeSave.Name = "btn_RecipeSave";
             this.btn_RecipeSave.Size = new System.Drawing.Size(113, 31);
             this.btn_RecipeSave.TabIndex = 20;
@@ -2064,7 +2060,7 @@ namespace SPIL
             // 
             // tBx_RecipeName
             // 
-            this.tBx_RecipeName.Location = new System.Drawing.Point(131, 10);
+            this.tBx_RecipeName.Location = new System.Drawing.Point(133, 19);
             this.tBx_RecipeName.Name = "tBx_RecipeName";
             this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
             this.tBx_RecipeName.TabIndex = 19;
@@ -2072,7 +2068,7 @@ namespace SPIL
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(15, 10);
+            this.label54.Location = new System.Drawing.Point(17, 19);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(110, 16);
             this.label54.TabIndex = 17;
@@ -2081,7 +2077,7 @@ namespace SPIL
             // CB_RecipeList
             // 
             this.CB_RecipeList.FormattingEnabled = true;
-            this.CB_RecipeList.Location = new System.Drawing.Point(612, 7);
+            this.CB_RecipeList.Location = new System.Drawing.Point(538, 30);
             this.CB_RecipeList.Name = "CB_RecipeList";
             this.CB_RecipeList.Size = new System.Drawing.Size(118, 24);
             this.CB_RecipeList.TabIndex = 16;
@@ -2090,7 +2086,7 @@ namespace SPIL
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(18, 40);
+            this.button8.Location = new System.Drawing.Point(3, 25);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(91, 30);
             this.button8.TabIndex = 8;
@@ -2123,7 +2119,7 @@ namespace SPIL
             this.gpBox_AOI.Controls.Add(this.label55);
             this.gpBox_AOI.Enabled = false;
             this.gpBox_AOI.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.gpBox_AOI.Location = new System.Drawing.Point(3, 88);
+            this.gpBox_AOI.Location = new System.Drawing.Point(4, 61);
             this.gpBox_AOI.Name = "gpBox_AOI";
             this.gpBox_AOI.Size = new System.Drawing.Size(786, 913);
             this.gpBox_AOI.TabIndex = 149;
@@ -2184,7 +2180,7 @@ namespace SPIL
             this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(2, 6);
             this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
             this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
-            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 228);
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 196);
             this.listBox_AOIAlgorithmList.TabIndex = 5;
             this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
             // 
@@ -2215,7 +2211,7 @@ namespace SPIL
             // 
             this.label96.AutoSize = true;
             this.label96.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label96.Location = new System.Drawing.Point(323, 535);
+            this.label96.Location = new System.Drawing.Point(323, 501);
             this.label96.Name = "label96";
             this.label96.Size = new System.Drawing.Size(92, 21);
             this.label96.TabIndex = 153;
@@ -2380,7 +2376,13 @@ namespace SPIL
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.btn_ReadRecipe);
             this.tabPage8.Controls.Add(this.gpBox_Sharpness);
+            this.tabPage8.Controls.Add(this.label67);
+            this.tabPage8.Controls.Add(this.CB_RecipeList);
+            this.tabPage8.Controls.Add(this.label54);
+            this.tabPage8.Controls.Add(this.tBx_RecipeName);
+            this.tabPage8.Controls.Add(this.btn_RecipeSave);
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Size = new System.Drawing.Size(793, 1019);
@@ -2412,9 +2414,9 @@ namespace SPIL
             this.gpBox_Sharpness.Controls.Add(this.listBox_SharpnessAlgorithmList);
             this.gpBox_Sharpness.Enabled = false;
             this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 3);
+            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 69);
             this.gpBox_Sharpness.Name = "gpBox_Sharpness";
-            this.gpBox_Sharpness.Size = new System.Drawing.Size(779, 989);
+            this.gpBox_Sharpness.Size = new System.Drawing.Size(779, 929);
             this.gpBox_Sharpness.TabIndex = 0;
             this.gpBox_Sharpness.TabStop = false;
             this.gpBox_Sharpness.Text = "SharpnessTesting";
@@ -4239,11 +4241,21 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
+            // btn_ReadRecipe
+            // 
+            this.btn_ReadRecipe.Location = new System.Drawing.Point(662, 10);
+            this.btn_ReadRecipe.Name = "btn_ReadRecipe";
+            this.btn_ReadRecipe.Size = new System.Drawing.Size(104, 44);
+            this.btn_ReadRecipe.TabIndex = 151;
+            this.btn_ReadRecipe.Text = "Read Recipe";
+            this.btn_ReadRecipe.UseVisualStyleBackColor = true;
+            this.btn_ReadRecipe.Click += new System.EventHandler(this.btn_ReadRecipe_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(815, 1061);
+            this.ClientSize = new System.Drawing.Size(818, 1061);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -4273,6 +4285,7 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
             this.gpBox_Sharpness.ResumeLayout(false);
             this.gpBox_Sharpness.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
@@ -4686,6 +4699,7 @@ namespace SPIL
         private System.Windows.Forms.RadioButton rdBtn_Octagon;
         private System.Windows.Forms.RadioButton rdBtn_circle;
         private System.Windows.Forms.ListBox listBox_AOI2AlgorithmList;
+        private System.Windows.Forms.Button btn_ReadRecipe;
     }
 }
 
