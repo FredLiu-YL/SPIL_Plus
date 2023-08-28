@@ -48,21 +48,27 @@ namespace SPIL.Model
             //var deleteNull = results.Where(r => r != null).ToArray();
 
             //排序後找出最大10張圖
-            var searchScore1s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore1).Take(10).ToList();
-            if (searchScore1s.Count < 10) throw new Exception("Sharpness Analyze Error");
+            var searchScore1s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore1).Take(20).ToList();
+            if (searchScore1s.Count < 20) throw new Exception("Sharpness Analyze Error");
             //  var image1 = searchScore1s.OrderByDescending(o => o.result.Score1).First();
 
             var image2 = searchScore1s.OrderByDescending(o => o.result.Score2).First();
 
             //Score2  最高那張號碼之前的所有圖片，找Score1最高分
-            var searchImage2 = results.Take(image2.index);
-            if (searchImage2.Where(r => r != null).Count() ==0) throw new Exception("Image2 Sharpness Analyze Error");
-          
-            var image1 = searchImage2.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.Score1).First();
+           //    var searchImage2 = results.Take(image2.index+1);
+
+            var image2Index =searchScore1s.IndexOf(image2);
+
+            var searchImage2 = searchScore1s.Take(image2Index+1);
+           
+            if (searchImage2.Where(r => r.result != null).Count() ==0) throw new Exception("Image2 Sharpness Analyze Error");
+            var image1 = searchImage2.Select((result) => (result)).Where(r => r.result != null).OrderByDescending(o => o.result.Score1).First();
+
+           // var image1 = searchImage2.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.Score1).First();
 
             //       var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2).Take(10);
             //排序後找出最大10張圖
-            var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(10).ToList();
+            var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(20).ToList();
             var image3 = searchScore12s.OrderByDescending(o => o.result.Score3).First();
 
 

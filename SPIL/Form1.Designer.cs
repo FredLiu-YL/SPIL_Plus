@@ -172,39 +172,8 @@ namespace SPIL
             this.label14 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.Log_tBx = new System.Windows.Forms.TextBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.btn_RecipeSave = new System.Windows.Forms.Button();
-            this.tBx_RecipeName = new System.Windows.Forms.TextBox();
-            this.label54 = new System.Windows.Forms.Label();
-            this.CB_RecipeList = new System.Windows.Forms.ComboBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.gpBox_AOI = new System.Windows.Forms.GroupBox();
-            this.rdBtn_Octagon = new System.Windows.Forms.RadioButton();
-            this.rdBtn_circle = new System.Windows.Forms.RadioButton();
-            this.tabCtrl_AlgorithmList = new System.Windows.Forms.TabControl();
-            this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
-            this.tabPage11 = new System.Windows.Forms.TabPage();
-            this.listBox_AOI2AlgorithmList = new System.Windows.Forms.ListBox();
-            this.label96 = new System.Windows.Forms.Label();
-            this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
-            this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
-            this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
-            this.tBx_CuValue = new System.Windows.Forms.TextBox();
-            this.txB_RecipePicName3 = new System.Windows.Forms.TextBox();
-            this.tBx_CuNiValue = new System.Windows.Forms.TextBox();
-            this.label57 = new System.Windows.Forms.Label();
-            this.btn_AOIOpenImage1 = new System.Windows.Forms.Button();
-            this.label58 = new System.Windows.Forms.Label();
-            this.btn_AOIOpenImage3 = new System.Windows.Forms.Button();
-            this.btn_AOITesting = new System.Windows.Forms.Button();
-            this.txB_RecipePicName2 = new System.Windows.Forms.TextBox();
-            this.btn_AOIOpenImage2 = new System.Windows.Forms.Button();
-            this.txB_RecipePicName1 = new System.Windows.Forms.TextBox();
-            this.label55 = new System.Windows.Forms.Label();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.btn_ReadRecipe = new System.Windows.Forms.Button();
             this.gpBox_Sharpness = new System.Windows.Forms.GroupBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -231,6 +200,38 @@ namespace SPIL
             this.btn_OpenSharpnessImage = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.listBox_SharpnessAlgorithmList = new System.Windows.Forms.ListBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.CB_RecipeList = new System.Windows.Forms.ComboBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.tBx_RecipeName = new System.Windows.Forms.TextBox();
+            this.btn_RecipeSave = new System.Windows.Forms.Button();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.Log_tBx = new System.Windows.Forms.TextBox();
+            this.button8 = new System.Windows.Forms.Button();
+            this.gpBox_AOI = new System.Windows.Forms.GroupBox();
+            this.rdBtn_Octagon = new System.Windows.Forms.RadioButton();
+            this.rdBtn_circle = new System.Windows.Forms.RadioButton();
+            this.tabCtrl_AlgorithmList = new System.Windows.Forms.TabControl();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.listBox_AOI2AlgorithmList = new System.Windows.Forms.ListBox();
+            this.label96 = new System.Windows.Forms.Label();
+            this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
+            this.tBx_CuValue = new System.Windows.Forms.TextBox();
+            this.txB_RecipePicName3 = new System.Windows.Forms.TextBox();
+            this.tBx_CuNiValue = new System.Windows.Forms.TextBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.btn_AOIOpenImage1 = new System.Windows.Forms.Button();
+            this.label58 = new System.Windows.Forms.Label();
+            this.btn_AOIOpenImage3 = new System.Windows.Forms.Button();
+            this.btn_AOITesting = new System.Windows.Forms.Button();
+            this.txB_RecipePicName2 = new System.Windows.Forms.TextBox();
+            this.btn_AOIOpenImage2 = new System.Windows.Forms.Button();
+            this.txB_RecipePicName1 = new System.Windows.Forms.TextBox();
+            this.label55 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -385,7 +386,6 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.btn_ReadRecipe = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -395,6 +395,11 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Connect_Status)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage8.SuspendLayout();
+            this.gpBox_Sharpness.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).BeginInit();
             this.tabPage7.SuspendLayout();
             this.gpBox_AOI.SuspendLayout();
             this.tabCtrl_AlgorithmList.SuspendLayout();
@@ -403,11 +408,6 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).BeginInit();
-            this.tabPage8.SuspendLayout();
-            this.gpBox_Sharpness.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl_Setup.SuspendLayout();
@@ -1519,12 +1519,12 @@ namespace SPIL
             this.cogDisplay3.ColorMapUpperRoiLimit = 1D;
             this.cogDisplay3.DoubleTapZoomCycleLength = 2;
             this.cogDisplay3.DoubleTapZoomSensitivity = 2.5D;
-            this.cogDisplay3.Location = new System.Drawing.Point(451, 705);
+            this.cogDisplay3.Location = new System.Drawing.Point(451, 702);
             this.cogDisplay3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogDisplay3.MouseWheelSensitivity = 1D;
             this.cogDisplay3.Name = "cogDisplay3";
             this.cogDisplay3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay3.OcxState")));
-            this.cogDisplay3.Size = new System.Drawing.Size(300, 300);
+            this.cogDisplay3.Size = new System.Drawing.Size(316, 278);
             this.cogDisplay3.TabIndex = 131;
             // 
             // label23
@@ -1590,7 +1590,7 @@ namespace SPIL
             this.cogDisplay2.MouseWheelSensitivity = 1D;
             this.cogDisplay2.Name = "cogDisplay2";
             this.cogDisplay2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay2.OcxState")));
-            this.cogDisplay2.Size = new System.Drawing.Size(300, 300);
+            this.cogDisplay2.Size = new System.Drawing.Size(316, 299);
             this.cogDisplay2.TabIndex = 125;
             // 
             // cogDisplay1
@@ -1607,7 +1607,7 @@ namespace SPIL
             this.cogDisplay1.MouseWheelSensitivity = 1D;
             this.cogDisplay1.Name = "cogDisplay1";
             this.cogDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay1.OcxState")));
-            this.cogDisplay1.Size = new System.Drawing.Size(300, 300);
+            this.cogDisplay1.Size = new System.Drawing.Size(316, 287);
             this.cogDisplay1.TabIndex = 124;
             // 
             // textBox_Slot
@@ -2016,6 +2016,340 @@ namespace SPIL
             this.tabPage1.Text = "Measurement";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.btn_ReadRecipe);
+            this.tabPage8.Controls.Add(this.gpBox_Sharpness);
+            this.tabPage8.Controls.Add(this.label67);
+            this.tabPage8.Controls.Add(this.CB_RecipeList);
+            this.tabPage8.Controls.Add(this.label54);
+            this.tabPage8.Controls.Add(this.tBx_RecipeName);
+            this.tabPage8.Controls.Add(this.btn_RecipeSave);
+            this.tabPage8.Location = new System.Drawing.Point(4, 26);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(793, 1019);
+            this.tabPage8.TabIndex = 3;
+            this.tabPage8.Text = "SharpnessAlgorithm";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // btn_ReadRecipe
+            // 
+            this.btn_ReadRecipe.Location = new System.Drawing.Point(662, 10);
+            this.btn_ReadRecipe.Name = "btn_ReadRecipe";
+            this.btn_ReadRecipe.Size = new System.Drawing.Size(104, 44);
+            this.btn_ReadRecipe.TabIndex = 151;
+            this.btn_ReadRecipe.Text = "Read Recipe";
+            this.btn_ReadRecipe.UseVisualStyleBackColor = true;
+            this.btn_ReadRecipe.Click += new System.EventHandler(this.btn_ReadRecipe_Click);
+            // 
+            // gpBox_Sharpness
+            // 
+            this.gpBox_Sharpness.BackColor = System.Drawing.Color.Snow;
+            this.gpBox_Sharpness.Controls.Add(this.dataGrid_Sharpness);
+            this.gpBox_Sharpness.Controls.Add(this.btn_SharpnessMultRun);
+            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore3);
+            this.gpBox_Sharpness.Controls.Add(this.label66);
+            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore2);
+            this.gpBox_Sharpness.Controls.Add(this.label65);
+            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore1);
+            this.gpBox_Sharpness.Controls.Add(this.label64);
+            this.gpBox_Sharpness.Controls.Add(this.tbx_SearchScore2);
+            this.gpBox_Sharpness.Controls.Add(this.label63);
+            this.gpBox_Sharpness.Controls.Add(this.cogRecordDisplay2);
+            this.gpBox_Sharpness.Controls.Add(this.txB_SharpnessPicName);
+            this.gpBox_Sharpness.Controls.Add(this.tbx_SearchScore1);
+            this.gpBox_Sharpness.Controls.Add(this.label59);
+            this.gpBox_Sharpness.Controls.Add(this.btn_SharpnessRun);
+            this.gpBox_Sharpness.Controls.Add(this.pBox_SharpnessPic);
+            this.gpBox_Sharpness.Controls.Add(this.btn_OpenSharpnessImage);
+            this.gpBox_Sharpness.Controls.Add(this.label56);
+            this.gpBox_Sharpness.Controls.Add(this.listBox_SharpnessAlgorithmList);
+            this.gpBox_Sharpness.Enabled = false;
+            this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 69);
+            this.gpBox_Sharpness.Name = "gpBox_Sharpness";
+            this.gpBox_Sharpness.Size = new System.Drawing.Size(779, 929);
+            this.gpBox_Sharpness.TabIndex = 0;
+            this.gpBox_Sharpness.TabStop = false;
+            this.gpBox_Sharpness.Text = "SharpnessTesting";
+            // 
+            // dataGrid_Sharpness
+            // 
+            this.dataGrid_Sharpness.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid_Sharpness.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.FileName,
+            this.SearchScore1,
+            this.SearchScore2,
+            this.Score1,
+            this.Score2,
+            this.Score3});
+            this.dataGrid_Sharpness.Location = new System.Drawing.Point(111, 767);
+            this.dataGrid_Sharpness.Name = "dataGrid_Sharpness";
+            this.dataGrid_Sharpness.ReadOnly = true;
+            this.dataGrid_Sharpness.RowHeadersWidth = 51;
+            this.dataGrid_Sharpness.RowTemplate.Height = 24;
+            this.dataGrid_Sharpness.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGrid_Sharpness.Size = new System.Drawing.Size(652, 145);
+            this.dataGrid_Sharpness.TabIndex = 146;
+            // 
+            // FileName
+            // 
+            this.FileName.HeaderText = "FileName";
+            this.FileName.MinimumWidth = 6;
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            this.FileName.Width = 125;
+            // 
+            // SearchScore1
+            // 
+            this.SearchScore1.HeaderText = "SearchScore1";
+            this.SearchScore1.MinimumWidth = 6;
+            this.SearchScore1.Name = "SearchScore1";
+            this.SearchScore1.ReadOnly = true;
+            this.SearchScore1.Width = 125;
+            // 
+            // SearchScore2
+            // 
+            this.SearchScore2.HeaderText = "SearchScore2";
+            this.SearchScore2.MinimumWidth = 6;
+            this.SearchScore2.Name = "SearchScore2";
+            this.SearchScore2.ReadOnly = true;
+            this.SearchScore2.Width = 125;
+            // 
+            // Score1
+            // 
+            this.Score1.HeaderText = "Score1";
+            this.Score1.MinimumWidth = 6;
+            this.Score1.Name = "Score1";
+            this.Score1.ReadOnly = true;
+            this.Score1.Width = 125;
+            // 
+            // Score2
+            // 
+            this.Score2.HeaderText = "Score2";
+            this.Score2.MinimumWidth = 6;
+            this.Score2.Name = "Score2";
+            this.Score2.ReadOnly = true;
+            this.Score2.Width = 125;
+            // 
+            // Score3
+            // 
+            this.Score3.HeaderText = "Score3";
+            this.Score3.MinimumWidth = 6;
+            this.Score3.Name = "Score3";
+            this.Score3.ReadOnly = true;
+            this.Score3.Width = 125;
+            // 
+            // btn_SharpnessMultRun
+            // 
+            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(0, 767);
+            this.btn_SharpnessMultRun.Name = "btn_SharpnessMultRun";
+            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(105, 54);
+            this.btn_SharpnessMultRun.TabIndex = 145;
+            this.btn_SharpnessMultRun.Text = "SharpnessRun";
+            this.btn_SharpnessMultRun.UseVisualStyleBackColor = true;
+            this.btn_SharpnessMultRun.Click += new System.EventHandler(this.btn_SharpnessMultRun_Click);
+            // 
+            // tbx_SharpnessScore3
+            // 
+            this.tbx_SharpnessScore3.Location = new System.Drawing.Point(124, 320);
+            this.tbx_SharpnessScore3.Name = "tbx_SharpnessScore3";
+            this.tbx_SharpnessScore3.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore3.TabIndex = 158;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(6, 323);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(85, 24);
+            this.label66.TabIndex = 157;
+            this.label66.Text = "Score3 :";
+            // 
+            // tbx_SharpnessScore2
+            // 
+            this.tbx_SharpnessScore2.Location = new System.Drawing.Point(124, 278);
+            this.tbx_SharpnessScore2.Name = "tbx_SharpnessScore2";
+            this.tbx_SharpnessScore2.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore2.TabIndex = 156;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(6, 282);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(85, 24);
+            this.label65.TabIndex = 155;
+            this.label65.Text = "Score2 :";
+            // 
+            // tbx_SharpnessScore1
+            // 
+            this.tbx_SharpnessScore1.Location = new System.Drawing.Point(124, 238);
+            this.tbx_SharpnessScore1.Name = "tbx_SharpnessScore1";
+            this.tbx_SharpnessScore1.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore1.TabIndex = 154;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(6, 241);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(85, 24);
+            this.label64.TabIndex = 153;
+            this.label64.Text = "Score1 :";
+            // 
+            // tbx_SearchScore2
+            // 
+            this.tbx_SearchScore2.Location = new System.Drawing.Point(165, 191);
+            this.tbx_SearchScore2.Name = "tbx_SearchScore2";
+            this.tbx_SearchScore2.Size = new System.Drawing.Size(103, 36);
+            this.tbx_SearchScore2.TabIndex = 152;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(6, 194);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(153, 24);
+            this.label63.TabIndex = 151;
+            this.label63.Text = "Search Score2 :";
+            // 
+            // cogRecordDisplay2
+            // 
+            this.cogRecordDisplay2.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay2.ColorMapLowerRoiLimit = 0D;
+            this.cogRecordDisplay2.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRecordDisplay2.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay2.ColorMapUpperRoiLimit = 1D;
+            this.cogRecordDisplay2.DoubleTapZoomCycleLength = 2;
+            this.cogRecordDisplay2.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRecordDisplay2.Location = new System.Drawing.Point(338, 353);
+            this.cogRecordDisplay2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRecordDisplay2.MouseWheelSensitivity = 1D;
+            this.cogRecordDisplay2.Name = "cogRecordDisplay2";
+            this.cogRecordDisplay2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay2.OcxState")));
+            this.cogRecordDisplay2.Size = new System.Drawing.Size(435, 374);
+            this.cogRecordDisplay2.TabIndex = 150;
+            // 
+            // txB_SharpnessPicName
+            // 
+            this.txB_SharpnessPicName.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txB_SharpnessPicName.Location = new System.Drawing.Point(17, 686);
+            this.txB_SharpnessPicName.Name = "txB_SharpnessPicName";
+            this.txB_SharpnessPicName.Size = new System.Drawing.Size(305, 23);
+            this.txB_SharpnessPicName.TabIndex = 145;
+            // 
+            // tbx_SearchScore1
+            // 
+            this.tbx_SearchScore1.Location = new System.Drawing.Point(165, 151);
+            this.tbx_SearchScore1.Name = "tbx_SearchScore1";
+            this.tbx_SearchScore1.Size = new System.Drawing.Size(103, 36);
+            this.tbx_SearchScore1.TabIndex = 143;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(6, 154);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(153, 24);
+            this.label59.TabIndex = 142;
+            this.label59.Text = "Search Score1 :";
+            // 
+            // btn_SharpnessRun
+            // 
+            this.btn_SharpnessRun.Location = new System.Drawing.Point(38, 70);
+            this.btn_SharpnessRun.Name = "btn_SharpnessRun";
+            this.btn_SharpnessRun.Size = new System.Drawing.Size(91, 37);
+            this.btn_SharpnessRun.TabIndex = 141;
+            this.btn_SharpnessRun.Text = "Testing";
+            this.btn_SharpnessRun.UseVisualStyleBackColor = true;
+            this.btn_SharpnessRun.Click += new System.EventHandler(this.btn_SharpnessRun_Click);
+            // 
+            // pBox_SharpnessPic
+            // 
+            this.pBox_SharpnessPic.BackColor = System.Drawing.Color.Black;
+            this.pBox_SharpnessPic.Location = new System.Drawing.Point(17, 424);
+            this.pBox_SharpnessPic.Name = "pBox_SharpnessPic";
+            this.pBox_SharpnessPic.Size = new System.Drawing.Size(305, 248);
+            this.pBox_SharpnessPic.TabIndex = 139;
+            this.pBox_SharpnessPic.TabStop = false;
+            // 
+            // btn_OpenSharpnessImage
+            // 
+            this.btn_OpenSharpnessImage.Location = new System.Drawing.Point(84, 376);
+            this.btn_OpenSharpnessImage.Name = "btn_OpenSharpnessImage";
+            this.btn_OpenSharpnessImage.Size = new System.Drawing.Size(157, 41);
+            this.btn_OpenSharpnessImage.TabIndex = 140;
+            this.btn_OpenSharpnessImage.Text = "Open_Image";
+            this.btn_OpenSharpnessImage.UseVisualStyleBackColor = true;
+            this.btn_OpenSharpnessImage.Click += new System.EventHandler(this.btn_OpenSharpnessImage_Click);
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label56.Location = new System.Drawing.Point(334, 32);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(204, 21);
+            this.label56.TabIndex = 24;
+            this.label56.Text = "Sharpness Method List :";
+            // 
+            // listBox_SharpnessAlgorithmList
+            // 
+            this.listBox_SharpnessAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
+            this.listBox_SharpnessAlgorithmList.FormattingEnabled = true;
+            this.listBox_SharpnessAlgorithmList.ItemHeight = 32;
+            this.listBox_SharpnessAlgorithmList.Location = new System.Drawing.Point(338, 56);
+            this.listBox_SharpnessAlgorithmList.Name = "listBox_SharpnessAlgorithmList";
+            this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(425, 260);
+            this.listBox_SharpnessAlgorithmList.TabIndex = 23;
+            this.listBox_SharpnessAlgorithmList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox_SharpnessAlgorithmList_MouseDoubleClick);
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(535, 7);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(104, 16);
+            this.label67.TabIndex = 150;
+            this.label67.Text = "Select Recipe  :";
+            // 
+            // CB_RecipeList
+            // 
+            this.CB_RecipeList.FormattingEnabled = true;
+            this.CB_RecipeList.Location = new System.Drawing.Point(538, 30);
+            this.CB_RecipeList.Name = "CB_RecipeList";
+            this.CB_RecipeList.Size = new System.Drawing.Size(118, 24);
+            this.CB_RecipeList.TabIndex = 16;
+            this.CB_RecipeList.SelectedIndexChanged += new System.EventHandler(this.CB_RecipeList_SelectedIndexChanged);
+            this.CB_RecipeList.Click += new System.EventHandler(this.CB_RecipeList_Click);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(17, 19);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(110, 16);
+            this.label54.TabIndex = 17;
+            this.label54.Text = "CurrentRecipe  :";
+            // 
+            // tBx_RecipeName
+            // 
+            this.tBx_RecipeName.Location = new System.Drawing.Point(133, 19);
+            this.tBx_RecipeName.Name = "tBx_RecipeName";
+            this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
+            this.tBx_RecipeName.TabIndex = 19;
+            // 
+            // btn_RecipeSave
+            // 
+            this.btn_RecipeSave.Location = new System.Drawing.Point(275, 15);
+            this.btn_RecipeSave.Name = "btn_RecipeSave";
+            this.btn_RecipeSave.Size = new System.Drawing.Size(113, 31);
+            this.btn_RecipeSave.TabIndex = 20;
+            this.btn_RecipeSave.Text = "Recipe Save";
+            this.btn_RecipeSave.UseVisualStyleBackColor = true;
+            this.btn_RecipeSave.Click += new System.EventHandler(this.btn_RecipeSave_Click);
+            // 
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.Log_tBx);
@@ -2038,51 +2372,6 @@ namespace SPIL
             this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.Log_tBx.Size = new System.Drawing.Size(456, 378);
             this.Log_tBx.TabIndex = 152;
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(535, 7);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(104, 16);
-            this.label67.TabIndex = 150;
-            this.label67.Text = "Select Recipe  :";
-            // 
-            // btn_RecipeSave
-            // 
-            this.btn_RecipeSave.Location = new System.Drawing.Point(275, 15);
-            this.btn_RecipeSave.Name = "btn_RecipeSave";
-            this.btn_RecipeSave.Size = new System.Drawing.Size(113, 31);
-            this.btn_RecipeSave.TabIndex = 20;
-            this.btn_RecipeSave.Text = "Recipe Save";
-            this.btn_RecipeSave.UseVisualStyleBackColor = true;
-            this.btn_RecipeSave.Click += new System.EventHandler(this.btn_RecipeSave_Click);
-            // 
-            // tBx_RecipeName
-            // 
-            this.tBx_RecipeName.Location = new System.Drawing.Point(133, 19);
-            this.tBx_RecipeName.Name = "tBx_RecipeName";
-            this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
-            this.tBx_RecipeName.TabIndex = 19;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(17, 19);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(110, 16);
-            this.label54.TabIndex = 17;
-            this.label54.Text = "CurrentRecipe  :";
-            // 
-            // CB_RecipeList
-            // 
-            this.CB_RecipeList.FormattingEnabled = true;
-            this.CB_RecipeList.Location = new System.Drawing.Point(538, 30);
-            this.CB_RecipeList.Name = "CB_RecipeList";
-            this.CB_RecipeList.Size = new System.Drawing.Size(118, 24);
-            this.CB_RecipeList.TabIndex = 16;
-            this.CB_RecipeList.SelectedIndexChanged += new System.EventHandler(this.CB_RecipeList_SelectedIndexChanged);
-            this.CB_RecipeList.Click += new System.EventHandler(this.CB_RecipeList_Click);
             // 
             // button8
             // 
@@ -2180,7 +2469,7 @@ namespace SPIL
             this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(2, 6);
             this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
             this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
-            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 196);
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 228);
             this.listBox_AOIAlgorithmList.TabIndex = 5;
             this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
             // 
@@ -2231,7 +2520,7 @@ namespace SPIL
             this.cogRcdDisp_Distance3.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance3.Name = "cogRcdDisp_Distance3";
             this.cogRcdDisp_Distance3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance3.OcxState")));
-            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(299, 259);
             this.cogRcdDisp_Distance3.TabIndex = 151;
             // 
             // cogRcdDisp_Distance2
@@ -2248,7 +2537,7 @@ namespace SPIL
             this.cogRcdDisp_Distance2.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance2.Name = "cogRcdDisp_Distance2";
             this.cogRcdDisp_Distance2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance2.OcxState")));
-            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(297, 237);
             this.cogRcdDisp_Distance2.TabIndex = 150;
             // 
             // cogRcdDisp_Distance1
@@ -2265,7 +2554,7 @@ namespace SPIL
             this.cogRcdDisp_Distance1.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance1.Name = "cogRcdDisp_Distance1";
             this.cogRcdDisp_Distance1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance1.OcxState")));
-            this.cogRcdDisp_Distance1.Size = new System.Drawing.Size(300, 250);
+            this.cogRcdDisp_Distance1.Size = new System.Drawing.Size(298, 239);
             this.cogRcdDisp_Distance1.TabIndex = 149;
             // 
             // tBx_CuValue
@@ -2373,272 +2662,6 @@ namespace SPIL
             this.label55.Size = new System.Drawing.Size(157, 21);
             this.label55.TabIndex = 21;
             this.label55.Text = "AOI Method List :";
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Controls.Add(this.btn_ReadRecipe);
-            this.tabPage8.Controls.Add(this.gpBox_Sharpness);
-            this.tabPage8.Controls.Add(this.label67);
-            this.tabPage8.Controls.Add(this.CB_RecipeList);
-            this.tabPage8.Controls.Add(this.label54);
-            this.tabPage8.Controls.Add(this.tBx_RecipeName);
-            this.tabPage8.Controls.Add(this.btn_RecipeSave);
-            this.tabPage8.Location = new System.Drawing.Point(4, 26);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(793, 1019);
-            this.tabPage8.TabIndex = 3;
-            this.tabPage8.Text = "SharpnessAlgorithm";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // gpBox_Sharpness
-            // 
-            this.gpBox_Sharpness.BackColor = System.Drawing.Color.Snow;
-            this.gpBox_Sharpness.Controls.Add(this.dataGrid_Sharpness);
-            this.gpBox_Sharpness.Controls.Add(this.btn_SharpnessMultRun);
-            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore3);
-            this.gpBox_Sharpness.Controls.Add(this.label66);
-            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore2);
-            this.gpBox_Sharpness.Controls.Add(this.label65);
-            this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore1);
-            this.gpBox_Sharpness.Controls.Add(this.label64);
-            this.gpBox_Sharpness.Controls.Add(this.tbx_SearchScore2);
-            this.gpBox_Sharpness.Controls.Add(this.label63);
-            this.gpBox_Sharpness.Controls.Add(this.cogRecordDisplay2);
-            this.gpBox_Sharpness.Controls.Add(this.txB_SharpnessPicName);
-            this.gpBox_Sharpness.Controls.Add(this.tbx_SearchScore1);
-            this.gpBox_Sharpness.Controls.Add(this.label59);
-            this.gpBox_Sharpness.Controls.Add(this.btn_SharpnessRun);
-            this.gpBox_Sharpness.Controls.Add(this.pBox_SharpnessPic);
-            this.gpBox_Sharpness.Controls.Add(this.btn_OpenSharpnessImage);
-            this.gpBox_Sharpness.Controls.Add(this.label56);
-            this.gpBox_Sharpness.Controls.Add(this.listBox_SharpnessAlgorithmList);
-            this.gpBox_Sharpness.Enabled = false;
-            this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 69);
-            this.gpBox_Sharpness.Name = "gpBox_Sharpness";
-            this.gpBox_Sharpness.Size = new System.Drawing.Size(779, 929);
-            this.gpBox_Sharpness.TabIndex = 0;
-            this.gpBox_Sharpness.TabStop = false;
-            this.gpBox_Sharpness.Text = "SharpnessTesting";
-            // 
-            // dataGrid_Sharpness
-            // 
-            this.dataGrid_Sharpness.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid_Sharpness.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.FileName,
-            this.SearchScore1,
-            this.SearchScore2,
-            this.Score1,
-            this.Score2,
-            this.Score3});
-            this.dataGrid_Sharpness.Location = new System.Drawing.Point(111, 767);
-            this.dataGrid_Sharpness.Name = "dataGrid_Sharpness";
-            this.dataGrid_Sharpness.ReadOnly = true;
-            this.dataGrid_Sharpness.RowTemplate.Height = 24;
-            this.dataGrid_Sharpness.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid_Sharpness.Size = new System.Drawing.Size(652, 145);
-            this.dataGrid_Sharpness.TabIndex = 146;
-            // 
-            // FileName
-            // 
-            this.FileName.HeaderText = "FileName";
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            // 
-            // SearchScore1
-            // 
-            this.SearchScore1.HeaderText = "SearchScore1";
-            this.SearchScore1.Name = "SearchScore1";
-            this.SearchScore1.ReadOnly = true;
-            // 
-            // SearchScore2
-            // 
-            this.SearchScore2.HeaderText = "SearchScore2";
-            this.SearchScore2.Name = "SearchScore2";
-            this.SearchScore2.ReadOnly = true;
-            // 
-            // Score1
-            // 
-            this.Score1.HeaderText = "Score1";
-            this.Score1.Name = "Score1";
-            this.Score1.ReadOnly = true;
-            // 
-            // Score2
-            // 
-            this.Score2.HeaderText = "Score2";
-            this.Score2.Name = "Score2";
-            this.Score2.ReadOnly = true;
-            // 
-            // Score3
-            // 
-            this.Score3.HeaderText = "Score3";
-            this.Score3.Name = "Score3";
-            this.Score3.ReadOnly = true;
-            // 
-            // btn_SharpnessMultRun
-            // 
-            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(0, 767);
-            this.btn_SharpnessMultRun.Name = "btn_SharpnessMultRun";
-            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(105, 54);
-            this.btn_SharpnessMultRun.TabIndex = 145;
-            this.btn_SharpnessMultRun.Text = "SharpnessRun";
-            this.btn_SharpnessMultRun.UseVisualStyleBackColor = true;
-            this.btn_SharpnessMultRun.Click += new System.EventHandler(this.btn_SharpnessMultRun_Click);
-            // 
-            // tbx_SharpnessScore3
-            // 
-            this.tbx_SharpnessScore3.Location = new System.Drawing.Point(124, 320);
-            this.tbx_SharpnessScore3.Name = "tbx_SharpnessScore3";
-            this.tbx_SharpnessScore3.Size = new System.Drawing.Size(144, 36);
-            this.tbx_SharpnessScore3.TabIndex = 158;
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(6, 323);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(85, 24);
-            this.label66.TabIndex = 157;
-            this.label66.Text = "Score3 :";
-            // 
-            // tbx_SharpnessScore2
-            // 
-            this.tbx_SharpnessScore2.Location = new System.Drawing.Point(124, 278);
-            this.tbx_SharpnessScore2.Name = "tbx_SharpnessScore2";
-            this.tbx_SharpnessScore2.Size = new System.Drawing.Size(144, 36);
-            this.tbx_SharpnessScore2.TabIndex = 156;
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(6, 282);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(85, 24);
-            this.label65.TabIndex = 155;
-            this.label65.Text = "Score2 :";
-            // 
-            // tbx_SharpnessScore1
-            // 
-            this.tbx_SharpnessScore1.Location = new System.Drawing.Point(124, 238);
-            this.tbx_SharpnessScore1.Name = "tbx_SharpnessScore1";
-            this.tbx_SharpnessScore1.Size = new System.Drawing.Size(144, 36);
-            this.tbx_SharpnessScore1.TabIndex = 154;
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(6, 241);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(85, 24);
-            this.label64.TabIndex = 153;
-            this.label64.Text = "Score1 :";
-            // 
-            // tbx_SearchScore2
-            // 
-            this.tbx_SearchScore2.Location = new System.Drawing.Point(165, 191);
-            this.tbx_SearchScore2.Name = "tbx_SearchScore2";
-            this.tbx_SearchScore2.Size = new System.Drawing.Size(103, 36);
-            this.tbx_SearchScore2.TabIndex = 152;
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(6, 194);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(153, 24);
-            this.label63.TabIndex = 151;
-            this.label63.Text = "Search Score2 :";
-            // 
-            // cogRecordDisplay2
-            // 
-            this.cogRecordDisplay2.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay2.ColorMapLowerRoiLimit = 0D;
-            this.cogRecordDisplay2.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRecordDisplay2.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay2.ColorMapUpperRoiLimit = 1D;
-            this.cogRecordDisplay2.DoubleTapZoomCycleLength = 2;
-            this.cogRecordDisplay2.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRecordDisplay2.Location = new System.Drawing.Point(338, 353);
-            this.cogRecordDisplay2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRecordDisplay2.MouseWheelSensitivity = 1D;
-            this.cogRecordDisplay2.Name = "cogRecordDisplay2";
-            this.cogRecordDisplay2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay2.OcxState")));
-            this.cogRecordDisplay2.Size = new System.Drawing.Size(425, 356);
-            this.cogRecordDisplay2.TabIndex = 150;
-            // 
-            // txB_SharpnessPicName
-            // 
-            this.txB_SharpnessPicName.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_SharpnessPicName.Location = new System.Drawing.Point(17, 686);
-            this.txB_SharpnessPicName.Name = "txB_SharpnessPicName";
-            this.txB_SharpnessPicName.Size = new System.Drawing.Size(305, 23);
-            this.txB_SharpnessPicName.TabIndex = 145;
-            // 
-            // tbx_SearchScore1
-            // 
-            this.tbx_SearchScore1.Location = new System.Drawing.Point(165, 151);
-            this.tbx_SearchScore1.Name = "tbx_SearchScore1";
-            this.tbx_SearchScore1.Size = new System.Drawing.Size(103, 36);
-            this.tbx_SearchScore1.TabIndex = 143;
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(6, 154);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(153, 24);
-            this.label59.TabIndex = 142;
-            this.label59.Text = "Search Score1 :";
-            // 
-            // btn_SharpnessRun
-            // 
-            this.btn_SharpnessRun.Location = new System.Drawing.Point(38, 70);
-            this.btn_SharpnessRun.Name = "btn_SharpnessRun";
-            this.btn_SharpnessRun.Size = new System.Drawing.Size(91, 37);
-            this.btn_SharpnessRun.TabIndex = 141;
-            this.btn_SharpnessRun.Text = "Testing";
-            this.btn_SharpnessRun.UseVisualStyleBackColor = true;
-            this.btn_SharpnessRun.Click += new System.EventHandler(this.btn_SharpnessRun_Click);
-            // 
-            // pBox_SharpnessPic
-            // 
-            this.pBox_SharpnessPic.BackColor = System.Drawing.Color.Black;
-            this.pBox_SharpnessPic.Location = new System.Drawing.Point(17, 424);
-            this.pBox_SharpnessPic.Name = "pBox_SharpnessPic";
-            this.pBox_SharpnessPic.Size = new System.Drawing.Size(305, 248);
-            this.pBox_SharpnessPic.TabIndex = 139;
-            this.pBox_SharpnessPic.TabStop = false;
-            // 
-            // btn_OpenSharpnessImage
-            // 
-            this.btn_OpenSharpnessImage.Location = new System.Drawing.Point(84, 376);
-            this.btn_OpenSharpnessImage.Name = "btn_OpenSharpnessImage";
-            this.btn_OpenSharpnessImage.Size = new System.Drawing.Size(157, 41);
-            this.btn_OpenSharpnessImage.TabIndex = 140;
-            this.btn_OpenSharpnessImage.Text = "Open_Image";
-            this.btn_OpenSharpnessImage.UseVisualStyleBackColor = true;
-            this.btn_OpenSharpnessImage.Click += new System.EventHandler(this.btn_OpenSharpnessImage_Click);
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label56.Location = new System.Drawing.Point(334, 32);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(204, 21);
-            this.label56.TabIndex = 24;
-            this.label56.Text = "Sharpness Method List :";
-            // 
-            // listBox_SharpnessAlgorithmList
-            // 
-            this.listBox_SharpnessAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
-            this.listBox_SharpnessAlgorithmList.FormattingEnabled = true;
-            this.listBox_SharpnessAlgorithmList.ItemHeight = 32;
-            this.listBox_SharpnessAlgorithmList.Location = new System.Drawing.Point(338, 56);
-            this.listBox_SharpnessAlgorithmList.Name = "listBox_SharpnessAlgorithmList";
-            this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(425, 292);
-            this.listBox_SharpnessAlgorithmList.TabIndex = 23;
-            this.listBox_SharpnessAlgorithmList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox_SharpnessAlgorithmList_MouseDoubleClick);
             // 
             // tabPage2
             // 
@@ -3049,7 +3072,7 @@ namespace SPIL
             this.cogRecordDisplay1.MouseWheelSensitivity = 1D;
             this.cogRecordDisplay1.Name = "cogRecordDisplay1";
             this.cogRecordDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay1.OcxState")));
-            this.cogRecordDisplay1.Size = new System.Drawing.Size(116, 146);
+            this.cogRecordDisplay1.Size = new System.Drawing.Size(145, 183);
             this.cogRecordDisplay1.TabIndex = 1;
             this.cogRecordDisplay1.Visible = false;
             // 
@@ -4241,16 +4264,6 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // btn_ReadRecipe
-            // 
-            this.btn_ReadRecipe.Location = new System.Drawing.Point(662, 10);
-            this.btn_ReadRecipe.Name = "btn_ReadRecipe";
-            this.btn_ReadRecipe.Size = new System.Drawing.Size(104, 44);
-            this.btn_ReadRecipe.TabIndex = 151;
-            this.btn_ReadRecipe.Text = "Read Recipe";
-            this.btn_ReadRecipe.UseVisualStyleBackColor = true;
-            this.btn_ReadRecipe.Click += new System.EventHandler(this.btn_ReadRecipe_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4261,7 +4274,7 @@ namespace SPIL
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20230821";
+            this.Text = "YuanLi OLS AOI-20230824-3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -4274,6 +4287,13 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Connect_Status)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            this.gpBox_Sharpness.ResumeLayout(false);
+            this.gpBox_Sharpness.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).EndInit();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             this.gpBox_AOI.ResumeLayout(false);
@@ -4284,13 +4304,6 @@ namespace SPIL
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogRcdDisp_Distance1)).EndInit();
-            this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
-            this.gpBox_Sharpness.ResumeLayout(false);
-            this.gpBox_Sharpness.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Sharpness)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBox_SharpnessPic)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();

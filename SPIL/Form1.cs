@@ -42,6 +42,7 @@ namespace SPIL
         private bool isRemote = false;
         // private string sharpnessImagesFolder = "D:\\SharpnessImages";
         private HostCommunication hostCommunication;
+        private bool isButtonExcute;
 
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
@@ -1167,6 +1168,16 @@ namespace SPIL
             Send_Server("InPos,e>");
 
 
+        }
+        private void Receive_Data(string dataNi, string dataCu)
+        {
+
+            var ni = Convert.ToDouble(dataNi) * variable_data.Degree_Ratio;
+            var cu = Convert.ToDouble(dataCu) * variable_data.Degree_Ratio;
+
+            UpdateTextbox(ni.ToString(), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
+            UpdateTextbox(cu.ToString(), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+            Send_Server("Data,e>");
         }
         private void Receive_Stop(string receive_data)
         {
@@ -3418,7 +3429,7 @@ namespace SPIL
 
         private void CB_RecipeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
 
 
         }
@@ -3671,6 +3682,7 @@ namespace SPIL
         {
             try
             {
+
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
                 //  cogRecordDisplay2.Size = new System.Drawing.Size(img1.Width, img1.Height);
                 var sharpResult = sharpnessFlow.Measurment(img1);
@@ -3706,15 +3718,27 @@ namespace SPIL
         {
             try
             {
+                if (isButtonExcute) return;
+                isButtonExcute = true;
+
                 if (txB_RecipePicName1.Text == "" || txB_RecipePicName2.Text == "" || txB_RecipePicName3.Text == "")
                     throw new Exception("picture  not exist");
                 //   if (sharpnessImage == null) throw new Exception($"Image not exist");
                 Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
                 Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
                 Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
+                try
+                {
 
-                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
-                aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+
+                    //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
+                    aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+                }
+                catch (Exception ex1)
+                {
+
+                    MessageBox.Show(ex1.Message);
+                }
                 var inputImage = aoIFlow.RunningToolInputImage(machineSetting.AOIAlgorithms[listBox_AOIAlgorithmList.SelectedIndex].Name);
 
                 //   var select = listBox_AOIAlgorithmList.SelectedItem;
@@ -3767,22 +3791,37 @@ namespace SPIL
 
                 MessageBox.Show(ex.Message);
             }
-
+            finally
+            {
+                isButtonExcute = false;
+            }
 
         }
         private void listBox_AOI2AlgorithmList_DoubleClick(object sender, EventArgs e)
         {
             try
             {
+                if (isButtonExcute) return;
+                isButtonExcute = true;
+
                 if (txB_RecipePicName1.Text == "" || txB_RecipePicName2.Text == "" || txB_RecipePicName3.Text == "")
                     throw new Exception("picture  not exist");
                 //   if (sharpnessImage == null) throw new Exception($"Image not exist");
                 Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
                 Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
                 Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
+                try
+                {
+                    //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
+                    aoIFlow2.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
 
-                //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
-                aoIFlow2.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);
+                }
+                catch (Exception ex1)
+                {
+
+                    MessageBox.Show(ex1.Message);
+                }
+
                 var inputImage = aoIFlow2.RunningToolInputImage(machineSetting.AOIAlgorithms_2[listBox_AOI2AlgorithmList.SelectedIndex].Name);
 
                 //   var select = listBox_AOIAlgorithmList.SelectedItem;
@@ -3805,11 +3844,18 @@ namespace SPIL
 
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                isButtonExcute = false;
+            }
         }
         private void listBox_SharpnessAlgorithmList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             try
             {
+                if (isButtonExcute) return;
+                isButtonExcute = true;
+
                 if (txB_SharpnessPicName.Text == "") throw new Exception($"Image not exist");
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
 
@@ -3836,6 +3882,10 @@ namespace SPIL
             {
 
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                isButtonExcute = false;
             }
         }
 
@@ -4032,6 +4082,8 @@ namespace SPIL
                         Receive_Start(Convert.ToInt32(re_data[1]), re_data[2], Convert.ToInt32(re_data[3]));
                     else if (re_data[0].Contains("InPos"))
                         Receive_InPos(Convert.ToInt32(re_data[1]));
+                    else if (re_data[0].Contains("Data"))
+                        Receive_Data(re_data[1], re_data[2]);
                     else if (re_data[0].Contains("Stop"))
                         Receive_Stop(re_data[1]);
                     else if (re_data[0].Contains("RFID"))
@@ -4102,7 +4154,7 @@ namespace SPIL
 
         }
 
-        
+
 
         private void HB_off()
         {
