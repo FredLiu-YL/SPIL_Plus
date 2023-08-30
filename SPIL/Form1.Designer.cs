@@ -947,7 +947,7 @@ namespace SPIL
             // textBox_Wafer_Size
             // 
             this.textBox_Wafer_Size.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_Wafer_Size.Location = new System.Drawing.Point(95, 161);
+            this.textBox_Wafer_Size.Location = new System.Drawing.Point(95, 155);
             this.textBox_Wafer_Size.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Wafer_Size.MaxLength = 15;
             this.textBox_Wafer_Size.Name = "textBox_Wafer_Size";
@@ -957,7 +957,7 @@ namespace SPIL
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(6, 170);
+            this.label46.Location = new System.Drawing.Point(7, 164);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(76, 16);
             this.label46.TabIndex = 186;

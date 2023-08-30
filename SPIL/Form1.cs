@@ -43,7 +43,7 @@ namespace SPIL
         // private string sharpnessImagesFolder = "D:\\SharpnessImages";
         private HostCommunication hostCommunication;
         private bool isButtonExcute;
-
+        private int tatalPoints = 20;
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
@@ -882,6 +882,7 @@ namespace SPIL
             }
             else
             {
+
                 ctl.Enabled = value;
             }
         }
@@ -974,11 +975,13 @@ namespace SPIL
         {
             if (this.InvokeRequired)
             {
+                int id = Thread.CurrentThread.ManagedThreadId;
                 UpdateUITextboxEnable uu = new UpdateUITextboxEnable(UpdateTextboxEnable);
                 this.BeginInvoke(uu, value, ctl);
             }
             else
             {
+                int id1 = Thread.CurrentThread.ManagedThreadId;
                 ctl.Enabled = value;
                 if (value)
                     ctl.BackColor = System.Drawing.Color.MintCream;
@@ -1125,7 +1128,7 @@ namespace SPIL
                 Send_Server("Mode,e>");
             }
         }
-        private void Receive_Start(int Totoal_Point, string wafer_ID, int now_Slot)
+        private void Receive_Start(int totoal_Point, string wafer_ID, int now_Slot)
         {
             for (int i = 1; i < 21; i++)
             {
@@ -1138,7 +1141,7 @@ namespace SPIL
                 UpdateTextboxEnable(false, textBoxes_Cu_1_20[i]);
                 UpdateTextbox("0", textBoxes_Cu_1_20[i]);
             }
-            for (int i = 1; i <= Totoal_Point; i++)
+            for (int i = 1; i <= totoal_Point; i++)
             {
                 UpdateTextboxEnable(true, textBoxes_0_1_20[i]);
                 UpdateTextboxEnable(true, textBoxes_CuNi_1_20[i]);
@@ -1153,7 +1156,7 @@ namespace SPIL
             open_hide_1 = true;
             open_hide_2 = true;
             //
-
+            tatalPoints = totoal_Point;
             Send_Server("Start,e>");
             UpdateGroupBox(false, groupBox2);
             UpdateGroupBox(false, gpBox_Sharpness);
@@ -1192,6 +1195,7 @@ namespace SPIL
 
                 HB_off();
                 isRemote = false;
+                tatalPoints = 20;
                 UpdateGroupBox(true, groupBox2);
                 UpdateGroupBox(true, gpBox_Sharpness);
                 UpdateGroupBox(true, gpBox_AOI);
@@ -1878,18 +1882,18 @@ namespace SPIL
                     "Cu Height," +
                     "Ni Height," +
                     "Solder tip Height");
-                for (int i = 1; i < 21; i++)
+                for (int i = 1; i <= tatalPoints; i++)
                 {
                     double z_dif = Convert.ToDouble(textBoxes_0_1_20[i].Text) - Convert.ToDouble(textBoxes_CuNi_1_20[i].Text);
                     double Ni = Convert.ToDouble(textBoxes_CuNi_1_20[i].Text) - Convert.ToDouble(textBoxes_Cu_1_20[i].Text);
-                    if (textBoxes_0_1_20[i].Enabled)
-                        Csv_Str_List.Add(
-                            $"{i}," +
-                            $"{textBoxes_0_1_20[i].Text}," +
-                            $"{textBoxes_CuNi_1_20[i].Text}," +
-                            $"{textBoxes_Cu_1_20[i].Text}," +
-                            $"{Convert.ToString(Ni)}," +
-                            $"{Convert.ToString(z_dif)}");
+                    // if (textBoxes_0_1_20[i].Enabled)
+                    Csv_Str_List.Add(
+                        $"{i}," +
+                        $"{textBoxes_0_1_20[i].Text}," +
+                        $"{textBoxes_CuNi_1_20[i].Text}," +
+                        $"{textBoxes_Cu_1_20[i].Text}," +
+                        $"{Convert.ToString(Ni)}," +
+                        $"{Convert.ToString(z_dif)}");
                 }
                 SaveArrayAsCSV(Csv_Str_List, Save_File_Address);
                 File.Copy(Save_File_Address, "C:\\Users\\Public\\Documents\\SPIL_Measurement_Data.csv", true);
