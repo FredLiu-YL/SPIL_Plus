@@ -3613,11 +3613,11 @@ namespace SPIL
             if (result == DialogResult.OK)
             {// 載入圖片
 
-                aoiImage1 = new Bitmap(dlg.FileName);
+                Bitmap temp1 = new Bitmap(dlg.FileName);
 
-
+                aoiImage1 = new Bitmap(temp1);
                 txB_RecipePicName1.Text = dlg.FileName;
-
+                temp1.Dispose();
 
             }
         }
@@ -3629,14 +3629,16 @@ namespace SPIL
             OpenFileDialog dlg = new OpenFileDialog();
 
             dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
+
             var result = dlg.ShowDialog();
+
             if (result == DialogResult.OK)
             {// 載入圖片
 
-                aoiImage2 = new Bitmap(dlg.FileName);
-
+                var temp2 = new Bitmap(dlg.FileName);
+                aoiImage2 = new Bitmap(temp2);
                 txB_RecipePicName2.Text = dlg.FileName;
-
+                temp2.Dispose();
 
             }
         }
@@ -3648,13 +3650,13 @@ namespace SPIL
             dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
             var result = dlg.ShowDialog();
             if (result == DialogResult.OK)
-            {// 載入圖片
-
-                aoiImage3 = new Bitmap(dlg.FileName);
-
+            {
+                // 載入圖片
+                var temp3 = new Bitmap(dlg.FileName);
+                aoiImage3 = new Bitmap(temp3);
 
                 txB_RecipePicName3.Text = dlg.FileName;
-
+                temp3.Dispose();
 
             }
         }
@@ -3670,13 +3672,14 @@ namespace SPIL
             if (result == DialogResult.OK)
             {// 載入圖片
 
-                sharpnessImage = new Bitmap(dlg.FileName);
-
+                var temp = new Bitmap(dlg.FileName);
+            
+                sharpnessImage = new Bitmap(temp);
                 pBox_SharpnessPic.Image = sharpnessImage;
                 pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
 
                 txB_SharpnessPicName.Text = dlg.FileName;
-
+                temp.Dispose();
                 //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
 
                 //     cogGM.EditParameter(image);
