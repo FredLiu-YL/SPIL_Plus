@@ -38,6 +38,7 @@ namespace SPIL
         private Bitmap aoiImage2;
         private Bitmap aoiImage3;
         private string password = "123";
+        private string password1 = "11084483";
         private string check_path;
         private bool isRemote = false;
         // private string sharpnessImagesFolder = "D:\\SharpnessImages";
@@ -1505,7 +1506,7 @@ namespace SPIL
         {
             if (!log_in)
             {
-                if (textBox_Password.Text == password)
+                if (textBox_Password.Text == password || textBox_Password.Text == password1)
                 {
                     logger.WriteLog("Log In");
                     log_in = true;

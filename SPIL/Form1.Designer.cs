@@ -391,6 +391,7 @@ namespace SPIL
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.lBx_LogList = new System.Windows.Forms.ListBox();
+            this.label98 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -682,7 +683,7 @@ namespace SPIL
             // button_Save_Setup
             // 
             this.button_Save_Setup.Enabled = false;
-            this.button_Save_Setup.Location = new System.Drawing.Point(327, 25);
+            this.button_Save_Setup.Location = new System.Drawing.Point(398, 25);
             this.button_Save_Setup.Name = "button_Save_Setup";
             this.button_Save_Setup.Size = new System.Drawing.Size(98, 41);
             this.button_Save_Setup.TabIndex = 20;
@@ -2715,12 +2716,13 @@ namespace SPIL
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label98);
             this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.button_Log_in_out);
             this.groupBox3.Controls.Add(this.textBox_Password);
             this.groupBox3.Location = new System.Drawing.Point(6, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(315, 66);
+            this.groupBox3.Size = new System.Drawing.Size(386, 66);
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Log in/out";
@@ -2729,7 +2731,7 @@ namespace SPIL
             // 
             this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 31);
+            this.label20.Location = new System.Drawing.Point(77, 31);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(67, 16);
             this.label20.TabIndex = 27;
@@ -2737,7 +2739,7 @@ namespace SPIL
             // 
             // button_Log_in_out
             // 
-            this.button_Log_in_out.Location = new System.Drawing.Point(230, 26);
+            this.button_Log_in_out.Location = new System.Drawing.Point(185, 26);
             this.button_Log_in_out.Name = "button_Log_in_out";
             this.button_Log_in_out.Size = new System.Drawing.Size(75, 27);
             this.button_Log_in_out.TabIndex = 1;
@@ -2748,7 +2750,7 @@ namespace SPIL
             // textBox_Password
             // 
             this.textBox_Password.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_Password.Location = new System.Drawing.Point(81, 26);
+            this.textBox_Password.Location = new System.Drawing.Point(7, 26);
             this.textBox_Password.Name = "textBox_Password";
             this.textBox_Password.PasswordChar = '*';
             this.textBox_Password.Size = new System.Drawing.Size(143, 27);
@@ -4322,6 +4324,15 @@ namespace SPIL
             this.lBx_LogList.Size = new System.Drawing.Size(767, 976);
             this.lBx_LogList.TabIndex = 160;
             // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(283, 31);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(76, 16);
+            this.label98.TabIndex = 30;
+            this.label98.Text = "統編  /123";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4777,6 +4788,7 @@ namespace SPIL
         private System.Windows.Forms.TextBox tbx_SECScsvPath;
         private System.Windows.Forms.TabPage tabPage12;
         private System.Windows.Forms.ListBox lBx_LogList;
+        private System.Windows.Forms.Label label98;
     }
 }
 
