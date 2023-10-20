@@ -52,7 +52,7 @@ namespace SPIL
         //距離算法(八角形)
         private AOIFlow aoIFlow2 { get; set; }
         private SharpnessFlow sharpnessFlow;
-
+        private readonly object logLock = new object();
         public Form1()
         {
             InitializeComponent();
@@ -257,6 +257,10 @@ namespace SPIL
                 sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
                 sPILRecipe.AOIParams2 = aoIFlow2.CogMethods.Select(m => m.method.RunParams).ToList();
                 sPILRecipe.ClarityParams = sharpnessFlow.CogMethods.Select(m => m.method.RunParams).ToList();
+                if (machineSetting.SecsCsvPath == "" || machineSetting.SecsCsvPath == null)
+                    machineSetting.SecsCsvPath = "C:\\Users\\Public\\Documents";
+
+                tbx_SECScsvPath.Text = machineSetting.SecsCsvPath;
 
                 //新增到UI 做顯示
                 foreach (var item in machineSetting.AOIAlgorithms)
@@ -370,14 +374,26 @@ namespace SPIL
                 Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                 Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
+                sharpnessFlow.WriteLog += (message) =>
+                {
+                    logger.WriteLog(message);
+                };
 
                 logger.LogRecord = (mes) =>
                 {
                     //string str = Log_tBx.Text;
                     // str += mes;
-                    UpdateTextboxAdd(mes, Log_tBx);
+                    lock(logLock)
+                    {
 
+                        UpdateTextboxAdd(mes, Log_tBx);
 
+                        //  lBx_LogList.Items.Add(mes);
+                        UpdateLogListBox(mes, lBx_LogList);
+
+                    }
+                  
+                    
                 };
 
                 tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
@@ -871,8 +887,13 @@ namespace SPIL
         //
         #region Change UI
         //
-
+        private delegate void UpdateUITextbox(string value, TextBox ctl);
         private delegate void UpdateGroupBoxEnable(bool value, GroupBox gpCtrl);
+        private delegate void UpdateUIPicturebox(Image value, PictureBox ctl);
+        private delegate void UpdateUIRadioButton(bool value, RadioButton ctl);
+        private delegate void UpdateUITextboxEnable(bool value, TextBox ctl);
+        private delegate void UpdateUIListbox(string value, ListBox ctl);
+
         private void UpdateGroupBox(bool value, GroupBox ctl)
         {
             if (this.InvokeRequired)
@@ -886,7 +907,7 @@ namespace SPIL
                 ctl.Enabled = value;
             }
         }
-        private delegate void UpdateUITextbox(string value, TextBox ctl);
+   
         private void UpdateTextbox(string value, TextBox ctl)
         {
             if (this.InvokeRequired)
@@ -942,7 +963,7 @@ namespace SPIL
             }
         }
         //
-        private delegate void UpdateUIPicturebox(Image value, PictureBox ctl);
+  
         private void UpdatePicturebox(Image value, PictureBox ctl)
         {
             if (this.InvokeRequired)
@@ -956,7 +977,7 @@ namespace SPIL
             }
         }
         //
-        private delegate void UpdateUIRadioButton(bool value, RadioButton ctl);
+
         private void UpdateRadioButton(bool value, RadioButton ctl)
         {
             if (this.InvokeRequired)
@@ -970,7 +991,7 @@ namespace SPIL
             }
         }
         //
-        private delegate void UpdateUITextboxEnable(bool value, TextBox ctl);
+
         private void UpdateTextboxEnable(bool value, TextBox ctl)
         {
             if (this.InvokeRequired)
@@ -987,6 +1008,23 @@ namespace SPIL
                     ctl.BackColor = System.Drawing.Color.MintCream;
                 else
                     ctl.BackColor = System.Drawing.Color.White;
+            }
+        }
+        private void UpdateLogListBox(string value, ListBox ctl)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateUIListbox uu = new UpdateUIListbox(UpdateLogListBox);
+                this.BeginInvoke(uu, value, ctl);
+            }
+            else
+            {
+                ctl.Items.Add (value);
+                if (ctl.Items.Count > 2000)
+                {
+                    ctl.Items.RemoveAt(0);
+                }
+                ctl.SelectedIndex = ctl.Items.Count - 1;
             }
         }
         #endregion
@@ -1068,7 +1106,7 @@ namespace SPIL
                     AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
                 else
                     AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
-
+        
                 //綁定cogRecordDisplay 用來存toolblock結果圖
                 AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
@@ -1896,7 +1934,7 @@ namespace SPIL
                         $"{Convert.ToString(z_dif)}");
                 }
                 SaveArrayAsCSV(Csv_Str_List, Save_File_Address);
-                File.Copy(Save_File_Address, "C:\\Users\\Public\\Documents\\SPIL_Measurement_Data.csv", true);
+                File.Copy(Save_File_Address, machineSetting.SecsCsvPath+"\\SPIL_Measurement_Data.csv", true);
                 logger.WriteLog("Save OK");
             }
             catch (Exception error)
@@ -2531,21 +2569,26 @@ namespace SPIL
             //}
 
         }
-
+        /// <summary>
+        /// 挑選清晰度 較好的三張圖
+        /// </summary>
+        /// <param name="dirpath"></param>
+        /// <param name="save_Folder"></param>
+        /// <returns></returns>
         private async Task<string[]> PickClarity(string dirpath, string save_Folder)
         {
             List<Bitmap> images = new List<Bitmap>();
             try
             {
 
-
+                Stopwatch stopwatch = new Stopwatch();
                 int id = Thread.CurrentThread.ManagedThreadId;
                 // 取得資料夾中的所有檔案
                 string[] files = Directory.GetFiles(dirpath);
                 List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
 
                 List<string> imageNames = new List<string>();
-
+                stopwatch.Start();
                 // 遍歷每個檔案，檢查是否為影像檔
                 foreach (string file in files)
                 {
@@ -2563,11 +2606,12 @@ namespace SPIL
                 }
                 List<string> names = new List<string>();
 
-                logger.WriteLog($"Image Count : {images.Count} ");
+                logger.WriteLog($"Image Count : {images.Count}  Time {stopwatch.ElapsedMilliseconds} ms");
 
+                stopwatch.Restart();
+                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images,true));
 
-                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
-
+                logger.WriteLog($"SharpnessAnalyzeTime :   {stopwatch.ElapsedMilliseconds} ms");
 
                 string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
                 if (!Directory.Exists(imageFolder))
@@ -3366,13 +3410,14 @@ namespace SPIL
         {
             try
             {
+            
                 //string name = CB_RecipeList.SelectedItem.ToString();
                 string name = CB_RecipeList.Text;
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
                 UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
                 MessageBox.Show("讀取完成");
-
+       
                 switch (sPILRecipe.AOIAlgorithmFunction)
                 {
                     case AOIFunction.Circle:
@@ -3453,7 +3498,7 @@ namespace SPIL
             aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
             aoIFlow2.SetMethodParam(sPILRecipe.AOIParams2);
             sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
-
+            sharpnessFlow.DuplicateTool();
             logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
         }
@@ -3673,7 +3718,7 @@ namespace SPIL
             {// 載入圖片
 
                 var temp = new Bitmap(dlg.FileName);
-            
+
                 sharpnessImage = new Bitmap(temp);
                 pBox_SharpnessPic.Image = sharpnessImage;
                 pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
@@ -3692,7 +3737,7 @@ namespace SPIL
 
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
                 //  cogRecordDisplay2.Size = new System.Drawing.Size(img1.Width, img1.Height);
-                var sharpResult = sharpnessFlow.Measurment(img1);
+                var sharpResult = sharpnessFlow.Measurement(img1);
 
                 if (sharpResult.result == null) throw new Exception(sharpnessFlow.ResultMessage);
 
@@ -3863,15 +3908,16 @@ namespace SPIL
                 if (isButtonExcute) return;
                 isButtonExcute = true;
 
-                if (txB_SharpnessPicName.Text == "") throw new Exception($"Image not exist");
+                if (txB_SharpnessPicName.Text == "") throw new OperateException($"Image not exist");
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
 
 
                 //先跑過一次 把圖片都吃進去 ， 再把輸入的圖片拿出來
-                sharpnessFlow.Measurment(img1);
+                sharpnessFlow.Measurement(img1);
                 var inputImage = sharpnessFlow.RunningToolInputImage(machineSetting.SharpAlgorithms[listBox_SharpnessAlgorithmList.SelectedIndex].Name);
 
                 //   var select = listBox_AOIAlgorithmList.SelectedItem;
+
                 //AOIParams  與 UIListbox 的順序一致  所以直接拿位置
                 CogParameter algorithmItem = sPILRecipe.ClarityParams[listBox_SharpnessAlgorithmList.SelectedIndex];
 
@@ -3885,10 +3931,14 @@ namespace SPIL
 
 
             }
+            catch (OperateException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
             finally
             {
@@ -3927,7 +3977,8 @@ namespace SPIL
                     List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
                     List<Bitmap> images = new List<Bitmap>();
                     List<string> imageNames = new List<string>();
-
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     // 遍歷每個檔案，檢查是否為影像檔
                     foreach (string file in files)
                     {
@@ -3960,17 +4011,26 @@ namespace SPIL
                              }*/
                         }
                     }
-
+                 
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
-
+                    var tSec = stopwatch.ElapsedMilliseconds;
                     //   sharpnessFlow.CogResult += UpdateDataGridView;
+                
                     sharpnessFlow.MethodAssignTool();
-                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images));
+                    sharpnessFlow.DuplicateTool();
+                    var tSec1 = stopwatch.ElapsedMilliseconds;
+                    logger.WriteLog($"清晰度圖片載入時間: {tSec1 }ms  {files.Length} 張");
+                    stopwatch.Restart();
+                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images,true));
 
+                    var tSec3 = stopwatch.ElapsedMilliseconds;
+                    logger.WriteLog($"清晰度運算時間: {tSec3 }ms " );
 
                     aoiImage1 = images[imagesIndex.Image1Index];
                     aoiImage2 = images[imagesIndex.Image2Index];
                     aoiImage3 = images[imagesIndex.Image3Index];
+
+
 
                     txB_RecipePicName1.Text = imageNames[imagesIndex.Image1Index];
                     txB_RecipePicName2.Text = imageNames[imagesIndex.Image2Index];
@@ -4051,7 +4111,11 @@ namespace SPIL
         private void ReciveIsConnect(bool isConnect)
         {
             if (isConnect)
+            {
                 UpdatePicturebox(I_Green, pictureBox_Connect_Status);
+                logger.WriteLog("與設備連線 " );
+            }
+                
             else
             {
                 //出錯的時候
@@ -4060,7 +4124,7 @@ namespace SPIL
                 UpdateGroupBox(true, groupBox2);
                 UpdateGroupBox(true, gpBox_Sharpness);
                 UpdateGroupBox(true, gpBox_AOI);
-
+                logger.WriteLog("與設備斷線 ");
 
             }
         }
@@ -4161,7 +4225,35 @@ namespace SPIL
 
         }
 
+        private void tabControl_Setup_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
+
+        private void btn_SecsCsvPath_Click(object sender, EventArgs e)
+        {
+            // 建立 FolderBrowserDialog 物件
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+            // 設定對話方塊的標題
+            folderBrowserDialog.Description = "請選取資料夾";
+            folderBrowserDialog.SelectedPath = machineSetting.SecsCsvPath;
+
+            // 顯示對話方塊並等待使用者選擇資料夾
+            DialogResult result = folderBrowserDialog.ShowDialog();
+
+
+            if (result == DialogResult.OK)
+            {
+
+                tbx_SECScsvPath.Text = folderBrowserDialog.SelectedPath;
+                //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+
+
+                machineSetting.SecsCsvPath = tbx_SECScsvPath.Text;
+                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+            }
+        }
 
         private void HB_off()
         {
@@ -4177,5 +4269,12 @@ namespace SPIL
     }
 
 
+    public class OperateException : Exception
+    {
+        public OperateException(string message) : base(message)
+        {
 
+        }
+
+    }
 }

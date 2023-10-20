@@ -34,6 +34,11 @@ namespace SPIL.Model
         public string ServerIP { get; set; }
         public int ServerPort { get; set; }
         /// <summary>
+        /// 存出量測結果，給雄旺的CSV資料
+        /// </summary>
+        public string SecsCsvPath { get; set; } = "C:\\Users\\Public\\Documents";
+
+        /// <summary>
         /// 放置 距離計算算法的vpp的檔案名稱 (圓形)
         /// </summary>
         public string AOIVppPath { get; set; }
