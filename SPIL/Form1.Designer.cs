@@ -237,6 +237,7 @@ namespace SPIL
             this.label55 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label98 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.button_Log_in_out = new System.Windows.Forms.Button();
             this.textBox_Password = new System.Windows.Forms.TextBox();
@@ -381,6 +382,8 @@ namespace SPIL
             this.tbx_AOIPath = new System.Windows.Forms.TextBox();
             this.label53 = new System.Windows.Forms.Label();
             this.label52 = new System.Windows.Forms.Label();
+            this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.lBx_LogList = new System.Windows.Forms.ListBox();
             this.timer_Log_in_Out = new System.Windows.Forms.Timer(this.components);
             this.timer_OLS_File = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_OLS_File = new System.ComponentModel.BackgroundWorker();
@@ -389,9 +392,7 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.tabPage12 = new System.Windows.Forms.TabPage();
-            this.lBx_LogList = new System.Windows.Forms.ListBox();
-            this.label98 = new System.Windows.Forms.Label();
+            this.cB_Multi = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -2083,6 +2084,7 @@ namespace SPIL
             // gpBox_Sharpness
             // 
             this.gpBox_Sharpness.BackColor = System.Drawing.Color.Snow;
+            this.gpBox_Sharpness.Controls.Add(this.cB_Multi);
             this.gpBox_Sharpness.Controls.Add(this.dataGrid_Sharpness);
             this.gpBox_Sharpness.Controls.Add(this.btn_SharpnessMultRun);
             this.gpBox_Sharpness.Controls.Add(this.tbx_SharpnessScore3);
@@ -2180,7 +2182,7 @@ namespace SPIL
             // 
             // btn_SharpnessMultRun
             // 
-            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(17, 739);
+            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(10, 730);
             this.btn_SharpnessMultRun.Name = "btn_SharpnessMultRun";
             this.btn_SharpnessMultRun.Size = new System.Drawing.Size(105, 71);
             this.btn_SharpnessMultRun.TabIndex = 145;
@@ -2726,6 +2728,15 @@ namespace SPIL
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Log in/out";
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(283, 31);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(76, 16);
+            this.label98.TabIndex = 30;
+            this.label98.Text = "統編  /123";
             // 
             // label20
             // 
@@ -4267,6 +4278,26 @@ namespace SPIL
             this.label52.TabIndex = 16;
             this.label52.Text = "AOI VPP Path :";
             // 
+            // tabPage12
+            // 
+            this.tabPage12.Controls.Add(this.lBx_LogList);
+            this.tabPage12.Location = new System.Drawing.Point(4, 26);
+            this.tabPage12.Name = "tabPage12";
+            this.tabPage12.Size = new System.Drawing.Size(793, 1019);
+            this.tabPage12.TabIndex = 4;
+            this.tabPage12.Text = "Log";
+            this.tabPage12.UseVisualStyleBackColor = true;
+            // 
+            // lBx_LogList
+            // 
+            this.lBx_LogList.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lBx_LogList.FormattingEnabled = true;
+            this.lBx_LogList.ItemHeight = 27;
+            this.lBx_LogList.Location = new System.Drawing.Point(12, 15);
+            this.lBx_LogList.Name = "lBx_LogList";
+            this.lBx_LogList.Size = new System.Drawing.Size(767, 976);
+            this.lBx_LogList.TabIndex = 160;
+            // 
             // timer_Log_in_Out
             // 
             this.timer_Log_in_Out.Interval = 250;
@@ -4304,34 +4335,15 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // tabPage12
+            // cB_Multi
             // 
-            this.tabPage12.Controls.Add(this.lBx_LogList);
-            this.tabPage12.Location = new System.Drawing.Point(4, 26);
-            this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(793, 1019);
-            this.tabPage12.TabIndex = 4;
-            this.tabPage12.Text = "Log";
-            this.tabPage12.UseVisualStyleBackColor = true;
-            // 
-            // lBx_LogList
-            // 
-            this.lBx_LogList.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.lBx_LogList.FormattingEnabled = true;
-            this.lBx_LogList.ItemHeight = 27;
-            this.lBx_LogList.Location = new System.Drawing.Point(12, 15);
-            this.lBx_LogList.Name = "lBx_LogList";
-            this.lBx_LogList.Size = new System.Drawing.Size(767, 976);
-            this.lBx_LogList.TabIndex = 160;
-            // 
-            // label98
-            // 
-            this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(283, 31);
-            this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(76, 16);
-            this.label98.TabIndex = 30;
-            this.label98.Text = "統編  /123";
+            this.cB_Multi.AutoSize = true;
+            this.cB_Multi.Location = new System.Drawing.Point(10, 854);
+            this.cB_Multi.Name = "cB_Multi";
+            this.cB_Multi.Size = new System.Drawing.Size(78, 28);
+            this.cB_Multi.TabIndex = 159;
+            this.cB_Multi.Text = "Multi";
+            this.cB_Multi.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -4789,6 +4801,7 @@ namespace SPIL
         private System.Windows.Forms.TabPage tabPage12;
         private System.Windows.Forms.ListBox lBx_LogList;
         private System.Windows.Forms.Label label98;
+        private System.Windows.Forms.CheckBox cB_Multi;
     }
 }
 

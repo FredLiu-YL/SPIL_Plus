@@ -137,7 +137,7 @@ namespace SPIL.Model
             {
 
                 var cogImg1 = new CogImage24PlanarColor(img1);
-                WriteLog?.Invoke($"Sharpness start ");
+      //          WriteLog?.Invoke($"Sharpness start ");
 
                 measureToolBlock.Inputs["Input"].Value = cogImg1;
 
@@ -255,6 +255,9 @@ namespace SPIL.Model
                 }
 
 
+                var r1 = ms1.Result;
+                results.Add(r1.result);
+
                 if (i + 1 < bmps.Length)
                 {
                     var r2 = ms2.Result;
@@ -280,8 +283,7 @@ namespace SPIL.Model
                     results.Add(r5.result);
                 }
 
-                var r1 = ms1.Result;
-                results.Add(r1.result);
+       
                 WriteCogResult?.Invoke(r1.result, r1.cogRecord);
             }
 

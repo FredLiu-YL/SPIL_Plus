@@ -384,7 +384,7 @@ namespace SPIL
                 {
                     //string str = Log_tBx.Text;
                     // str += mes;
-                    lock(logLock)
+                    lock (logLock)
                     {
 
                         UpdateTextboxAdd(mes, Log_tBx);
@@ -393,8 +393,8 @@ namespace SPIL
                         UpdateLogListBox(mes, lBx_LogList);
 
                     }
-                  
-                    
+
+
                 };
 
                 tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
@@ -908,7 +908,7 @@ namespace SPIL
                 ctl.Enabled = value;
             }
         }
-   
+
         private void UpdateTextbox(string value, TextBox ctl)
         {
             if (this.InvokeRequired)
@@ -964,7 +964,7 @@ namespace SPIL
             }
         }
         //
-  
+
         private void UpdatePicturebox(Image value, PictureBox ctl)
         {
             if (this.InvokeRequired)
@@ -1020,7 +1020,7 @@ namespace SPIL
             }
             else
             {
-                ctl.Items.Add (value);
+                ctl.Items.Add(value);
                 if (ctl.Items.Count > 2000)
                 {
                     ctl.Items.RemoveAt(0);
@@ -1107,7 +1107,7 @@ namespace SPIL
                     AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
                 else
                     AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
-        
+
                 //綁定cogRecordDisplay 用來存toolblock結果圖
                 AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                 AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
@@ -1935,7 +1935,7 @@ namespace SPIL
                         $"{Convert.ToString(z_dif)}");
                 }
                 SaveArrayAsCSV(Csv_Str_List, Save_File_Address);
-                File.Copy(Save_File_Address, machineSetting.SecsCsvPath+"\\SPIL_Measurement_Data.csv", true);
+                File.Copy(Save_File_Address, machineSetting.SecsCsvPath + "\\SPIL_Measurement_Data.csv", true);
                 logger.WriteLog("Save OK");
             }
             catch (Exception error)
@@ -2590,8 +2590,45 @@ namespace SPIL
 
                 List<string> imageNames = new List<string>();
                 stopwatch.Start();
+
+
+                List<string> bmpNameList = new List<string>();
                 // 遍歷每個檔案，檢查是否為影像檔
-                foreach (string file in files)
+                Queue<string> Queuefiles = new Queue<string>(files);
+
+                while (Queuefiles.Count > 0)
+                {
+
+                    bmpNameList.Clear();
+                    //一次跑5張 
+                    int dequeuecount = Queuefiles.Count >= 5 ? 5 : Queuefiles.Count;
+
+                    for (int i = 0; i < dequeuecount; i++)
+                        bmpNameList.Add(Queuefiles.Dequeue());
+
+
+                    string extension = Path.GetExtension(bmpNameList[0]).ToLower();
+
+                    // 檢查副檔名是否為影像檔（可根據需求調整）
+                    if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                    {
+
+                        List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
+
+                        foreach (var task in taskList)
+                        {
+                            Bitmap bmp = await task.task;
+                            images.Add(bmp);
+                            imageNames.Add(task.fileName);
+                        }
+
+                    }
+                    else
+                        throw new Exception("Non-compliant documents");
+                }
+
+                // 遍歷每個檔案，檢查是否為影像檔
+             /*   foreach (string file in files)
                 {
                     string extension = Path.GetExtension(file).ToLower();
                     string name = Path.GetFileName(file);
@@ -2605,12 +2642,16 @@ namespace SPIL
                     }
 
                 }
+
+*/
+
+
                 List<string> names = new List<string>();
 
                 logger.WriteLog($"Image Count : {images.Count}  Time {stopwatch.ElapsedMilliseconds} ms");
 
                 stopwatch.Restart();
-                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images,true));
+                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, true));
 
                 logger.WriteLog($"SharpnessAnalyzeTime :   {stopwatch.ElapsedMilliseconds} ms");
 
@@ -3411,14 +3452,14 @@ namespace SPIL
         {
             try
             {
-            
+
                 //string name = CB_RecipeList.SelectedItem.ToString();
                 string name = CB_RecipeList.Text;
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
                 UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
                 MessageBox.Show("讀取完成");
-       
+
                 switch (sPILRecipe.AOIAlgorithmFunction)
                 {
                     case AOIFunction.Circle:
@@ -3948,7 +3989,23 @@ namespace SPIL
         }
 
 
+        private List<(Task<Bitmap> task, string fileName)> MultReadBitmap(IEnumerable<string> bmpNames)
+        {
+            List<(Task<Bitmap> task, string fileName)> tasks = new List<(Task<Bitmap> task, string fileName)>();
+            foreach (var name in bmpNames)
+            {
+                Task<Bitmap> t = Task.Run(() =>
+                {
+                    return new Bitmap(name);
+                });
 
+                tasks.Add((t, name));
+
+            }
+
+
+            return tasks;
+        }
         private async void btn_SharpnessMultRun_Click(object sender, EventArgs e)
         {
             try
@@ -3978,54 +4035,78 @@ namespace SPIL
                     List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
                     List<Bitmap> images = new List<Bitmap>();
                     List<string> imageNames = new List<string>();
+                    List<string> bmpNameList = new List<string>();
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
+
                     // 遍歷每個檔案，檢查是否為影像檔
-                    foreach (string file in files)
+                    Queue<string> Queuefiles = new Queue<string>(files);
+
+                    while (Queuefiles.Count > 0)
                     {
-                        string extension = Path.GetExtension(file).ToLower();
-                        string name = Path.GetFileName(file);
+
+                        bmpNameList.Clear();
+                        //一次跑5張
+                        int dequeuecount = Queuefiles.Count >= 5 ? 5 : Queuefiles.Count;
+
+                        for (int i = 0; i < dequeuecount; i++)
+                            bmpNameList.Add(Queuefiles.Dequeue());
+
+
+                        string extension = Path.GetExtension(bmpNameList[0]).ToLower();
+
                         // 檢查副檔名是否為影像檔（可根據需求調整）
                         if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
                         {
 
-                            images.Add(new Bitmap(file));
-                            imageNames.Add(file);
-                            /* using (Bitmap img1 = new Bitmap(file))
-                             {
-                                 SharpnessResult sharpResult = null;
-                                 await Task.Run(async () =>
-                              {
+                            List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
 
-                                  sharpResult = await sharpnessFlow.Measurment(img1);
-                                  sharpnessResults.Add(sharpResult);
-                              });
+                            foreach (var task in taskList)
+                            {
+                                Bitmap bmp = await task.task;
+                                images.Add(bmp);
+                                imageNames.Add(task.fileName);
+                            }
 
-                                 if (sharpResult == null)
-                                     dataGrid_Sharpness.Rows.Add(name, -1, -1, -1, -1, -1);
-                                 else
-                                 {
-                                     dataGrid_Sharpness.Rows.Add(name, sharpResult.SearchScore1.ToString("0.00000"), sharpResult.SearchScore2.ToString("0.00000"),
-                                         sharpResult.Score1.ToString("0.00000000"), sharpResult.Score2.ToString("0.00000000"), sharpResult.Score3.ToString("0.00000000"));
-                                     cogRecordDisplay2.Record = sharpResult.CogRecord;
-                                 }
-                             }*/
                         }
+                        else
+                            throw new Exception("Non-compliant documents");
                     }
-                 
+                    /* foreach (string file in files)
+                     {
+                         string extension = Path.GetExtension(file).ToLower();
+                         string name = Path.GetFileName(file);
+                         // 檢查副檔名是否為影像檔（可根據需求調整）
+                         if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                         {
+
+                              var tSec11 = stopwatch.ElapsedMilliseconds;
+                             images.Add(new Bitmap(file));
+                             imageNames.Add(file);
+                             var temp = stopwatch.ElapsedMilliseconds;
+
+                             logger.WriteLog($"測試單張時間: {temp -tSec11}ms  張");
+
+
+                         }
+                     }*/
+
+
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
                     var tSec = stopwatch.ElapsedMilliseconds;
                     //   sharpnessFlow.CogResult += UpdateDataGridView;
-                
+
+                    logger.WriteLog($"清晰度圖片載入時間: {tSec }ms  {files.Length} 張");
+                    stopwatch.Restart();
                     sharpnessFlow.MethodAssignTool();
                     sharpnessFlow.DuplicateTool();
                     var tSec1 = stopwatch.ElapsedMilliseconds;
-                    logger.WriteLog($"清晰度圖片載入時間: {tSec1 }ms  {files.Length} 張");
+                    logger.WriteLog($"Cog載入時間: {tSec1 }ms ");
                     stopwatch.Restart();
-                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images,true));
+                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, cB_Multi.Checked));
 
                     var tSec3 = stopwatch.ElapsedMilliseconds;
-                    logger.WriteLog($"清晰度運算時間: {tSec3 }ms " );
+                    logger.WriteLog($"清晰度運算時間: {tSec3 }ms ");
 
                     aoiImage1 = images[imagesIndex.Image1Index];
                     aoiImage2 = images[imagesIndex.Image2Index];
@@ -4114,9 +4195,9 @@ namespace SPIL
             if (isConnect)
             {
                 UpdatePicturebox(I_Green, pictureBox_Connect_Status);
-                logger.WriteLog("與設備連線 " );
+                logger.WriteLog("與設備連線 ");
             }
-                
+
             else
             {
                 //出錯的時候
