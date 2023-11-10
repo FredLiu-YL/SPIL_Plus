@@ -57,7 +57,7 @@ namespace SPIL
         public Form1()
         {
             InitializeComponent();
-
+            this.Size = new System.Drawing.Size(this.Size.Width, 1200);
         }
 
 
@@ -188,7 +188,7 @@ namespace SPIL
             textBoxes_Cu_1_20[20] = textBox_Mesument_20_Cu;
         }
         //Form Load
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             int counter = 0;
 
@@ -214,195 +214,233 @@ namespace SPIL
                 is_test_mode = true;
             }
 
+            try
+            {
+                this.Enabled = false;
+                Task cogt1 = Task.CompletedTask;
 
-            // 演算法 模組
-            string configFile = $"{systemPath}\\machineConfig.cfg";
-            if (!File.Exists(configFile))
-            {
-                machineSetting.Save(configFile);
-            }
-            else
-            {
-                machineSetting = MachineSetting.Load(configFile);
-                //暫時措施 到時候拿掉
-                if (machineSetting.ServerIP == null)
+                // 演算法 模組
+                string configFile = $"{systemPath}\\machineConfig.cfg";
+
+                if (!File.Exists(configFile))
                 {
-                    machineSetting.ServerIP = "192.168.0.3";
-                    machineSetting.ServerPort = 1200;
+                    machineSetting.Save(configFile);
                 }
-
-            }
-            if (machineSetting.AOIVppPath != null)
-            {
-
-                tbx_AOIPath.Text = machineSetting.AOIVppPath;
-                tbx_SharpPath.Text = machineSetting.SharpVppPath;
-                //找出在我的文件的路徑
-                var index = machineSetting.AOIVppPath.IndexOf("SPILmachine") + 12;
-                var aoi1Name = machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length - index);
-                var aoi1Name2 = machineSetting.AOIVppPath2.Substring(index, machineSetting.AOIVppPath2.Length - index);
-                var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
-
-                tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
-                string aoiVppPath = $"{systemPath}\\{aoi1Name}";
-                string aoi2VppPath = $"{systemPath}\\{aoi1Name2}";
-                string sharpVppPath = $"{systemPath}\\{sharpName}";
-
-                //tBx_RecipeName.Text = "Default";
-                aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger, 101);
-                aoIFlow2 = new AOIFlow(aoi2VppPath, machineSetting.AOIAlgorithms_2, logger, 301);
-                sharpnessFlow = new SharpnessFlow(sharpVppPath, machineSetting.SharpAlgorithms);
-
-                sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms, machineSetting.SharpAlgorithms);
-                //預設把 toolBlock 的參數先拿來用
-                sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
-                sPILRecipe.AOIParams2 = aoIFlow2.CogMethods.Select(m => m.method.RunParams).ToList();
-                sPILRecipe.ClarityParams = sharpnessFlow.CogMethods.Select(m => m.method.RunParams).ToList();
-                if (machineSetting.SecsCsvPath == "" || machineSetting.SecsCsvPath == null)
-                    machineSetting.SecsCsvPath = "C:\\Users\\Public\\Documents";
-
-                tbx_SECScsvPath.Text = machineSetting.SecsCsvPath;
-
-                //新增到UI 做顯示
-                foreach (var item in machineSetting.AOIAlgorithms)
+                else
                 {
-                    listBox_AOIAlgorithmList.Items.Add(item);
-                }
-                //新增到UI 做顯示
-                foreach (var item in machineSetting.AOIAlgorithms_2)
-                {
-                    listBox_AOI2AlgorithmList.Items.Add(item);
-                }
-
-                //新增到UI 做顯示
-                foreach (var item in machineSetting.SharpAlgorithms)
-                {
-                    listBox_SharpnessAlgorithmList.Items.Add(item);
-                }
-
-                cogRecordDisplay2.AutoFit = true;
-                cogRecordDisplay2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
-
-                cogRcdDisp_Distance1.AutoFit = true;
-                cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
-
-            }
-
-
-
-
-            //開啟socket server
-            //取得此電腦上ip位置
-            Search_Ethernet_Card();
-            for (int i = 0; i < ethernet_card.Count; i++)
-            {
-                Search_IP(i);
-            }
-
-
-            //選擇一個乙太卡開啟socket server
-            if (comboBox_IP.Items.Count == 0)
-            {
-                //return;
-                logger.WriteLog("Search_IP Error");
-            }
-            else
-            {
-
-                comboBox_IP.SelectedIndex = 0;
-                comboBox_IP_Motion.SelectedIndex = 0;
-            }
-
-
-            button_Connect_Click(sender, e);
-            button_Start_Server_Click(sender, e);
-            button_Start_Click(sender, e);
-            combine_text_box();
-
-
-
-            if (is_test_mode)
-            {
-                logger.WriteLog("test mode");
-                groupBox_test_item.Visible = true;
-                string vpp_file_test_path = "";
-                StreamReader file = new StreamReader("test.txt");
-                string line;
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (counter == 0)
+                    machineSetting = MachineSetting.Load(configFile);
+                    //暫時措施 到時候拿掉
+                    if (machineSetting.ServerIP == null)
                     {
-                        if (line == "0")
+                        machineSetting.ServerIP = "192.168.0.3";
+                        machineSetting.ServerPort = 1200;
+                    }
+
+                }
+
+                if (machineSetting.AOIVppPath != null)
+                {
+
+
+                    tbx_AOIPath.Text = machineSetting.AOIVppPath;
+                    tbx_SharpPath.Text = machineSetting.SharpVppPath;
+                    //找出在我的文件的路徑
+                    var index = machineSetting.AOIVppPath.IndexOf("SPILmachine") + 12;
+                    var aoi1Name = machineSetting.AOIVppPath.Substring(index, machineSetting.AOIVppPath.Length - index);
+                    var aoi1Name2 = machineSetting.AOIVppPath2.Substring(index, machineSetting.AOIVppPath2.Length - index);
+                    var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
+
+                    tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
+                    string aoiVppPath = $"{systemPath}\\{aoi1Name}";
+                    string aoi2VppPath = $"{systemPath}\\{aoi1Name2}";
+                    string sharpVppPath = $"{systemPath}\\{sharpName}";
+
+                    //tBx_RecipeName.Text = "Default";
+                    //需要7-11秒的時間 所以把他丟在背景執行 與其他初始化同時處理
+                    cogt1 = Task.Run(() =>
+                    {
+
+
+                        aoIFlow = new AOIFlow(aoiVppPath, machineSetting.AOIAlgorithms, logger, 101);
+                        aoIFlow2 = new AOIFlow(aoi2VppPath, machineSetting.AOIAlgorithms_2, logger, 301);
+                        sharpnessFlow = new SharpnessFlow(sharpVppPath, machineSetting.SharpAlgorithms);
+
+                        sPILRecipe = new SPILRecipe(machineSetting.AOIAlgorithms, machineSetting.SharpAlgorithms);
+
+
+                        //預設把 toolBlock 的參數先拿來用
+                        sPILRecipe.AOIParams = aoIFlow.CogMethods.Select(m => m.method.RunParams).ToList();
+                        sPILRecipe.AOIParams2 = aoIFlow2.CogMethods.Select(m => m.method.RunParams).ToList();
+                        sPILRecipe.ClarityParams = sharpnessFlow.CogMethods.Select(m => m.method.RunParams).ToList();
+                    });
+
+                    if (machineSetting.SecsCsvPath == "" || machineSetting.SecsCsvPath == null)
+                        machineSetting.SecsCsvPath = "C:\\Users\\Public\\Documents";
+
+                    tbx_SECScsvPath.Text = machineSetting.SecsCsvPath;
+
+                    //新增到UI 做顯示
+                    foreach (var item in machineSetting.AOIAlgorithms)
+                    {
+                        listBox_AOIAlgorithmList.Items.Add(item);
+                    }
+                    //新增到UI 做顯示
+                    foreach (var item in machineSetting.AOIAlgorithms_2)
+                    {
+                        listBox_AOI2AlgorithmList.Items.Add(item);
+                    }
+
+                    //新增到UI 做顯示
+                    foreach (var item in machineSetting.SharpAlgorithms)
+                    {
+                        listBox_SharpnessAlgorithmList.Items.Add(item);
+                    }
+
+                    cogRecordDisplay2.AutoFit = true;
+                    cogRecordDisplay2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+
+                    cogRcdDisp_Distance1.AutoFit = true;
+                    cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
+
+
+
+                }
+                else
+                {
+                    throw new Exception();
+
+                }
+
+                //開啟socket server
+                //取得此電腦上ip位置
+                Search_Ethernet_Card();
+                for (int i = 0; i < ethernet_card.Count; i++)
+                {
+                    Search_IP(i);
+                }
+          
+            
+                //選擇一個乙太卡開啟socket server
+                if (comboBox_IP.Items.Count == 0)
+                {
+                    //return;
+                    logger.WriteLog("Search_IP Error");
+                }
+                else
+                {
+
+                    comboBox_IP.SelectedIndex = 0;
+                    comboBox_IP_Motion.SelectedIndex = 0;
+                }
+         
+  
+       
+
+
+
+
+                button_Connect_Click(sender, e);
+                combine_text_box();
+
+
+                if (is_test_mode)
+                {
+                    logger.WriteLog("test mode");
+                    groupBox_test_item.Visible = true;
+                    string vpp_file_test_path = "";
+                    StreamReader file = new StreamReader("test.txt");
+                    string line;
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (counter == 0)
                         {
-                            radioButton_Degree_0.Checked = true;
+                            if (line == "0")
+                            {
+                                radioButton_Degree_0.Checked = true;
+                            }
+                            else if (line == "45")
+                            {
+                                radioButton_Degree_45.Checked = true;
+                            }
                         }
-                        else if (line == "45")
+                        else if (counter == 1)
                         {
-                            radioButton_Degree_45.Checked = true;
+                            vpp_file_test_path = line;
                         }
+                        logger.WriteLog(line);
+                        counter++;
                     }
-                    else if (counter == 1)
+                    file.Close();
+                   
+                    AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
+                    ////綁定cogRecordDisplay 用來存toolblock結果圖
+                    AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                    AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
+                    AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
+                    AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
+                    AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                    AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                    AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+
+ 
+
+                    //載入手動量測
+                    Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                    Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
+                    Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
+                    Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
+                    Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                    Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                    Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+
+                 
+
+                    logger.LogRecord = (mes) =>
                     {
-                        vpp_file_test_path = line;
-                    }
-                    logger.WriteLog(line);
-                    counter++;
+                        //string str = Log_tBx.Text;
+                        // str += mes;
+                        lock (logLock)
+                        {
+
+                            UpdateTextboxAdd(mes, Log_tBx);
+
+                            //  lBx_LogList.Items.Add(mes);
+                            UpdateLogListBox(mes, lBx_LogList);
+
+                        }
+
+
+                    };
+               
+                    tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
+                    tabCtrl_AlgorithmList.ItemSize = new Size(0, 1);
+           
+
+                    await cogt1;
+                    sharpnessFlow.WriteLog += (message) =>
+                    {
+                        logger.WriteLog(message);
+                    };
+            
+                
                 }
-                file.Close();
-
-                AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
-                ////綁定cogRecordDisplay 用來存toolblock結果圖
-                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
-                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
-                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
-                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
-                //載入手動量測
-                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
-                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
-                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
-                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
-                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
-
-                sharpnessFlow.WriteLog += (message) =>
+                else
                 {
-                    logger.WriteLog(message);
-                };
-
-                logger.LogRecord = (mes) =>
-                {
-                    //string str = Log_tBx.Text;
-                    // str += mes;
-                    lock (logLock)
-                    {
-
-                        UpdateTextboxAdd(mes, Log_tBx);
-
-                        //  lBx_LogList.Items.Add(mes);
-                        UpdateLogListBox(mes, lBx_LogList);
-
-                    }
-
-
-                };
-
-                tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
-                tabCtrl_AlgorithmList.ItemSize = new Size(0, 1);
+                    groupBox_test_item.Visible = false;
+                }
+                this.Enabled = true;
             }
-            else
+            catch (Exception ex)
             {
-                groupBox_test_item.Visible = false;
+
+                MessageBox.Show(ex.Message);
             }
         }
         private void Load_Setup_Data()
@@ -1280,8 +1318,9 @@ namespace SPIL
         }
         #endregion
         //
-        private (double cuNi, double cu) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
+        private (double cuNi, double cu, bool isOK) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
+            bool isOK = false;
             logger.WriteLog("AOI Measurment Point " + textBox_Point.Text);
             double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
             Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out distance_CuNi, out distance_Cu);
@@ -1293,6 +1332,7 @@ namespace SPIL
                 logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
                 UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+                isOK = true;
             }
             else
             {
@@ -1300,9 +1340,11 @@ namespace SPIL
                 UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
                 logger.WriteErrorLog("AOI Error!");
+                isOK = false;
+
             }
 
-            return (cuNi, cu);
+            return (cuNi, cu, isOK);
         }
         //
         private void Initial_OLS()
@@ -2236,13 +2278,7 @@ namespace SPIL
         #endregion
 
         #region OLS
-        private void button_Start_Click(object sender, EventArgs e)
-        {
-            /* if (!timer_OLS_File.Enabled)
-                 timer_OLS_File.Enabled = true;
-             else
-                 timer_OLS_File.Enabled = false;*/
-        }
+ 
         private void timer_OLS_File_Tick(object sender, EventArgs e)
         {
             if (!backgroundWorker_OLS_File.IsBusy)
@@ -2628,22 +2664,22 @@ namespace SPIL
                 }
 
                 // 遍歷每個檔案，檢查是否為影像檔
-             /*   foreach (string file in files)
-                {
-                    string extension = Path.GetExtension(file).ToLower();
-                    string name = Path.GetFileName(file);
-                    // 檢查副檔名是否為影像檔（可根據需求調整）
-                    if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
-                    {
+                /*   foreach (string file in files)
+                   {
+                       string extension = Path.GetExtension(file).ToLower();
+                       string name = Path.GetFileName(file);
+                       // 檢查副檔名是否為影像檔（可根據需求調整）
+                       if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
+                       {
 
-                        images.Add(new Bitmap(file));
-                        imageNames.Add(file);
+                           images.Add(new Bitmap(file));
+                           imageNames.Add(file);
 
-                    }
+                       }
 
-                }
+                   }
 
-*/
+   */
 
 
                 List<string> names = new List<string>();
@@ -2918,8 +2954,10 @@ namespace SPIL
         }
         private async Task AoiMeansure()
         {
+            (double cuNi, double cu, bool isOK) value = (0, 0, true);
             if (checkBox_bmp.Checked)
             {
+
 
                 FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
                 if (FIle_List.Length == 0)
@@ -2948,14 +2986,17 @@ namespace SPIL
                 }
                 else //45度
                 {
+
+
                     //45度才執行 圖像計算
                     string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder, Save_File_Folder);
                     //執行AOI計算
                     if (is_hand_measurement)
                     {
-                        //得到三張圖  做距離計算
-                        AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
                         logger.WriteLog("手動量測");
+                        //得到三張圖  做距離計算
+                        value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+
 
                         logger.WriteLog("Img file 1 : " + aoiImages[0]);
                         logger.WriteLog("Img file 2 : " + aoiImages[1]);
@@ -2967,9 +3008,10 @@ namespace SPIL
                     }
                     else
                     {
-                        //AOI 計算
-                        AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
                         logger.WriteLog("AOI自動量測");
+                        //AOI 計算
+                        value = AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+
 
                         logger.WriteLog("Img file 1 : " + aoiImages[0]);
                         logger.WriteLog("Img file 2 : " + aoiImages[1]);
@@ -3006,6 +3048,10 @@ namespace SPIL
 
             }
             AoiOutputData(Save_File_Folder);
+
+
+            if (!value.isOK) //除了量測錯誤外 其他都OK
+                throw new Exception("量測錯誤");
         }
 
         private void timer_Initial_Tick(object sender, EventArgs e)
@@ -3080,32 +3126,34 @@ namespace SPIL
         }
         private void button_Open_Hide_2_Click(object sender, EventArgs e)
         {
-            /* try
-             {
-                 logger.WriteLog("Open Hide 2");
-                 string send_data_str = get_socket_send_data();
-                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-                 Thread.Sleep(100);
-                 clientSocket_OLS.Send(StringToByteArray("open_2"));
-                 Thread.Sleep(100);
-             }
-             catch (Exception error)
-             {
-                 logger.WriteErrorLog("Open Hide 2 Error! " + error.ToString());
-             }*/
+            try
+            {
+                logger.WriteLog("Open Hide 2");
+                string send_data_str = get_socket_send_data();
+                //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+
+                hostCommunication.Send("open_2");
+
+
+            }
+            catch (Exception error)
+            {
+                logger.WriteErrorLog("Open Hide 2 Error! " + error.ToString());
+            }
         }
         private void button_Close_Hide_2_Click(object sender, EventArgs e)
         {
-            /* try
-             {
-                 logger.WriteLog("Close Hide 2");
-                 clientSocket_OLS.Send(StringToByteArray("close_2"));
-                 Thread.Sleep(100);
-             }
-             catch (Exception error)
-             {
-                 logger.WriteErrorLog("Close Hide 2 Error! " + error.ToString());
-             }*/
+            try
+            {
+                logger.WriteLog("Close Hide 2");
+                hostCommunication.Send("close_2");
+
+
+            }
+            catch (Exception error)
+            {
+                logger.WriteErrorLog("Close Hide 2 Error! " + error.ToString());
+            }
         }
         private void timer_Mouse_Point_Tick(object sender, EventArgs e)
         {
@@ -3134,156 +3182,12 @@ namespace SPIL
                 open_hide_2_Old = open_hide_2;
             }
         }
-        private void timer_connect_client_Tick(object sender, EventArgs e)
-        {
-            /* if (!bgWorkerServerRun.IsBusy)
-             {
-                 bgWorkerServerRun.RunWorkerAsync();
-             }
-            */
-        }
-        private void bgWorkerServerRun_DoWork(object sender, DoWorkEventArgs e)
-        {/*
-            try
-            {
-                if (!connect_OLS_client)
-                {
-                    //連線成功
-                    clientSocket_OLS = Socketserver_OLS.Accept();
-                    connect_OLS_client = true;
-                    UpdateTextboxAdd("Client connect ip:" + IPAddress.Parse(((IPEndPoint)clientSocket_OLS.RemoteEndPoint).Address.ToString()) + Environment.NewLine, textBox_Server_Receive);
-                    //傳送預設資料
-                    string send_data_str = get_socket_send_data();
-                    byte[] send_data = new byte[send_data_str.Length];
-                    for (int i = 0; i < send_data_str.Length; i++)
-                        send_data[i] = Convert.ToByte(send_data_str[i]);
-                    logger.WriteLog("Connect client : " + IPAddress.Parse(((IPEndPoint)clientSocket_OLS.RemoteEndPoint).Address.ToString()) + Environment.NewLine);
-                    clientSocket_OLS.Send(send_data);
-                }
-                else
-                {
-                    try
-                    {
-                        byte[] Receive_data = new byte[1024];
-                        string receive_data = "";
-                        //通過clientSocket接收資料
-                        int receiveNumber = clientSocket_OLS.Receive(Receive_data);
-                        for (int i = 0; i < 1024; i++)
-                        {
-                            if (Receive_data[i] == 0)
-                                break;
-                            else
-                            {
-                                receive_data += Convert.ToString(Convert.ToChar(Receive_data[i]));
-                            }
-                        }
-                        if (receive_data == "hand measurement on")
-                        {
-                            UpdateTextboxAdd("進入手動量測模式" + "\r\n", textBox_Server_Receive);
-                            is_hand_measurement = true;
-                        }
-                        //從cover_and_init接收資料
-                        UpdateTextboxAdd("OLS Recive:" + receive_data + "\r\n", textBox_Server_Receive);
-
-                        logger.WriteLog("OLS Recive:" + receive_data);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.WriteErrorLog(ex.ToString());
-                        int aaa = ex.HResult;
-                        if (aaa == -2147467259)
-                        {
-                            clientSocket_OLS.Shutdown(SocketShutdown.Both);
-                            clientSocket_OLS.Close();
-                            connect_OLS_client = false;
-                            logger.WriteErrorLog("OLS Disconnect!");
-                        }
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                logger.WriteErrorLog("OLS error" + error.ToString());
-            }*/
-        }
-        private void button_Send_Client_Click(object sender, EventArgs e)
-        {
-            /* try
-             {
-                 string send_ss = textBox_Server_Send.Text;
-                 byte[] send_data = new byte[send_ss.Length];
-                 for (int i = 0; i < send_ss.Length; i++)
-                     send_data[i] = Convert.ToByte(send_ss[i]);
-                 clientSocket_OLS.Send(send_data);
-                 textBox_Server_Receive.Text += "Send:" + send_ss + Environment.NewLine;
-                 timer_Server.Enabled = true;
-             }
-             catch (Exception error)
-             {
-                 MessageBox.Show(error.ToString());
-             }*/
-        }
-        private void button_Start_Server_Click(object sender, EventArgs e)
-        {
-            /* try
-             {
-                 logger.WriteLog("Create OLS Server");
-                 string ip_address = comboBox_IP.Text;
-                 IPAddress ip = IPAddress.Parse(ip_address);
-                 int port = Convert.ToInt32(textBox_Server_Port.Text);
-                 Socketserver_OLS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                 Socketserver_OLS.Bind(new IPEndPoint(ip, port));  //繫結IP地址：埠
-                 Socketserver_OLS.Listen(10);    //設定最多10個排隊連線請求
-                 textBox_Server_Receive.Text += "socket start" + Environment.NewLine;
-                 timer_Server.Enabled = true;
-                 timer_connect_client.Enabled = true;
-                 timer_Open_Hide.Enabled = true;
-                 logger.WriteLog("Create OLS Server Successful");
-             }
-             catch (Exception error)
-             {
-                 logger.WriteErrorLog("Create OLS Server Fail ! " + error.ToString());
-             }
-            */
-
-        }
-        private void button_auto_click_Sp1_Click(object sender, EventArgs e)
-        {
-            /* Thread.Sleep(1000);
-             string send_data_str = get_socket_send_data();
-             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-             //Thread.Sleep(100);
-             clientSocket_OLS.Send(StringToByteArray("SP1"));
-             Thread.Sleep(100);*/
-
-        }
-        private void button_auto_click_Sp2_Click(object sender, EventArgs e)
-        {
-            /* string send_data_str = get_socket_send_data();
-             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-             //Thread.Sleep(100);
-             clientSocket_OLS.Send(StringToByteArray("SP2"));
-             Thread.Sleep(100);*/
-        }
-        private void button_auto_click_Sp3_Click(object sender, EventArgs e)
-        {
-            /*string send_data_str = get_socket_send_data();
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            //Thread.Sleep(100);
-            clientSocket_OLS.Send(StringToByteArray("SP3"));
-            Thread.Sleep(100);*/
-        }
+ 
+      
+    
+       
         #endregion
 
-        private void button_auto_click_Sp5_Click(object sender, EventArgs e)
-        {
-            /* string send_data_str = get_socket_send_data();
-             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-             //Thread.Sleep(100);
-             clientSocket_OLS.Send(StringToByteArray("SP5"));
-             Thread.Sleep(100);*/
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
