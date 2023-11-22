@@ -106,7 +106,7 @@ namespace SPIL
         //    }
         //}
 
-        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, out double distance_CuNi, out double distance_Cu)
+        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, string saveFolder, out double distance_CuNi, out double distance_Cu)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace SPIL
                 else
                 {
                     //存圖有問題  如果有需要就另外寫
-                   // Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
+                 //   Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
                   
                     var cord = MeasureToolBlock.CreateLastRunRecord();
                     cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
@@ -171,7 +171,12 @@ namespace SPIL
                     var result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
                     cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
                     var result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
-                   
+
+                    result_img1.Save($"{saveFolder}\\Result1_AOI.bmp");
+                    result_img2.Save($"{saveFolder}\\Result2_AOI.bmp");
+                    result_img3.Save($"{saveFolder}\\Result3_AOI.bmp");
+                    
+
                     CogDisplay_result_1.Image = new CogImage24PlanarColor(result_img1);
                     CogDisplay_result_1.Fit(true);
                     CogDisplay_result_2.Image = new CogImage24PlanarColor(result_img2);

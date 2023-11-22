@@ -54,10 +54,14 @@ namespace SPIL
         private AOIFlow aoIFlow2 { get; set; }
         private SharpnessFlow sharpnessFlow;
         private readonly object logLock = new object();
+
+        private string isReadRecipePath = "";
+
         public Form1()
         {
             InitializeComponent();
-            this.Size = new System.Drawing.Size(this.Size.Width, 1200);
+            this.Size = new System.Drawing.Size(this.Size.Width, 1100);
+            logger.WriteLog("InitializeComponent...");
         }
 
 
@@ -318,8 +322,8 @@ namespace SPIL
                 {
                     Search_IP(i);
                 }
-          
-            
+                logger.WriteLog("Search_IP OK");
+
                 //選擇一個乙太卡開啟socket server
                 if (comboBox_IP.Items.Count == 0)
                 {
@@ -332,9 +336,9 @@ namespace SPIL
                     comboBox_IP.SelectedIndex = 0;
                     comboBox_IP_Motion.SelectedIndex = 0;
                 }
-         
-  
-       
+
+
+
 
 
 
@@ -343,6 +347,7 @@ namespace SPIL
                 combine_text_box();
 
 
+                logger.WriteLog("Connect OK");
                 if (is_test_mode)
                 {
                     logger.WriteLog("test mode");
@@ -371,7 +376,7 @@ namespace SPIL
                         counter++;
                     }
                     file.Close();
-                   
+
                     AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
                     ////綁定cogRecordDisplay 用來存toolblock結果圖
                     AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
@@ -385,7 +390,7 @@ namespace SPIL
                     AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                     AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
- 
+
 
                     //載入手動量測
                     Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
@@ -400,7 +405,7 @@ namespace SPIL
                     Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                     Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
-                 
+
 
                     logger.LogRecord = (mes) =>
                     {
@@ -418,18 +423,20 @@ namespace SPIL
 
 
                     };
-               
+
                     tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
                     tabCtrl_AlgorithmList.ItemSize = new Size(0, 1);
-           
+
 
                     await cogt1;
+
+                    logger.WriteLog("Initialed");
                     sharpnessFlow.WriteLog += (message) =>
                     {
                         logger.WriteLog(message);
                     };
-            
-                
+
+
                 }
                 else
                 {
@@ -439,7 +446,7 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-
+                logger.WriteLog(ex.ToString());
                 MessageBox.Show(ex.Message);
             }
         }
@@ -1132,45 +1139,51 @@ namespace SPIL
                 string path = $"{systemPath}\\Recipe\\{receive_data}";
                 if (!Directory.Exists(path)) throw new Exception($"Not Found Recipe : {receive_data}");
 
+                logger.WriteLog($"Old Recipe :{isReadRecipePath}     Recipe : {path}");
+                if (isReadRecipePath != path)
+                {
+                    isReadRecipePath = path;
+                    LoadRecipe(path);
 
-                LoadRecipe(path);
 
+                    /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
+                    string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
+                    AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
 
-                /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
-                string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
-                AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
+                    // AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
+                    if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
+                        AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
+                    else
+                        AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
 
-                // AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
-                if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
-                    AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
-                else
-                    AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
+                    //綁定cogRecordDisplay 用來存toolblock結果圖
+                    AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                    AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                    AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                    AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                    AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
-                //綁定cogRecordDisplay 用來存toolblock結果圖
-                AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                AOI_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                AOI_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                AOI_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+                    AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
+                    AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
+                    AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
+                    //載入手動量測vpp
+                    Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
+                    Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
+                    Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
+                    Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
+                    Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
+                    Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
+                    Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
+                    Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
 
-                AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
-                AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
-                AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
-                //載入手動量測vpp
-                Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
-                Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
-                Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
-                Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
-                Hand_Measurement.CogDisplay_result_3 = cogDisplay3;
-                Hand_Measurement.save_AOI_result_idx_1 = (int)numericUpDown_AOI_save_idx1.Value;
-                Hand_Measurement.save_AOI_result_idx_2 = (int)numericUpDown_AOI_save_idx2.Value;
-                Hand_Measurement.save_AOI_result_idx_3 = (int)numericUpDown_AOI_save_idx3.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
-                Hand_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
+                }
 
+                Cal_File_Address();
 
                 Send_Server("SetRecipe,e>");
 
@@ -1229,7 +1242,7 @@ namespace SPIL
             //
             UpdateTextbox(Convert.ToString(now_Slot), textBox_Slot);
             //
-            Cal_File_Address();
+          //  Cal_File_Address();
             open_hide_1 = true;
             open_hide_2 = true;
             //
@@ -1295,6 +1308,10 @@ namespace SPIL
 
 
                 Send_Server("Done,s>");
+
+                //  Cal_File_Address(); //建資料夾
+
+
                 if (AOI_Measurement.MeasureToolBlock == null)
                 {
 
@@ -1323,7 +1340,7 @@ namespace SPIL
             bool isOK = false;
             logger.WriteLog("AOI Measurment Point " + textBox_Point.Text);
             double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, out distance_CuNi, out distance_Cu);
+            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, Save_File_Folder, out distance_CuNi, out distance_Cu);
             if (distance_CuNi != -1 && distance_Cu != -1)
             {
                 cuNi = distance_CuNi * variable_data.Degree_Ratio;
@@ -1931,7 +1948,7 @@ namespace SPIL
         {
             try
             {
-                Cal_File_Address();
+                //      Cal_File_Address();
                 //20211224-S
                 //double[] zero_degree_ = new double[9];
                 //zero_degree_[0] = Convert.ToDouble(textBox_Mesument_1_0.Text);
@@ -2278,7 +2295,7 @@ namespace SPIL
         #endregion
 
         #region OLS
- 
+
         private void timer_OLS_File_Tick(object sender, EventArgs e)
         {
             if (!backgroundWorker_OLS_File.IsBusy)
@@ -2638,29 +2655,31 @@ namespace SPIL
                     bmpNameList.Clear();
                     //一次跑5張 
                     int dequeuecount = Queuefiles.Count >= 5 ? 5 : Queuefiles.Count;
-
+                    if (Queuefiles.Count == 0) break;
                     for (int i = 0; i < dequeuecount; i++)
-                        bmpNameList.Add(Queuefiles.Dequeue());
-
-
-                    string extension = Path.GetExtension(bmpNameList[0]).ToLower();
-
-                    // 檢查副檔名是否為影像檔（可根據需求調整）
-                    if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
                     {
+                        var img = Queuefiles.Dequeue();
+                        string extension1 = Path.GetExtension(img).ToLower();
 
-                        List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
-
-                        foreach (var task in taskList)
-                        {
-                            Bitmap bmp = await task.task;
-                            images.Add(bmp);
-                            imageNames.Add(task.fileName);
-                        }
+                        // 檢查副檔名是否為影像檔（可根據需求調整）
+                        if (extension1 == ".bmp" || extension1 == ".jpg" || extension1 == ".jpeg" || extension1 == ".png" || extension1 == ".gif")
+                            bmpNameList.Add(img);
 
                     }
-                    else
-                        throw new Exception("Non-compliant documents");
+
+
+
+
+                    List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
+
+                    foreach (var task in taskList)
+                    {
+                        Bitmap bmp = await task.task;
+                        images.Add(bmp);
+                        imageNames.Add(task.fileName);
+                    }
+
+
                 }
 
                 // 遍歷每個檔案，檢查是否為影像檔
@@ -2680,7 +2699,7 @@ namespace SPIL
                    }
 
    */
-
+                var ii = Thread.CurrentThread.ManagedThreadId;
 
                 List<string> names = new List<string>();
 
@@ -2696,6 +2715,7 @@ namespace SPIL
                 {
                     Directory.CreateDirectory(imageFolder);
                 }
+                logger.WriteLog($"SharpnessImageFolder :   {imageFolder} ");
                 //將圖片存到資料夾
                 for (int i = 0; i < images.Count; i++)
                 {
@@ -3009,6 +3029,8 @@ namespace SPIL
                     else
                     {
                         logger.WriteLog("AOI自動量測");
+
+
                         //AOI 計算
                         value = AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
 
@@ -3182,10 +3204,10 @@ namespace SPIL
                 open_hide_2_Old = open_hide_2;
             }
         }
- 
-      
-    
-       
+
+
+
+
         #endregion
 
 
@@ -3954,27 +3976,29 @@ namespace SPIL
                         int dequeuecount = Queuefiles.Count >= 5 ? 5 : Queuefiles.Count;
 
                         for (int i = 0; i < dequeuecount; i++)
-                            bmpNameList.Add(Queuefiles.Dequeue());
-
-
-                        string extension = Path.GetExtension(bmpNameList[0]).ToLower();
-
-                        // 檢查副檔名是否為影像檔（可根據需求調整）
-                        if (extension == ".bmp" || extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
                         {
+                            var img = Queuefiles.Dequeue();
 
-                            List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
 
-                            foreach (var task in taskList)
-                            {
-                                Bitmap bmp = await task.task;
-                                images.Add(bmp);
-                                imageNames.Add(task.fileName);
-                            }
+                            string extension1 = Path.GetExtension(img).ToLower();
+
+                            // 檢查副檔名是否為影像檔（可根據需求調整）
+                            if (extension1 == ".bmp" || extension1 == ".jpg" || extension1 == ".jpeg" || extension1 == ".png" || extension1 == ".gif")
+                                bmpNameList.Add(img);
 
                         }
-                        else
-                            throw new Exception("Non-compliant documents");
+
+
+
+                        List<(Task<Bitmap> task, string fileName)> taskList = MultReadBitmap(bmpNameList);
+
+                        foreach (var task in taskList)
+                        {
+                            Bitmap bmp = await task.task;
+                            images.Add(bmp);
+                            imageNames.Add(task.fileName);
+                        }
+
                     }
                     /* foreach (string file in files)
                      {
@@ -4239,6 +4263,17 @@ namespace SPIL
                 machineSetting.SecsCsvPath = tbx_SECScsvPath.Text;
                 machineSetting.Save($"{systemPath}\\machineConfig.cfg");
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var size = this.Size;
+            logger.WriteLog($"Form Size {size}");
+        }
+
+        private void dataGrid_Sharpness_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
         private void HB_off()
