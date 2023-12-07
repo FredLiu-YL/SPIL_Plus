@@ -34,6 +34,7 @@ namespace SPIL
             this.textBox_OLS_Folder = new System.Windows.Forms.TextBox();
             this.button_OLS_Folder = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox_SaveSharpnessImage = new System.Windows.Forms.CheckBox();
             this.label97 = new System.Windows.Forms.Label();
             this.btn_SecsCsvPath = new System.Windows.Forms.Button();
             this.tbx_SECScsvPath = new System.Windows.Forms.TextBox();
@@ -180,6 +181,12 @@ namespace SPIL
             this.gpBox_Sharpness = new System.Windows.Forms.GroupBox();
             this.cB_Multi = new System.Windows.Forms.CheckBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_SharpnessMultRun = new System.Windows.Forms.Button();
             this.tbx_SharpnessScore3 = new System.Windows.Forms.TextBox();
             this.label66 = new System.Windows.Forms.Label();
@@ -388,12 +395,6 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -473,6 +474,7 @@ namespace SPIL
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox_SaveSharpnessImage);
             this.groupBox1.Controls.Add(this.label97);
             this.groupBox1.Controls.Add(this.btn_SecsCsvPath);
             this.groupBox1.Controls.Add(this.tbx_SECScsvPath);
@@ -497,6 +499,17 @@ namespace SPIL
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Save File Data";
+            // 
+            // checkBox_SaveSharpnessImage
+            // 
+            this.checkBox_SaveSharpnessImage.AutoSize = true;
+            this.checkBox_SaveSharpnessImage.Location = new System.Drawing.Point(18, 136);
+            this.checkBox_SaveSharpnessImage.Name = "checkBox_SaveSharpnessImage";
+            this.checkBox_SaveSharpnessImage.Size = new System.Drawing.Size(100, 20);
+            this.checkBox_SaveSharpnessImage.TabIndex = 42;
+            this.checkBox_SaveSharpnessImage.Text = "Save Image";
+            this.checkBox_SaveSharpnessImage.UseVisualStyleBackColor = true;
+            this.checkBox_SaveSharpnessImage.CheckedChanged += new System.EventHandler(this.checkBox_SaveSharpnessImage_CheckedChanged);
             // 
             // label97
             // 
@@ -2144,6 +2157,53 @@ namespace SPIL
             this.dataGrid_Sharpness.TabIndex = 146;
             this.dataGrid_Sharpness.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_Sharpness_CellContentClick);
             // 
+            // FileName
+            // 
+            this.FileName.HeaderText = "FileName";
+            this.FileName.MinimumWidth = 6;
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            // 
+            // SearchScore1
+            // 
+            this.SearchScore1.HeaderText = "SearchScore1";
+            this.SearchScore1.MinimumWidth = 6;
+            this.SearchScore1.Name = "SearchScore1";
+            this.SearchScore1.ReadOnly = true;
+            this.SearchScore1.Width = 140;
+            // 
+            // SearchScore2
+            // 
+            this.SearchScore2.HeaderText = "SearchScore2";
+            this.SearchScore2.MinimumWidth = 6;
+            this.SearchScore2.Name = "SearchScore2";
+            this.SearchScore2.ReadOnly = true;
+            this.SearchScore2.Width = 140;
+            // 
+            // Score1
+            // 
+            this.Score1.HeaderText = "Score1";
+            this.Score1.MinimumWidth = 6;
+            this.Score1.Name = "Score1";
+            this.Score1.ReadOnly = true;
+            this.Score1.Width = 85;
+            // 
+            // Score2
+            // 
+            this.Score2.HeaderText = "Score2";
+            this.Score2.MinimumWidth = 6;
+            this.Score2.Name = "Score2";
+            this.Score2.ReadOnly = true;
+            this.Score2.Width = 85;
+            // 
+            // Score3
+            // 
+            this.Score3.HeaderText = "Score3";
+            this.Score3.MinimumWidth = 6;
+            this.Score3.Name = "Score3";
+            this.Score3.ReadOnly = true;
+            this.Score3.Width = 85;
+            // 
             // btn_SharpnessMultRun
             // 
             this.btn_SharpnessMultRun.Location = new System.Drawing.Point(11, 796);
@@ -2781,7 +2841,7 @@ namespace SPIL
             this.groupBox_Excel_Data_Setup.Size = new System.Drawing.Size(726, 274);
             this.groupBox_Excel_Data_Setup.TabIndex = 25;
             this.groupBox_Excel_Data_Setup.TabStop = false;
-            this.groupBox_Excel_Data_Setup.Text = "Excel Data Setup";
+            this.groupBox_Excel_Data_Setup.Text = " ";
             // 
             // tabPage4
             // 
@@ -4304,53 +4364,6 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // FileName
-            // 
-            this.FileName.HeaderText = "FileName";
-            this.FileName.MinimumWidth = 6;
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            // 
-            // SearchScore1
-            // 
-            this.SearchScore1.HeaderText = "SearchScore1";
-            this.SearchScore1.MinimumWidth = 6;
-            this.SearchScore1.Name = "SearchScore1";
-            this.SearchScore1.ReadOnly = true;
-            this.SearchScore1.Width = 140;
-            // 
-            // SearchScore2
-            // 
-            this.SearchScore2.HeaderText = "SearchScore2";
-            this.SearchScore2.MinimumWidth = 6;
-            this.SearchScore2.Name = "SearchScore2";
-            this.SearchScore2.ReadOnly = true;
-            this.SearchScore2.Width = 140;
-            // 
-            // Score1
-            // 
-            this.Score1.HeaderText = "Score1";
-            this.Score1.MinimumWidth = 6;
-            this.Score1.Name = "Score1";
-            this.Score1.ReadOnly = true;
-            this.Score1.Width = 85;
-            // 
-            // Score2
-            // 
-            this.Score2.HeaderText = "Score2";
-            this.Score2.MinimumWidth = 6;
-            this.Score2.Name = "Score2";
-            this.Score2.ReadOnly = true;
-            this.Score2.Width = 85;
-            // 
-            // Score3
-            // 
-            this.Score3.HeaderText = "Score3";
-            this.Score3.MinimumWidth = 6;
-            this.Score3.Name = "Score3";
-            this.Score3.ReadOnly = true;
-            this.Score3.Width = 85;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4363,7 +4376,7 @@ namespace SPIL
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20231122";
+            this.Text = "YuanLi OLS AOI-20231206";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -4810,6 +4823,7 @@ namespace SPIL
         private System.Windows.Forms.DataGridViewTextBoxColumn Score1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
+        private System.Windows.Forms.CheckBox checkBox_SaveSharpnessImage;
     }
 }
 

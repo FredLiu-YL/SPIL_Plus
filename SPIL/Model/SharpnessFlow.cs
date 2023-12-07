@@ -56,7 +56,7 @@ namespace SPIL.Model
             WriteLog?.Invoke($"toolBlock2 SharpnessTool:{ tbtool5.RunParams.Mode }  { tbtool5.RunParams.GradientEnergyLowPassSmoothing }");
         }
 
-        public (int Image1Index, int Image2Index, int Image3Index) SharpnessAnalyzeAsync(IEnumerable<Bitmap> bitmaps, bool isMulit)
+        public (int Image1Index, int Image2Index, int Image3Index) SharpnessAnalyzeAsync(IEnumerable<Bitmap> bitmaps, bool isMulit )
         {
 
             //   MethodAssignTool();

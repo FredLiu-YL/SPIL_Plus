@@ -106,7 +106,7 @@ namespace SPIL
         //    }
         //}
 
-        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, string saveFolder, out double distance_CuNi, out double distance_Cu)
+        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, string saveFolder,string inPoint, out double distance_CuNi, out double distance_Cu)
         {
             try
             {
@@ -172,9 +172,9 @@ namespace SPIL
                     cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
                     var result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
 
-                    result_img1.Save($"{saveFolder}\\Result1_AOI.bmp");
-                    result_img2.Save($"{saveFolder}\\Result2_AOI.bmp");
-                    result_img3.Save($"{saveFolder}\\Result3_AOI.bmp");
+                    result_img1.Save($"{saveFolder}\\Result{inPoint}--1_AOI.bmp");
+                    result_img2.Save($"{saveFolder}\\Result{inPoint}--2_AOI.bmp");
+                    result_img3.Save($"{saveFolder}\\Result{inPoint}--3_AOI.bmp");
                     
 
                     CogDisplay_result_1.Image = new CogImage24PlanarColor(result_img1);

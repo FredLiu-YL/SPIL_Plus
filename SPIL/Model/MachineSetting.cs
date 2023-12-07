@@ -33,6 +33,8 @@ namespace SPIL.Model
 
         public string ServerIP { get; set; }
         public int ServerPort { get; set; }
+        public bool IsSaveSharpnessImage { get; set; }
+     
         /// <summary>
         /// 存出量測結果，給雄旺的CSV資料
         /// </summary>

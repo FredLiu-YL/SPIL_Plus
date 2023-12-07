@@ -282,7 +282,7 @@ namespace SPIL
                         machineSetting.SecsCsvPath = "C:\\Users\\Public\\Documents";
 
                     tbx_SECScsvPath.Text = machineSetting.SecsCsvPath;
-
+                    checkBox_SaveSharpnessImage.Checked = machineSetting.IsSaveSharpnessImage;
                     //新增到UI 做顯示
                     foreach (var item in machineSetting.AOIAlgorithms)
                     {
@@ -1242,7 +1242,7 @@ namespace SPIL
             //
             UpdateTextbox(Convert.ToString(now_Slot), textBox_Slot);
             //
-          //  Cal_File_Address();
+            //  Cal_File_Address();
             open_hide_1 = true;
             open_hide_2 = true;
             //
@@ -1338,24 +1338,25 @@ namespace SPIL
         private (double cuNi, double cu, bool isOK) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
             bool isOK = false;
-            logger.WriteLog("AOI Measurment Point " + textBox_Point.Text);
+            string inPoint = textBox_Point.Text;
+            logger.WriteLog("AOI Measurment Point " + inPoint);
             double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, Save_File_Folder, out distance_CuNi, out distance_Cu);
+            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, Save_File_Folder, inPoint, out distance_CuNi, out distance_Cu);
             if (distance_CuNi != -1 && distance_Cu != -1)
             {
                 cuNi = distance_CuNi * variable_data.Degree_Ratio;
                 cu = distance_Cu * variable_data.Degree_Ratio;
                 logger.WriteLog("AOI Measurment Distance" + Convert.ToString(cuNi));
                 logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
-                UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
-                UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+                UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
+                UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
                 isOK = true;
             }
             else
             {
                 string error_value_string = "量測錯誤";
-                UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
-                UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+                UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
+                UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
                 logger.WriteErrorLog("AOI Error!");
                 isOK = false;
 
@@ -2706,7 +2707,8 @@ namespace SPIL
                 logger.WriteLog($"Image Count : {images.Count}  Time {stopwatch.ElapsedMilliseconds} ms");
 
                 stopwatch.Restart();
-                var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, true));
+                //計算要用哪三張圖計算AOI
+                (int Image1Index, int Image2Index, int Image3Index) imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, true));
 
                 logger.WriteLog($"SharpnessAnalyzeTime :   {stopwatch.ElapsedMilliseconds} ms");
 
@@ -2716,13 +2718,34 @@ namespace SPIL
                     Directory.CreateDirectory(imageFolder);
                 }
                 logger.WriteLog($"SharpnessImageFolder :   {imageFolder} ");
-                //將圖片存到資料夾
-                for (int i = 0; i < images.Count; i++)
+
+            
+
+                var nameArray = imageNames.Select(
+                 (n, i) =>
+                 {
+
+                     string name1 = Path.GetFileName(n);
+                     return $"{imageFolder}\\{name1}";
+                 }).ToArray();
+
+                bool isSave = machineSetting.IsSaveSharpnessImage;
+                if(isSave)
                 {
-                    string name = Path.GetFileName(imageNames[i]);
-                    images[i].Save($"{imageFolder}\\{name}");
-                    images[i].Dispose();
+                    //先複製一份新的BMP   才能做TASK另存
+                    var bmps = images.Select(b => new Bitmap(b)).ToArray();
+                    Task savetask = SaveClarityImage(bmps, nameArray);
+
                 }
+          
+
+                     //將圖片存到資料夾
+            /*    for (int i = 0; i < images.Count; i++)
+                     {
+                         string name = Path.GetFileName(imageNames[i]);
+                         images[i].Save($"{imageFolder}\\{name}");
+                         images[i].Dispose();
+                     }*/
 
 
 
@@ -2737,7 +2760,8 @@ namespace SPIL
                 names.Add(imageNames[imagesIndex.Image3Index]);
 
 
-
+                foreach (var item in images)
+                    item.Dispose();
 
 
 
@@ -3210,6 +3234,26 @@ namespace SPIL
 
         #endregion
 
+        private Task SaveClarityImage(Bitmap[] bmps, string[] names)
+        {
+
+            return Task.Run(() =>
+            {
+
+                for (int i = 0; i < names.Length; i++)
+                {
+                    bmps[i].Save(names[i]);
+
+                }
+                //記憶體釋放
+                foreach (var bmp in bmps)
+                    bmp.Dispose();
+           
+            });
+
+
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -3588,7 +3632,7 @@ namespace SPIL
                    img1.Dispose();
                    img2.Dispose();
                    img3.Dispose();
-                
+
                  */
 
                 AOI_Measurement.ShowRecord += UpdateAOIRecord;
@@ -4018,7 +4062,7 @@ namespace SPIL
 
                          }
                      }*/
-
+                
 
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
                     var tSec = stopwatch.ElapsedMilliseconds;
@@ -4274,6 +4318,13 @@ namespace SPIL
         private void dataGrid_Sharpness_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void checkBox_SaveSharpnessImage_CheckedChanged(object sender, EventArgs e)
+        {
+           bool isSave= checkBox_SaveSharpnessImage.Checked;
+            machineSetting.IsSaveSharpnessImage = isSave;
+            machineSetting.Save($"{systemPath}\\machineConfig.cfg");
         }
 
         private void HB_off()
