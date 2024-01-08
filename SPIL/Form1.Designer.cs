@@ -277,6 +277,7 @@ namespace SPIL
             this.button1 = new System.Windows.Forms.Button();
             this.cogRecordDisplay1 = new Cognex.VisionPro.CogRecordDisplay();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.btn_Remove = new System.Windows.Forms.Button();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
@@ -3162,6 +3163,7 @@ namespace SPIL
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.btn_Remove);
             this.groupBox10.Controls.Add(this.radioButton6);
             this.groupBox10.Controls.Add(this.radioButton5);
             this.groupBox10.Controls.Add(this.radioButton4);
@@ -3175,15 +3177,25 @@ namespace SPIL
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "刪除檔案時間設定";
             // 
+            // btn_Remove
+            // 
+            this.btn_Remove.Location = new System.Drawing.Point(110, 243);
+            this.btn_Remove.Name = "btn_Remove";
+            this.btn_Remove.Size = new System.Drawing.Size(75, 23);
+            this.btn_Remove.TabIndex = 6;
+            this.btn_Remove.Text = "Remove";
+            this.btn_Remove.UseVisualStyleBackColor = true;
+            this.btn_Remove.Click += new System.EventHandler(this.btn_Remove_Click);
+            // 
             // radioButton6
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Location = new System.Drawing.Point(18, 246);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(42, 20);
+            this.radioButton6.Size = new System.Drawing.Size(45, 20);
             this.radioButton6.TabIndex = 5;
             this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "2y";
+            this.radioButton6.Text = "2Y";
             this.radioButton6.UseVisualStyleBackColor = true;
             // 
             // radioButton5
@@ -3191,10 +3203,10 @@ namespace SPIL
             this.radioButton5.AutoSize = true;
             this.radioButton5.Location = new System.Drawing.Point(18, 207);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(42, 20);
+            this.radioButton5.Size = new System.Drawing.Size(45, 20);
             this.radioButton5.TabIndex = 4;
             this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "1y";
+            this.radioButton5.Text = "1Y";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // radioButton4
@@ -3202,10 +3214,10 @@ namespace SPIL
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(18, 159);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(46, 20);
+            this.radioButton4.Size = new System.Drawing.Size(47, 20);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "9m";
+            this.radioButton4.Text = "9M";
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // radioButton3
@@ -3213,10 +3225,10 @@ namespace SPIL
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(18, 115);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(46, 20);
+            this.radioButton3.Size = new System.Drawing.Size(47, 20);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "6m";
+            this.radioButton3.Text = "6M";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
@@ -3224,10 +3236,10 @@ namespace SPIL
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(18, 74);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(46, 20);
+            this.radioButton2.Size = new System.Drawing.Size(47, 20);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "3m";
+            this.radioButton2.Text = "3M";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
@@ -3235,10 +3247,10 @@ namespace SPIL
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(18, 36);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(46, 20);
+            this.radioButton1.Size = new System.Drawing.Size(47, 20);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "1m";
+            this.radioButton1.Text = "1M";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // tabPage5
@@ -4352,7 +4364,7 @@ namespace SPIL
             // timer_check_delete_file
             // 
             this.timer_check_delete_file.Enabled = true;
-            this.timer_check_delete_file.Interval = 1000;
+            this.timer_check_delete_file.Interval = 600000;
             this.timer_check_delete_file.Tick += new System.EventHandler(this.timer_chek_delete_file_Tick);
             // 
             // backgroundWorker_delete_old_file
@@ -4376,7 +4388,7 @@ namespace SPIL
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20231206";
+            this.Text = "YuanLi OLS AOI-20240108";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -4824,6 +4836,7 @@ namespace SPIL
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
         private System.Windows.Forms.CheckBox checkBox_SaveSharpnessImage;
+        private System.Windows.Forms.Button btn_Remove;
     }
 }
 

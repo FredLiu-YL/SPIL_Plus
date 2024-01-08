@@ -1903,7 +1903,7 @@ namespace SPIL
             }
             if (!backgroundWorker_delete_old_file.IsBusy)
             {
-                check_path = textBox_Excel_File_Path_1.Text + "\\" + textBox_Excel_File_Path_2.Text + "\\" + textBox_Excel_File_Path_3.Text;//要檢查刪除的資料夾位置
+        
                 backgroundWorker_delete_old_file.RunWorkerAsync();
             }
         }
@@ -1912,18 +1912,24 @@ namespace SPIL
         {
             int id = Thread.CurrentThread.ManagedThreadId;
             //string check_path = textBox_Excel_File_Path_1.Text + "\\" + textBox_Excel_File_Path_2.Text + "\\" + textBox_Excel_File_Path_3.Text;//要檢查刪除的資料夾位置
-            if (!Directory.Exists(check_path))
+
+            var rootFolder = textBox_Excel_File_Path_1.Text;
+            // 檢查根文件夾是否存在
+            if (Directory.Exists(rootFolder))
             {
-                return;
-            }
-            //取出資料夾創建時間
-            DateTime file_create_time = File.GetCreationTime(check_path);
-            DateTime now_time = DateTime.Now;
-            var diff = now_time.Subtract(file_create_time).TotalDays;
-            //刪除超過設定時間的資料夾
-            if (diff > check_delete_time)
-            {
-                Directory.Delete(check_path);
+                // 遍歷文件夾
+                foreach (string folderPath in Directory.GetDirectories(rootFolder))
+                {
+                    DirectoryInfo folderInfo = new DirectoryInfo(folderPath);
+
+                    // 檢查創建時間是否超過2天
+                    if ((DateTime.Now - folderInfo.CreationTime).TotalDays > check_delete_time)
+                    {
+                        // 刪除文件夾及其內容
+                        Directory.Delete(folderPath, true);
+                       
+                    }
+                }
             }
 
         }
@@ -4023,7 +4029,7 @@ namespace SPIL
                         {
                             var img = Queuefiles.Dequeue();
 
-
+                           
                             string extension1 = Path.GetExtension(img).ToLower();
 
                             // 檢查副檔名是否為影像檔（可根據需求調整）
@@ -4325,6 +4331,37 @@ namespace SPIL
            bool isSave= checkBox_SaveSharpnessImage.Checked;
             machineSetting.IsSaveSharpnessImage = isSave;
             machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+        }
+
+        private void btn_Remove_Click(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked)
+            {
+                check_delete_time = 30;
+            }
+            else if (radioButton2.Checked)
+            {
+                check_delete_time = 30 * 3;
+            }
+            else if (radioButton3.Checked)
+            {
+                check_delete_time = 30 * 6;
+            }
+            else if (radioButton4.Checked)
+            {
+                check_delete_time = 30 * 9;
+            }
+            else if (radioButton5.Checked)
+            {
+                check_delete_time = 30 * 12;
+            }
+            else
+            {
+                check_delete_time = 30 * 24;
+            }
+
+
+            backgroundWorker_delete_old_file.RunWorkerAsync();
         }
 
         private void HB_off()
