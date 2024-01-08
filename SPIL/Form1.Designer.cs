@@ -992,7 +992,7 @@ namespace SPIL
             this.groupBox2.Controls.Add(this.textBox_Point);
             this.groupBox2.Location = new System.Drawing.Point(6, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(840, 1100);
+            this.groupBox2.Size = new System.Drawing.Size(865, 1120);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Excel Data";
@@ -2136,10 +2136,10 @@ namespace SPIL
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage12);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(10, 10);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(860, 1140);
+            this.tabControl1.Size = new System.Drawing.Size(885, 1150);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
@@ -2148,7 +2148,7 @@ namespace SPIL
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(852, 1110);
+            this.tabPage1.Size = new System.Drawing.Size(877, 1120);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Measurement";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -2164,7 +2164,7 @@ namespace SPIL
             this.tabPage8.Controls.Add(this.btn_RecipeSave);
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(852, 1110);
+            this.tabPage8.Size = new System.Drawing.Size(877, 1120);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -2206,7 +2206,7 @@ namespace SPIL
             this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 60);
             this.gpBox_Sharpness.Name = "gpBox_Sharpness";
-            this.gpBox_Sharpness.Size = new System.Drawing.Size(845, 1047);
+            this.gpBox_Sharpness.Size = new System.Drawing.Size(870, 1055);
             this.gpBox_Sharpness.TabIndex = 0;
             this.gpBox_Sharpness.TabStop = false;
             this.gpBox_Sharpness.Text = "SharpnessTesting";
@@ -2237,7 +2237,7 @@ namespace SPIL
             this.dataGrid_Sharpness.RowHeadersWidth = 51;
             this.dataGrid_Sharpness.RowTemplate.Height = 24;
             this.dataGrid_Sharpness.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid_Sharpness.Size = new System.Drawing.Size(705, 220);
+            this.dataGrid_Sharpness.Size = new System.Drawing.Size(715, 220);
             this.dataGrid_Sharpness.TabIndex = 146;
             this.dataGrid_Sharpness.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_Sharpness_CellContentClick);
             // 
@@ -2504,7 +2504,7 @@ namespace SPIL
             this.tabPage7.Controls.Add(this.gpBox_AOI);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(852, 1110);
+            this.tabPage7.Size = new System.Drawing.Size(877, 1120);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "AOIAlgorithm";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -2547,7 +2547,7 @@ namespace SPIL
             this.gpBox_AOI.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.gpBox_AOI.Location = new System.Drawing.Point(4, 41);
             this.gpBox_AOI.Name = "gpBox_AOI";
-            this.gpBox_AOI.Size = new System.Drawing.Size(845, 1066);
+            this.gpBox_AOI.Size = new System.Drawing.Size(865, 1066);
             this.gpBox_AOI.TabIndex = 149;
             this.gpBox_AOI.TabStop = false;
             this.gpBox_AOI.Text = "AOI Distance";
@@ -2820,7 +2820,7 @@ namespace SPIL
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(852, 1110);
+            this.tabPage2.Size = new System.Drawing.Size(877, 1110);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Setup";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -4464,7 +4464,7 @@ namespace SPIL
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(879, 1161);
+            this.ClientSize = new System.Drawing.Size(894, 1161);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
