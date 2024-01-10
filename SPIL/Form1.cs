@@ -4364,6 +4364,16 @@ namespace SPIL
             backgroundWorker_delete_old_file.RunWorkerAsync();
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string name = CB_RecipeList.Text;
+            string path = $"{systemPath}\\Recipe\\{name}";
+            // 刪除文件夾及其內容
+            Directory.Delete(path, true);
+            CB_RecipeList.SelectedIndex = -1;
+
+        }
+
         private void HB_off()
         {
             /* string send_data_str = get_socket_send_data();
