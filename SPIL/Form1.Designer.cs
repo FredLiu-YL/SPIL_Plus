@@ -177,6 +177,7 @@ namespace SPIL
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button9 = new System.Windows.Forms.Button();
             this.btn_ReadRecipe = new System.Windows.Forms.Button();
             this.gpBox_Sharpness = new System.Windows.Forms.GroupBox();
             this.cB_Multi = new System.Windows.Forms.CheckBox();
@@ -396,7 +397,6 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.button9 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -2170,6 +2170,16 @@ namespace SPIL
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(769, 10);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(104, 44);
+            this.button9.TabIndex = 152;
+            this.button9.Text = "Delect Recipe";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // btn_ReadRecipe
             // 
@@ -4461,22 +4471,12 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(769, 10);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(104, 44);
-            this.button9.TabIndex = 152;
-            this.button9.Text = "Delect Recipe";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(894, 1061);
+            this.ClientSize = new System.Drawing.Size(894, 1161);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
