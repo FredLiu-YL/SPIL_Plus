@@ -1308,7 +1308,7 @@ namespace SPIL
 
 
                 Send_Server("Done,s>");
-
+   
                 //  Cal_File_Address(); //建資料夾
 
 
@@ -2639,6 +2639,7 @@ namespace SPIL
         private async Task<string[]> PickClarity(string dirpath, string save_Folder)
         {
             List<Bitmap> images = new List<Bitmap>();
+            List<string> imageNames = new List<string>();
             try
             {
 
@@ -2648,7 +2649,7 @@ namespace SPIL
                 string[] files = Directory.GetFiles(dirpath);
                 List<SharpnessResult> sharpnessResults = new List<SharpnessResult>();
 
-                List<string> imageNames = new List<string>();
+
                 stopwatch.Start();
 
 
@@ -2775,7 +2776,23 @@ namespace SPIL
             }
             catch (Exception ex)
             {
+               /* string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
+                var nameArray = imageNames.Select(
+                 (n, i) =>
+                 {
 
+                     string name1 = Path.GetFileName(n);
+                     return $"{imageFolder}\\{name1}";
+                 }).ToArray();
+
+                bool isSave = machineSetting.IsSaveSharpnessImage;
+                if (isSave)
+                {
+                    //先複製一份新的BMP   才能做TASK另存
+                    var bmps = images.Select(b => new Bitmap(b)).ToArray();
+                    Task savetask = SaveClarityImage(bmps, nameArray);
+
+                }*/
                 throw ex;
             }
             finally
@@ -3069,8 +3086,16 @@ namespace SPIL
                         logger.WriteLog("Img file 2 : " + aoiImages[1]);
                         logger.WriteLog("AOI_Calculate");
                         //   button_hb_on_Click(sender, e);
-
-
+                       
+                       
+                        //量測錯誤時存檔
+                        if (!value.isOK)
+                        {
+                            SaveErrorImage(machineSetting.SharpnessImagesFolder,Save_File_Folder);
+                            
+                 
+                        }
+                           
                     }
 
                     //if (count > 3)//已經存超過兩張
@@ -3520,6 +3545,24 @@ namespace SPIL
             logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
         }
+        private void SaveErrorImage(string sourcePath, string savePath)
+        {
+            Directory.CreateDirectory($"{savePath}\\SharpnessImages");
+            string[] files = Directory.GetFiles(sourcePath);
+            foreach (string file in files)
+            {
+
+                string extension1 = Path.GetExtension(file).ToLower();
+                string name = Path.GetFileName(file);
+                // 檢查副檔名是否為影像檔（可根據需求調整）
+                if (extension1 == ".bmp" || extension1 == ".jpg" || extension1 == ".jpeg" || extension1 == ".png" || extension1 == ".gif")
+                    File.Copy(file, $"{savePath}\\SharpnessImages\\{name}");
+
+
+            }
+
+        }
+
         private void SaveRecipe(SPILRecipe recipe, string path)
         {
             recipe.RecipeSave(path);
