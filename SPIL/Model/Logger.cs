@@ -32,19 +32,19 @@ namespace SPIL.model
             try {
                 //LOG 新增時間  單位到毫秒
                 DateTime dateTime = DateTime.Now;
-                string str = $"{dateTime.ToString("MM-dd-HH:mm:ss")} :{  dateTime.Millisecond}   {logMessage} \r\n";
+                string str = $"{dateTime.ToString("MM-dd-HH:mm:ss")} :{  dateTime.Millisecond}   {logMessage} ";
 
-                var date = dateTime.ToString("MM-dd-HH-mm-ss");
+                var date = dateTime.ToString("yyyyMMdd");
                 LogRecord?.Invoke(str);
                 logList.Add(str);
-                File.AppendAllText($"{path}\\{date}.txt", str);
+                File.AppendAllText($"{path}\\LOG-{date}.txt", str+"\r\n");
 
                 //如果行數太多 就備份檔案 名稱是 年月日+時
-                if (logList.Count > 100000) {
-                    var dateH = dateTime.ToString("MM-dd-HH-mm-ss");
-                    File.WriteAllLines($"{path}\\{dateH}.txt", logList);
+                if (logList.Count > 200000) {
+                    var dateH = dateTime.ToString("yyyyMMdd");
+                    File.WriteAllLines($"{path}\\LOG-{dateH}-BACKUP.txt", logList);
                     logList.Clear();
-                    File.WriteAllText($"{path}\\{date}.txt", ""); //覆寫原有檔案
+                    File.WriteAllText($"{path}\\LOG-{date}.txt", ""); //覆寫原有檔案
                 }
 
             }

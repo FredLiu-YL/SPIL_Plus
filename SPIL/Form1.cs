@@ -2829,43 +2829,13 @@ namespace SPIL
         {
             if (checkBox_xlsx.Checked)
             {
+                logger.WriteLog("AOI_Save xlsx");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.xlsx");
-                /*    if (FIle_List.Length > 0)
-                    {
-                        try
-                        {
-                            for (int i = 0; i < FIle_List.Length; i++)
-                            {
-                                //取出excel資料
-                                int row = Convert.ToInt32(textBox_0_degree_height_Num.Text);
-                                int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'A' + 1;
-                                string value = getExcelValue(FIle_List[i].FullName, row, column);
-                                //顯示在GUI介面中
-                                imshowValueInMeasurementGUI(value);
-                                logger.WriteLog("get measurement value: " + value);
-                                logger.WriteLog("New File : " + FIle_List[i].FullName);
-                                if (radioButton_Degree_0.Checked)
-                                {
-                                    if (File.Exists(Save_File_Folder + textBox_Point.Text + "_0.xlsx"))
-                                        File.Delete(Save_File_Folder + textBox_Point.Text + "_0.xlsx");
-                                    File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_0.xlsx");
-                                }
-                                else
-                                {
-                                    if (File.Exists(Save_File_Folder + textBox_Point.Text + "_45.xlsx"))
-                                        File.Delete(Save_File_Folder + textBox_Point.Text + "_45.xlsx");
-                                    File.Move(FIle_List[i].FullName, Save_File_Folder + textBox_Point.Text + "_45.xlsx");
-                                }
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            logger.WriteErrorLog("Move xlsx File Error! " + error.ToString());
-                        }
-                    }*/
+                
             }
             if (checkBox_csv.Checked)
             {
+                logger.WriteLog("AOI_Save csv ");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.csv");
                 if (FIle_List.Length > 0)
                 {
@@ -2901,11 +2871,11 @@ namespace SPIL
                                 //移動檔案
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
-                                logger.WriteLog("split by _ keyword:");
+                             //   logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                    logger.WriteLog(s);
+                                  //  logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
@@ -2920,11 +2890,11 @@ namespace SPIL
                                 //移動檔案
                                 //使用'_'分割檔名
                                 string save_degree_45_name = "";
-                                logger.WriteLog("split by _ keyword:");
+                               // logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                    logger.WriteLog(s);
+                                   // logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
@@ -2945,6 +2915,7 @@ namespace SPIL
             }
             if (checkBox_poir.Checked && !copy_poir_once)
             {
+                logger.WriteLog("AOI_Save poir -1");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
                 if (FIle_List.Length > 0)
                 {
@@ -2961,7 +2932,7 @@ namespace SPIL
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                    logger.WriteLog(s);
+                                 //   logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
@@ -2979,7 +2950,7 @@ namespace SPIL
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                    logger.WriteLog(s);
+                                 //   logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
@@ -3001,6 +2972,7 @@ namespace SPIL
             }
             else if (checkBox_poir.Checked && copy_poir_once)
             {
+                logger.WriteLog("AOI_Save poir -2");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
                 if (FIle_List.Length > 0)
                 {
@@ -3018,6 +2990,7 @@ namespace SPIL
                     }
                 }
             }
+            logger.WriteLog("AOI_SaveData-結束");
         }
         private async Task AoiMeansure()
         {
@@ -3039,24 +3012,26 @@ namespace SPIL
                 {
                     file_list_part_name.Add(FIle_List[i].FullName);
                     //file_list_part_name = FIle_List[i].FullName.Split('_');
-                    logger.WriteLog("file last part name:" + FIle_List[i].FullName);
+                   // logger.WriteLog("file last part name:" + FIle_List[i].FullName);
                 }
 
                 if (radioButton_Degree_0.Checked) //0度
                 {
+                    logger.WriteLog("AOI Degree_0 量測-開始");
                     foreach (var imageName in file_list_part_name)
                     {
                         AoiDegree_0(imageName);
                     }
-
+                    logger.WriteLog("AOI Degree_0 量測-結束");
 
                 }
                 else //45度
                 {
-
+                    logger.WriteLog("AOI  清晰度計算-開始");
 
                     //45度才執行 圖像計算
                     string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder, Save_File_Folder);
+                    logger.WriteLog("AOI  清晰度計算-結束");
                     //執行AOI計算
                     if (is_hand_measurement)
                     {
@@ -3547,6 +3522,7 @@ namespace SPIL
         }
         private void SaveErrorImage(string sourcePath, string savePath)
         {
+            logger.WriteLog("SaveErrorImage-開始");
             Directory.CreateDirectory($"{savePath}\\SharpnessImages");
             string[] files = Directory.GetFiles(sourcePath);
             foreach (string file in files)
@@ -3560,7 +3536,7 @@ namespace SPIL
 
 
             }
-
+            logger.WriteLog("SaveErrorImage-結束");
         }
 
         private void SaveRecipe(SPILRecipe recipe, string path)
