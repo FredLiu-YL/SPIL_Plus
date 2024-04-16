@@ -1308,7 +1308,7 @@ namespace SPIL
 
 
                 Send_Server("Done,s>");
-   
+
                 //  Cal_File_Address(); //建資料夾
 
 
@@ -1903,7 +1903,7 @@ namespace SPIL
             }
             if (!backgroundWorker_delete_old_file.IsBusy)
             {
-        
+
                 backgroundWorker_delete_old_file.RunWorkerAsync();
             }
         }
@@ -1927,7 +1927,7 @@ namespace SPIL
                     {
                         // 刪除文件夾及其內容
                         Directory.Delete(folderPath, true);
-                       
+
                     }
                 }
             }
@@ -1955,7 +1955,7 @@ namespace SPIL
         {
             try
             {
-                 Cal_File_Address();
+                Cal_File_Address();
                 //20211224-S
                 //double[] zero_degree_ = new double[9];
                 //zero_degree_[0] = Convert.ToDouble(textBox_Mesument_1_0.Text);
@@ -2726,7 +2726,7 @@ namespace SPIL
                 }
                 logger.WriteLog($"SharpnessImageFolder :   {imageFolder} ");
 
-            
+
 
                 var nameArray = imageNames.Select(
                  (n, i) =>
@@ -2737,22 +2737,22 @@ namespace SPIL
                  }).ToArray();
 
                 bool isSave = machineSetting.IsSaveSharpnessImage;
-                if(isSave)
+                if (isSave)
                 {
                     //先複製一份新的BMP   才能做TASK另存
                     var bmps = images.Select(b => new Bitmap(b)).ToArray();
                     Task savetask = SaveClarityImage(bmps, nameArray);
 
                 }
-          
 
-                     //將圖片存到資料夾
-            /*    for (int i = 0; i < images.Count; i++)
-                     {
-                         string name = Path.GetFileName(imageNames[i]);
-                         images[i].Save($"{imageFolder}\\{name}");
-                         images[i].Dispose();
-                     }*/
+
+                //將圖片存到資料夾
+                /*    for (int i = 0; i < images.Count; i++)
+                         {
+                             string name = Path.GetFileName(imageNames[i]);
+                             images[i].Save($"{imageFolder}\\{name}");
+                             images[i].Dispose();
+                         }*/
 
 
 
@@ -2776,23 +2776,23 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-               /* string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
-                var nameArray = imageNames.Select(
-                 (n, i) =>
+                /* string imageFolder = $"{save_Folder}\\{textBox_Point.Text}";
+                 var nameArray = imageNames.Select(
+                  (n, i) =>
+                  {
+
+                      string name1 = Path.GetFileName(n);
+                      return $"{imageFolder}\\{name1}";
+                  }).ToArray();
+
+                 bool isSave = machineSetting.IsSaveSharpnessImage;
+                 if (isSave)
                  {
+                     //先複製一份新的BMP   才能做TASK另存
+                     var bmps = images.Select(b => new Bitmap(b)).ToArray();
+                     Task savetask = SaveClarityImage(bmps, nameArray);
 
-                     string name1 = Path.GetFileName(n);
-                     return $"{imageFolder}\\{name1}";
-                 }).ToArray();
-
-                bool isSave = machineSetting.IsSaveSharpnessImage;
-                if (isSave)
-                {
-                    //先複製一份新的BMP   才能做TASK另存
-                    var bmps = images.Select(b => new Bitmap(b)).ToArray();
-                    Task savetask = SaveClarityImage(bmps, nameArray);
-
-                }*/
+                 }*/
                 throw ex;
             }
             finally
@@ -2806,24 +2806,34 @@ namespace SPIL
         }
         private void AoiDegree_0(string fileName)
         {
-            string[] file_list_part_name = fileName.Split('_');
-            //使用'_'分割檔名
-            string save_degree_0_name = "";
-            logger.WriteLog("split by _ keyword:");
-            string[] split_input_file_names = Path.GetFileNameWithoutExtension(fileName).Split('_');
-            //foreach(string s in split_input_file_names)
-            //{
-            //    logger.Write_Logger(s);
-            //}
-            save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
-            string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0_" + file_list_part_name[file_list_part_name.Length - 1];
-            if (File.Exists(save_full_file_name))
+            try
             {
-                File.Delete(save_full_file_name);
-                logger.WriteLog("Delete File : " + save_full_file_name);
+
+
+                string[] file_list_part_name = fileName.Split('_');
+                //使用'_'分割檔名
+                string save_degree_0_name = "";
+                logger.WriteLog("split by _ keyword:");
+                string[] split_input_file_names = Path.GetFileNameWithoutExtension(fileName).Split('_');
+                //foreach(string s in split_input_file_names)
+                //{
+                //    logger.Write_Logger(s);
+                //}
+                save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
+                string save_full_file_name = Save_File_Folder + save_degree_0_name + textBox_Point.Text + "_0_" + file_list_part_name[file_list_part_name.Length - 1];
+                if (File.Exists(save_full_file_name))
+                {
+                    File.Delete(save_full_file_name);
+                    logger.WriteLog("Delete File : " + save_full_file_name);
+                }
+                File.Move(fileName, save_full_file_name);
+                logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
             }
-            File.Move(fileName, save_full_file_name);
-            logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         private void AoiOutputData(string save_Folder)
         {
@@ -2831,7 +2841,7 @@ namespace SPIL
             {
                 logger.WriteLog("AOI_Save xlsx");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.xlsx");
-                
+
             }
             if (checkBox_csv.Checked)
             {
@@ -2871,11 +2881,11 @@ namespace SPIL
                                 //移動檔案
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
-                             //   logger.WriteLog("split by _ keyword:");
+                                //   logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                  //  logger.WriteLog(s);
+                                    //  logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.csv";
@@ -2890,11 +2900,11 @@ namespace SPIL
                                 //移動檔案
                                 //使用'_'分割檔名
                                 string save_degree_45_name = "";
-                               // logger.WriteLog("split by _ keyword:");
+                                // logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                   // logger.WriteLog(s);
+                                    // logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.csv";
@@ -2932,7 +2942,7 @@ namespace SPIL
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                 //   logger.WriteLog(s);
+                                    //   logger.WriteLog(s);
                                 }
                                 save_degree_0_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
@@ -2950,7 +2960,7 @@ namespace SPIL
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
-                                 //   logger.WriteLog(s);
+                                    //   logger.WriteLog(s);
                                 }
                                 save_degree_45_name += split_input_file_names[0] + "_" + split_input_file_names[1] + "_" + split_input_file_names[2] + "_";
                                 string save_full_file_name = save_Folder + save_degree_45_name + textBox_Point.Text + "_45.poir";
@@ -2994,116 +3004,127 @@ namespace SPIL
         }
         private async Task AoiMeansure()
         {
-            (double cuNi, double cu, bool isOK) value = (0, 0, true);
-            if (checkBox_bmp.Checked)
+            try
             {
 
-
-                FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
-                if (FIle_List.Length == 0)
+                (double cuNi, double cu, bool isOK) value = (0, 0, true);
+                if (checkBox_bmp.Checked)
                 {
-                    FIle_List = folder_info.GetFiles("*.bmp");
-                }
-                List<string> file_list_part_name = new List<string>();
 
-                //try
-                //{
-                for (int i = 0; i < FIle_List.Length; i++)
-                {
-                    file_list_part_name.Add(FIle_List[i].FullName);
-                    //file_list_part_name = FIle_List[i].FullName.Split('_');
-                   // logger.WriteLog("file last part name:" + FIle_List[i].FullName);
-                }
 
-                if (radioButton_Degree_0.Checked) //0度
-                {
-                    logger.WriteLog("AOI Degree_0 量測-開始");
-                    foreach (var imageName in file_list_part_name)
+                    FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                    if (FIle_List.Length == 0)
                     {
-                        AoiDegree_0(imageName);
+                        FIle_List = folder_info.GetFiles("*.bmp");
                     }
-                    logger.WriteLog("AOI Degree_0 量測-結束");
+                    List<string> file_list_part_name = new List<string>();
 
-                }
-                else //45度
-                {
-                    logger.WriteLog("AOI  清晰度計算-開始");
-
-                    //45度才執行 圖像計算
-                    string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder, Save_File_Folder);
-                    logger.WriteLog("AOI  清晰度計算-結束");
-                    //執行AOI計算
-                    if (is_hand_measurement)
-                    {
-                        logger.WriteLog("手動量測");
-                        //得到三張圖  做距離計算
-                        value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
-
-
-                        logger.WriteLog("Img file 1 : " + aoiImages[0]);
-                        logger.WriteLog("Img file 2 : " + aoiImages[1]);
-                        logger.WriteLog("Img file 3 : " + aoiImages[2]);
-                        logger.WriteLog("AOI_Calculate");
-                        //   button_hb_on_Click(sender, e);
-
-
-                    }
-                    else
-                    {
-                        logger.WriteLog("AOI自動量測");
-
-
-                        //AOI 計算
-                        value = AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
-
-
-                        logger.WriteLog("Img file 1 : " + aoiImages[0]);
-                        logger.WriteLog("Img file 2 : " + aoiImages[1]);
-                        logger.WriteLog("AOI_Calculate");
-                        //   button_hb_on_Click(sender, e);
-                       
-                       
-                        //量測錯誤時存檔
-                        if (!value.isOK)
-                        {
-                            SaveErrorImage(machineSetting.SharpnessImagesFolder,Save_File_Folder);
-                            
-                 
-                        }
-                           
-                    }
-
-                    //if (count > 3)//已經存超過兩張
+                    //try
                     //{
-                    //    //執行AOI計算
-                    //    if (is_hand_measurement)
-                    //    {
-                    //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                    //        logger.Write_Logger("手動量測");
-                    //    }
-                    //    else
-                    //    {
-                    //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                    //        logger.Write_Logger("AOI自動量測");
-                    //    }
+                    for (int i = 0; i < FIle_List.Length; i++)
+                    {
+                        file_list_part_name.Add(FIle_List[i].FullName);
+                        //file_list_part_name = FIle_List[i].FullName.Split('_');
+                        // logger.WriteLog("file last part name:" + FIle_List[i].FullName);
+                    }
 
-                    //    count = 1;
-                    //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                    //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                    //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
-                    //    logger.Write_Logger("AOI_Calculate");
-                    //    button_hb_on_Click(sender, e);
-                    //}
+                    if (radioButton_Degree_0.Checked) //0度
+                    {
+                        logger.WriteLog("AOI Degree_0 量測-開始");
+                        foreach (var imageName in file_list_part_name)
+                        {
+                            AoiDegree_0(imageName);
+                        }
+                        logger.WriteLog("AOI Degree_0 量測-結束");
+
+                    }
+                    else //45度
+                    {
+                        logger.WriteLog("AOI  清晰度計算-開始");
+
+                        //45度才執行 圖像計算
+                        string[] aoiImages = await PickClarity(machineSetting.SharpnessImagesFolder, Save_File_Folder);
+                        logger.WriteLog("AOI  清晰度計算-結束");
+                        //執行AOI計算
+                        if (is_hand_measurement)
+                        {
+                            logger.WriteLog("手動量測");
+                            //得到三張圖  做距離計算
+                            value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+
+
+                            logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                            logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                            logger.WriteLog("Img file 3 : " + aoiImages[2]);
+                            logger.WriteLog("AOI_Calculate");
+                            //   button_hb_on_Click(sender, e);
+
+
+                        }
+                        else
+                        {
+                            logger.WriteLog("AOI自動量測");
+
+
+                            //AOI 計算
+                            value = AOI_Calculate(AOI_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], is_hand_measurement);
+
+
+                            logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                            logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                            logger.WriteLog("AOI_Calculate");
+                            //   button_hb_on_Click(sender, e);
+
+
+                            //量測錯誤時存檔
+                            if (!value.isOK)
+                            {
+                                SaveErrorImage(machineSetting.SharpnessImagesFolder, Save_File_Folder);
+
+
+                            }
+
+                        }
+
+                        //if (count > 3)//已經存超過兩張
+                        //{
+                        //    //執行AOI計算
+                        //    if (is_hand_measurement)
+                        //    {
+                        //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                        //        logger.Write_Logger("手動量測");
+                        //    }
+                        //    else
+                        //    {
+                        //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
+                        //        logger.Write_Logger("AOI自動量測");
+                        //    }
+
+                        //    count = 1;
+                        //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
+                        //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
+                        //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
+                        //    logger.Write_Logger("AOI_Calculate");
+                        //    button_hb_on_Click(sender, e);
+                        //}
+
+                    }
+
 
                 }
+                AoiOutputData(Save_File_Folder);
+
+
+                if (!value.isOK) //除了量測錯誤外 其他都OK
+                    throw new Exception("量測錯誤");
 
 
             }
-            AoiOutputData(Save_File_Folder);
+            catch (Exception ex)
+            {
 
-
-            if (!value.isOK) //除了量測錯誤外 其他都OK
-                throw new Exception("量測錯誤");
+                throw ex;
+            }
         }
 
         private void timer_Initial_Tick(object sender, EventArgs e)
@@ -3254,7 +3275,7 @@ namespace SPIL
                 //記憶體釋放
                 foreach (var bmp in bmps)
                     bmp.Dispose();
-           
+
             });
 
 
@@ -4048,7 +4069,7 @@ namespace SPIL
                         {
                             var img = Queuefiles.Dequeue();
 
-                           
+
                             string extension1 = Path.GetExtension(img).ToLower();
 
                             // 檢查副檔名是否為影像檔（可根據需求調整）
@@ -4087,7 +4108,7 @@ namespace SPIL
 
                          }
                      }*/
-                
+
 
                     sharpnessFlow.WriteCogResult += UpdateDataGridView;
                     var tSec = stopwatch.ElapsedMilliseconds;
@@ -4347,7 +4368,7 @@ namespace SPIL
 
         private void checkBox_SaveSharpnessImage_CheckedChanged(object sender, EventArgs e)
         {
-           bool isSave= checkBox_SaveSharpnessImage.Checked;
+            bool isSave = checkBox_SaveSharpnessImage.Checked;
             machineSetting.IsSaveSharpnessImage = isSave;
             machineSetting.Save($"{systemPath}\\machineConfig.cfg");
         }
