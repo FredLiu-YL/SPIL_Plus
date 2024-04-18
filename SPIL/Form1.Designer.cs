@@ -182,12 +182,6 @@ namespace SPIL
             this.gpBox_Sharpness = new System.Windows.Forms.GroupBox();
             this.cB_Multi = new System.Windows.Forms.CheckBox();
             this.dataGrid_Sharpness = new System.Windows.Forms.DataGridView();
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btn_SharpnessMultRun = new System.Windows.Forms.Button();
             this.tbx_SharpnessScore3 = new System.Windows.Forms.TextBox();
             this.label66 = new System.Windows.Forms.Label();
@@ -214,7 +208,6 @@ namespace SPIL
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.button8 = new System.Windows.Forms.Button();
             this.gpBox_AOI = new System.Windows.Forms.GroupBox();
-            this.Log_tBx = new System.Windows.Forms.TextBox();
             this.rdBtn_Octagon = new System.Windows.Forms.RadioButton();
             this.rdBtn_circle = new System.Windows.Forms.RadioButton();
             this.tabCtrl_AlgorithmList = new System.Windows.Forms.TabControl();
@@ -222,7 +215,6 @@ namespace SPIL
             this.listBox_AOIAlgorithmList = new System.Windows.Forms.ListBox();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.listBox_AOI2AlgorithmList = new System.Windows.Forms.ListBox();
-            this.label96 = new System.Windows.Forms.Label();
             this.cogRcdDisp_Distance3 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance2 = new Cognex.VisionPro.CogRecordDisplay();
             this.cogRcdDisp_Distance1 = new Cognex.VisionPro.CogRecordDisplay();
@@ -397,6 +389,12 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SearchScore2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -507,7 +505,7 @@ namespace SPIL
             this.checkBox_SaveSharpnessImage.AutoSize = true;
             this.checkBox_SaveSharpnessImage.Location = new System.Drawing.Point(18, 136);
             this.checkBox_SaveSharpnessImage.Name = "checkBox_SaveSharpnessImage";
-            this.checkBox_SaveSharpnessImage.Size = new System.Drawing.Size(99, 20);
+            this.checkBox_SaveSharpnessImage.Size = new System.Drawing.Size(100, 20);
             this.checkBox_SaveSharpnessImage.TabIndex = 42;
             this.checkBox_SaveSharpnessImage.Text = "Save Image";
             this.checkBox_SaveSharpnessImage.UseVisualStyleBackColor = true;
@@ -518,7 +516,7 @@ namespace SPIL
             this.label97.AutoSize = true;
             this.label97.Location = new System.Drawing.Point(15, 184);
             this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(99, 16);
+            this.label97.Size = new System.Drawing.Size(100, 16);
             this.label97.TabIndex = 30;
             this.label97.Text = "Secs csv  Path:";
             // 
@@ -545,7 +543,7 @@ namespace SPIL
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(525, 105);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(87, 16);
+            this.label48.Size = new System.Drawing.Size(88, 16);
             this.label48.TabIndex = 39;
             this.label48.Text = "*S* : Slot ID";
             // 
@@ -554,7 +552,7 @@ namespace SPIL
             this.label45.AutoSize = true;
             this.label45.Location = new System.Drawing.Point(414, 105);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(87, 16);
+            this.label45.Size = new System.Drawing.Size(88, 16);
             this.label45.TabIndex = 38;
             this.label45.Text = "*RF* : RFID";
             // 
@@ -563,7 +561,7 @@ namespace SPIL
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(467, 64);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(37, 16);
+            this.label62.Size = new System.Drawing.Size(38, 16);
             this.label62.TabIndex = 37;
             this.label62.Text = ".xlsx";
             // 
@@ -572,7 +570,7 @@ namespace SPIL
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(260, 64);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(11, 16);
+            this.label61.Size = new System.Drawing.Size(12, 16);
             this.label61.TabIndex = 36;
             this.label61.Text = "\\";
             // 
@@ -581,7 +579,7 @@ namespace SPIL
             this.label60.AutoSize = true;
             this.label60.Location = new System.Drawing.Point(84, 64);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(11, 16);
+            this.label60.Size = new System.Drawing.Size(12, 16);
             this.label60.TabIndex = 35;
             this.label60.Text = "\\";
             // 
@@ -590,7 +588,7 @@ namespace SPIL
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(335, 29);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(11, 16);
+            this.label13.Size = new System.Drawing.Size(12, 16);
             this.label13.TabIndex = 34;
             this.label13.Text = "\\";
             // 
@@ -599,7 +597,7 @@ namespace SPIL
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(291, 105);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(107, 16);
+            this.label12.Size = new System.Drawing.Size(108, 16);
             this.label12.TabIndex = 33;
             this.label12.Text = "*W* : Wafer ID";
             // 
@@ -608,7 +606,7 @@ namespace SPIL
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(102, 105);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(76, 16);
+            this.label11.Size = new System.Drawing.Size(77, 16);
             this.label11.TabIndex = 29;
             this.label11.Text = "*T* : Time";
             // 
@@ -617,7 +615,7 @@ namespace SPIL
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(196, 105);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(75, 16);
+            this.label10.Size = new System.Drawing.Size(76, 16);
             this.label10.TabIndex = 28;
             this.label10.Text = "*D* : Date";
             // 
@@ -626,7 +624,7 @@ namespace SPIL
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(7, 105);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(88, 16);
+            this.label9.Size = new System.Drawing.Size(89, 16);
             this.label9.TabIndex = 27;
             this.label9.Text = "*R* : Recipe";
             // 
@@ -733,7 +731,7 @@ namespace SPIL
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(39, 71);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 16);
+            this.label4.Size = new System.Drawing.Size(77, 16);
             this.label4.TabIndex = 14;
             this.label4.Text = "OLS Name";
             // 
@@ -754,7 +752,7 @@ namespace SPIL
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(22, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 16);
+            this.label1.Size = new System.Drawing.Size(76, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "IP Address";
             // 
@@ -763,7 +761,7 @@ namespace SPIL
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(22, 59);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 16);
+            this.label2.Size = new System.Drawing.Size(33, 16);
             this.label2.TabIndex = 12;
             this.label2.Text = "Port";
             // 
@@ -784,7 +782,7 @@ namespace SPIL
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(162, 42);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(70, 16);
+            this.label19.Size = new System.Drawing.Size(71, 16);
             this.label19.TabIndex = 29;
             this.label19.Text = "um / pixel";
             // 
@@ -793,7 +791,7 @@ namespace SPIL
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(15, 42);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(64, 16);
+            this.label18.Size = new System.Drawing.Size(65, 16);
             this.label18.TabIndex = 27;
             this.label18.Text = "45˚ Ratio";
             // 
@@ -848,7 +846,7 @@ namespace SPIL
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 123);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(39, 16);
+            this.label5.Size = new System.Drawing.Size(40, 16);
             this.label5.TabIndex = 12;
             this.label5.Text = "Point";
             // 
@@ -879,7 +877,7 @@ namespace SPIL
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(176, 39);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 16);
+            this.label6.Size = new System.Drawing.Size(92, 16);
             this.label6.TabIndex = 18;
             this.label6.Text = "Recipe Name";
             // 
@@ -993,7 +991,7 @@ namespace SPIL
             this.groupBox2.Controls.Add(this.textBox_Point);
             this.groupBox2.Location = new System.Drawing.Point(6, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(865, 1120);
+            this.groupBox2.Size = new System.Drawing.Size(960, 1514);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Excel Data";
@@ -1013,7 +1011,7 @@ namespace SPIL
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(7, 164);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(75, 16);
+            this.label46.Size = new System.Drawing.Size(76, 16);
             this.label46.TabIndex = 186;
             this.label46.Text = "Wafer Size";
             // 
@@ -1032,7 +1030,7 @@ namespace SPIL
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(226, 164);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(41, 16);
+            this.label44.Size = new System.Drawing.Size(42, 16);
             this.label44.TabIndex = 184;
             this.label44.Text = "RFID";
             // 
@@ -1609,9 +1607,9 @@ namespace SPIL
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(582, 731);
+            this.label24.Location = new System.Drawing.Point(659, 1010);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(84, 16);
+            this.label24.Size = new System.Drawing.Size(85, 16);
             this.label24.TabIndex = 132;
             this.label24.Text = "AOI result 3";
             // 
@@ -1624,12 +1622,12 @@ namespace SPIL
             this.cogDisplay3.ColorMapUpperRoiLimit = 1D;
             this.cogDisplay3.DoubleTapZoomCycleLength = 2;
             this.cogDisplay3.DoubleTapZoomSensitivity = 2.5D;
-            this.cogDisplay3.Location = new System.Drawing.Point(415, 750);
+            this.cogDisplay3.Location = new System.Drawing.Point(414, 1041);
             this.cogDisplay3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogDisplay3.MouseWheelSensitivity = 1D;
             this.cogDisplay3.Name = "cogDisplay3";
             this.cogDisplay3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay3.OcxState")));
-            this.cogDisplay3.Size = new System.Drawing.Size(420, 320);
+            this.cogDisplay3.Size = new System.Drawing.Size(540, 450);
             this.cogDisplay3.TabIndex = 131;
             // 
             // label23
@@ -1669,18 +1667,18 @@ namespace SPIL
             // label95
             // 
             this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(582, 378);
+            this.label95.Location = new System.Drawing.Point(659, 518);
             this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(84, 16);
+            this.label95.Size = new System.Drawing.Size(85, 16);
             this.label95.TabIndex = 127;
             this.label95.Text = "AOI result 2";
             // 
             // label94
             // 
             this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(582, 22);
+            this.label94.Location = new System.Drawing.Point(659, 29);
             this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(84, 16);
+            this.label94.Size = new System.Drawing.Size(85, 16);
             this.label94.TabIndex = 126;
             this.label94.Text = "AOI result 1";
             // 
@@ -1693,12 +1691,12 @@ namespace SPIL
             this.cogDisplay2.ColorMapUpperRoiLimit = 1D;
             this.cogDisplay2.DoubleTapZoomCycleLength = 2;
             this.cogDisplay2.DoubleTapZoomSensitivity = 2.5D;
-            this.cogDisplay2.Location = new System.Drawing.Point(414, 401);
+            this.cogDisplay2.Location = new System.Drawing.Point(414, 546);
             this.cogDisplay2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogDisplay2.MouseWheelSensitivity = 1D;
             this.cogDisplay2.Name = "cogDisplay2";
             this.cogDisplay2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay2.OcxState")));
-            this.cogDisplay2.Size = new System.Drawing.Size(420, 320);
+            this.cogDisplay2.Size = new System.Drawing.Size(540, 450);
             this.cogDisplay2.TabIndex = 125;
             // 
             // cogDisplay1
@@ -1710,12 +1708,12 @@ namespace SPIL
             this.cogDisplay1.ColorMapUpperRoiLimit = 1D;
             this.cogDisplay1.DoubleTapZoomCycleLength = 2;
             this.cogDisplay1.DoubleTapZoomSensitivity = 2.5D;
-            this.cogDisplay1.Location = new System.Drawing.Point(415, 46);
+            this.cogDisplay1.Location = new System.Drawing.Point(415, 56);
             this.cogDisplay1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogDisplay1.MouseWheelSensitivity = 1D;
             this.cogDisplay1.Name = "cogDisplay1";
             this.cogDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay1.OcxState")));
-            this.cogDisplay1.Size = new System.Drawing.Size(420, 320);
+            this.cogDisplay1.Size = new System.Drawing.Size(540, 450);
             this.cogDisplay1.TabIndex = 124;
             // 
             // textBox_Slot
@@ -1744,7 +1742,7 @@ namespace SPIL
             this.label71.AutoSize = true;
             this.label71.Location = new System.Drawing.Point(226, 129);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(31, 16);
+            this.label71.Size = new System.Drawing.Size(32, 16);
             this.label71.TabIndex = 121;
             this.label71.Text = "Slot";
             // 
@@ -1753,7 +1751,7 @@ namespace SPIL
             this.label76.AutoSize = true;
             this.label76.Location = new System.Drawing.Point(226, 82);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(65, 16);
+            this.label76.Size = new System.Drawing.Size(66, 16);
             this.label76.TabIndex = 120;
             this.label76.Text = "Wafer ID";
             // 
@@ -1772,7 +1770,7 @@ namespace SPIL
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 39);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 16);
+            this.label3.Size = new System.Drawing.Size(60, 16);
             this.label3.TabIndex = 54;
             this.label3.Text = "Connect";
             // 
@@ -2090,7 +2088,7 @@ namespace SPIL
             // 
             // button_Save_Excel
             // 
-            this.button_Save_Excel.Location = new System.Drawing.Point(24, 1021);
+            this.button_Save_Excel.Location = new System.Drawing.Point(10, 1448);
             this.button_Save_Excel.Name = "button_Save_Excel";
             this.button_Save_Excel.Size = new System.Drawing.Size(369, 41);
             this.button_Save_Excel.TabIndex = 22;
@@ -2126,7 +2124,7 @@ namespace SPIL
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(6, 82);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(52, 16);
+            this.label14.Size = new System.Drawing.Size(53, 16);
             this.label14.TabIndex = 20;
             this.label14.Text = "Degree";
             // 
@@ -2137,10 +2135,10 @@ namespace SPIL
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage12);
-            this.tabControl1.Location = new System.Drawing.Point(10, 10);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(885, 1150);
+            this.tabControl1.Size = new System.Drawing.Size(1000, 1550);
             this.tabControl1.TabIndex = 23;
             // 
             // tabPage1
@@ -2149,7 +2147,7 @@ namespace SPIL
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(877, 1120);
+            this.tabPage1.Size = new System.Drawing.Size(992, 1520);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Measurement";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -2164,18 +2162,20 @@ namespace SPIL
             this.tabPage8.Controls.Add(this.label54);
             this.tabPage8.Controls.Add(this.tBx_RecipeName);
             this.tabPage8.Controls.Add(this.btn_RecipeSave);
+            this.tabPage8.Font = new System.Drawing.Font("新細明體", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tabPage8.Location = new System.Drawing.Point(4, 26);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(877, 1120);
+            this.tabPage8.Size = new System.Drawing.Size(992, 1520);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "SharpnessAlgorithm";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(769, 10);
+            this.button9.Font = new System.Drawing.Font("新細明體", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button9.Location = new System.Drawing.Point(806, 42);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(104, 44);
+            this.button9.Size = new System.Drawing.Size(180, 44);
             this.button9.TabIndex = 152;
             this.button9.Text = "Delect Recipe";
             this.button9.UseVisualStyleBackColor = true;
@@ -2183,9 +2183,10 @@ namespace SPIL
             // 
             // btn_ReadRecipe
             // 
-            this.btn_ReadRecipe.Location = new System.Drawing.Point(662, 10);
+            this.btn_ReadRecipe.Font = new System.Drawing.Font("新細明體", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_ReadRecipe.Location = new System.Drawing.Point(636, 42);
             this.btn_ReadRecipe.Name = "btn_ReadRecipe";
-            this.btn_ReadRecipe.Size = new System.Drawing.Size(104, 44);
+            this.btn_ReadRecipe.Size = new System.Drawing.Size(164, 44);
             this.btn_ReadRecipe.TabIndex = 151;
             this.btn_ReadRecipe.Text = "Read Recipe";
             this.btn_ReadRecipe.UseVisualStyleBackColor = true;
@@ -2215,10 +2216,10 @@ namespace SPIL
             this.gpBox_Sharpness.Controls.Add(this.label56);
             this.gpBox_Sharpness.Controls.Add(this.listBox_SharpnessAlgorithmList);
             this.gpBox_Sharpness.Enabled = false;
-            this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 60);
+            this.gpBox_Sharpness.Font = new System.Drawing.Font("新細明體", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.gpBox_Sharpness.Location = new System.Drawing.Point(3, 101);
             this.gpBox_Sharpness.Name = "gpBox_Sharpness";
-            this.gpBox_Sharpness.Size = new System.Drawing.Size(870, 1055);
+            this.gpBox_Sharpness.Size = new System.Drawing.Size(983, 1410);
             this.gpBox_Sharpness.TabIndex = 0;
             this.gpBox_Sharpness.TabStop = false;
             this.gpBox_Sharpness.Text = "SharpnessTesting";
@@ -2226,9 +2227,9 @@ namespace SPIL
             // cB_Multi
             // 
             this.cB_Multi.AutoSize = true;
-            this.cB_Multi.Location = new System.Drawing.Point(17, 918);
+            this.cB_Multi.Location = new System.Drawing.Point(244, 1080);
             this.cB_Multi.Name = "cB_Multi";
-            this.cB_Multi.Size = new System.Drawing.Size(78, 28);
+            this.cB_Multi.Size = new System.Drawing.Size(94, 33);
             this.cB_Multi.TabIndex = 159;
             this.cB_Multi.Text = "Multi";
             this.cB_Multi.UseVisualStyleBackColor = true;
@@ -2243,68 +2244,21 @@ namespace SPIL
             this.Score1,
             this.Score2,
             this.Score3});
-            this.dataGrid_Sharpness.Location = new System.Drawing.Point(134, 801);
+            this.dataGrid_Sharpness.Location = new System.Drawing.Point(6, 1131);
             this.dataGrid_Sharpness.Name = "dataGrid_Sharpness";
             this.dataGrid_Sharpness.ReadOnly = true;
             this.dataGrid_Sharpness.RowHeadersWidth = 51;
             this.dataGrid_Sharpness.RowTemplate.Height = 24;
             this.dataGrid_Sharpness.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid_Sharpness.Size = new System.Drawing.Size(715, 220);
+            this.dataGrid_Sharpness.Size = new System.Drawing.Size(971, 273);
             this.dataGrid_Sharpness.TabIndex = 146;
             this.dataGrid_Sharpness.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_Sharpness_CellContentClick);
             // 
-            // FileName
-            // 
-            this.FileName.HeaderText = "FileName";
-            this.FileName.MinimumWidth = 6;
-            this.FileName.Name = "FileName";
-            this.FileName.ReadOnly = true;
-            // 
-            // SearchScore1
-            // 
-            this.SearchScore1.HeaderText = "SearchScore1";
-            this.SearchScore1.MinimumWidth = 6;
-            this.SearchScore1.Name = "SearchScore1";
-            this.SearchScore1.ReadOnly = true;
-            this.SearchScore1.Width = 140;
-            // 
-            // SearchScore2
-            // 
-            this.SearchScore2.HeaderText = "SearchScore2";
-            this.SearchScore2.MinimumWidth = 6;
-            this.SearchScore2.Name = "SearchScore2";
-            this.SearchScore2.ReadOnly = true;
-            this.SearchScore2.Width = 140;
-            // 
-            // Score1
-            // 
-            this.Score1.HeaderText = "Score1";
-            this.Score1.MinimumWidth = 6;
-            this.Score1.Name = "Score1";
-            this.Score1.ReadOnly = true;
-            this.Score1.Width = 85;
-            // 
-            // Score2
-            // 
-            this.Score2.HeaderText = "Score2";
-            this.Score2.MinimumWidth = 6;
-            this.Score2.Name = "Score2";
-            this.Score2.ReadOnly = true;
-            this.Score2.Width = 85;
-            // 
-            // Score3
-            // 
-            this.Score3.HeaderText = "Score3";
-            this.Score3.MinimumWidth = 6;
-            this.Score3.Name = "Score3";
-            this.Score3.ReadOnly = true;
-            this.Score3.Width = 85;
-            // 
             // btn_SharpnessMultRun
             // 
-            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(6, 801);
+            this.btn_SharpnessMultRun.Location = new System.Drawing.Point(17, 1037);
             this.btn_SharpnessMultRun.Name = "btn_SharpnessMultRun";
-            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(118, 71);
+            this.btn_SharpnessMultRun.Size = new System.Drawing.Size(182, 71);
             this.btn_SharpnessMultRun.TabIndex = 145;
             this.btn_SharpnessMultRun.Text = "SharpnessRun";
             this.btn_SharpnessMultRun.UseVisualStyleBackColor = true;
@@ -2312,65 +2266,74 @@ namespace SPIL
             // 
             // tbx_SharpnessScore3
             // 
-            this.tbx_SharpnessScore3.Location = new System.Drawing.Point(124, 293);
+            this.tbx_SharpnessScore3.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SharpnessScore3.Location = new System.Drawing.Point(165, 337);
             this.tbx_SharpnessScore3.Name = "tbx_SharpnessScore3";
-            this.tbx_SharpnessScore3.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore3.Size = new System.Drawing.Size(232, 46);
             this.tbx_SharpnessScore3.TabIndex = 158;
             // 
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(6, 296);
+            this.label66.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label66.Location = new System.Drawing.Point(10, 340);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(85, 24);
+            this.label66.Size = new System.Drawing.Size(114, 32);
             this.label66.TabIndex = 157;
             this.label66.Text = "Score3 :";
             // 
             // tbx_SharpnessScore2
             // 
-            this.tbx_SharpnessScore2.Location = new System.Drawing.Point(124, 251);
+            this.tbx_SharpnessScore2.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SharpnessScore2.Location = new System.Drawing.Point(165, 285);
             this.tbx_SharpnessScore2.Name = "tbx_SharpnessScore2";
-            this.tbx_SharpnessScore2.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore2.Size = new System.Drawing.Size(232, 46);
             this.tbx_SharpnessScore2.TabIndex = 156;
             // 
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(6, 255);
+            this.label65.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label65.Location = new System.Drawing.Point(10, 288);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(85, 24);
+            this.label65.Size = new System.Drawing.Size(114, 32);
             this.label65.TabIndex = 155;
             this.label65.Text = "Score2 :";
             // 
             // tbx_SharpnessScore1
             // 
-            this.tbx_SharpnessScore1.Location = new System.Drawing.Point(124, 211);
+            this.tbx_SharpnessScore1.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SharpnessScore1.Location = new System.Drawing.Point(165, 233);
             this.tbx_SharpnessScore1.Name = "tbx_SharpnessScore1";
-            this.tbx_SharpnessScore1.Size = new System.Drawing.Size(144, 36);
+            this.tbx_SharpnessScore1.Size = new System.Drawing.Size(232, 46);
             this.tbx_SharpnessScore1.TabIndex = 154;
             // 
             // label64
             // 
             this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(6, 214);
+            this.label64.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label64.Location = new System.Drawing.Point(10, 236);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(85, 24);
+            this.label64.Size = new System.Drawing.Size(114, 32);
             this.label64.TabIndex = 153;
             this.label64.Text = "Score1 :";
             // 
             // tbx_SearchScore2
             // 
-            this.tbx_SearchScore2.Location = new System.Drawing.Point(165, 164);
+            this.tbx_SearchScore2.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SearchScore2.Location = new System.Drawing.Point(225, 176);
             this.tbx_SearchScore2.Name = "tbx_SearchScore2";
-            this.tbx_SearchScore2.Size = new System.Drawing.Size(103, 36);
+            this.tbx_SearchScore2.Size = new System.Drawing.Size(160, 46);
             this.tbx_SearchScore2.TabIndex = 152;
+            this.tbx_SearchScore2.TextChanged += new System.EventHandler(this.tbx_SearchScore2_TextChanged);
             // 
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(6, 167);
+            this.label63.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label63.Location = new System.Drawing.Point(6, 179);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(153, 24);
+            this.label63.Size = new System.Drawing.Size(203, 32);
             this.label63.TabIndex = 151;
             this.label63.Text = "Search Score2 :";
             // 
@@ -2383,35 +2346,37 @@ namespace SPIL
             this.cogRecordDisplay2.ColorMapUpperRoiLimit = 1D;
             this.cogRecordDisplay2.DoubleTapZoomCycleLength = 2;
             this.cogRecordDisplay2.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRecordDisplay2.Location = new System.Drawing.Point(364, 355);
+            this.cogRecordDisplay2.Location = new System.Drawing.Point(430, 573);
             this.cogRecordDisplay2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogRecordDisplay2.MouseWheelSensitivity = 1D;
             this.cogRecordDisplay2.Name = "cogRecordDisplay2";
             this.cogRecordDisplay2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay2.OcxState")));
-            this.cogRecordDisplay2.Size = new System.Drawing.Size(470, 360);
+            this.cogRecordDisplay2.Size = new System.Drawing.Size(523, 407);
             this.cogRecordDisplay2.TabIndex = 150;
             // 
             // txB_SharpnessPicName
             // 
             this.txB_SharpnessPicName.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_SharpnessPicName.Location = new System.Drawing.Point(17, 673);
+            this.txB_SharpnessPicName.Location = new System.Drawing.Point(6, 957);
             this.txB_SharpnessPicName.Name = "txB_SharpnessPicName";
-            this.txB_SharpnessPicName.Size = new System.Drawing.Size(333, 23);
+            this.txB_SharpnessPicName.Size = new System.Drawing.Size(409, 23);
             this.txB_SharpnessPicName.TabIndex = 145;
             // 
             // tbx_SearchScore1
             // 
-            this.tbx_SearchScore1.Location = new System.Drawing.Point(165, 124);
+            this.tbx_SearchScore1.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tbx_SearchScore1.Location = new System.Drawing.Point(225, 124);
             this.tbx_SearchScore1.Name = "tbx_SearchScore1";
-            this.tbx_SearchScore1.Size = new System.Drawing.Size(103, 36);
+            this.tbx_SearchScore1.Size = new System.Drawing.Size(160, 46);
             this.tbx_SearchScore1.TabIndex = 143;
             // 
             // label59
             // 
             this.label59.AutoSize = true;
+            this.label59.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label59.Location = new System.Drawing.Point(6, 127);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(153, 24);
+            this.label59.Size = new System.Drawing.Size(203, 32);
             this.label59.TabIndex = 142;
             this.label59.Text = "Search Score1 :";
             // 
@@ -2428,15 +2393,15 @@ namespace SPIL
             // pBox_SharpnessPic
             // 
             this.pBox_SharpnessPic.BackColor = System.Drawing.Color.Black;
-            this.pBox_SharpnessPic.Location = new System.Drawing.Point(17, 386);
+            this.pBox_SharpnessPic.Location = new System.Drawing.Point(6, 573);
             this.pBox_SharpnessPic.Name = "pBox_SharpnessPic";
-            this.pBox_SharpnessPic.Size = new System.Drawing.Size(333, 266);
+            this.pBox_SharpnessPic.Size = new System.Drawing.Size(409, 370);
             this.pBox_SharpnessPic.TabIndex = 139;
             this.pBox_SharpnessPic.TabStop = false;
             // 
             // btn_OpenSharpnessImage
             // 
-            this.btn_OpenSharpnessImage.Location = new System.Drawing.Point(84, 338);
+            this.btn_OpenSharpnessImage.Location = new System.Drawing.Point(17, 511);
             this.btn_OpenSharpnessImage.Name = "btn_OpenSharpnessImage";
             this.btn_OpenSharpnessImage.Size = new System.Drawing.Size(157, 41);
             this.btn_OpenSharpnessImage.TabIndex = 140;
@@ -2447,10 +2412,10 @@ namespace SPIL
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label56.Location = new System.Drawing.Point(360, 24);
+            this.label56.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label56.Location = new System.Drawing.Point(426, 22);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(204, 21);
+            this.label56.Size = new System.Drawing.Size(263, 27);
             this.label56.TabIndex = 24;
             this.label56.Text = "Sharpness Method List :";
             // 
@@ -2459,27 +2424,29 @@ namespace SPIL
             this.listBox_SharpnessAlgorithmList.Font = new System.Drawing.Font("新細明體", 24F);
             this.listBox_SharpnessAlgorithmList.FormattingEnabled = true;
             this.listBox_SharpnessAlgorithmList.ItemHeight = 32;
-            this.listBox_SharpnessAlgorithmList.Location = new System.Drawing.Point(364, 48);
+            this.listBox_SharpnessAlgorithmList.Location = new System.Drawing.Point(430, 56);
             this.listBox_SharpnessAlgorithmList.Name = "listBox_SharpnessAlgorithmList";
-            this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(470, 292);
+            this.listBox_SharpnessAlgorithmList.Size = new System.Drawing.Size(490, 420);
             this.listBox_SharpnessAlgorithmList.TabIndex = 23;
             this.listBox_SharpnessAlgorithmList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox_SharpnessAlgorithmList_MouseDoubleClick);
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(535, 7);
+            this.label67.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label67.Location = new System.Drawing.Point(429, 10);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(103, 16);
+            this.label67.Size = new System.Drawing.Size(171, 27);
             this.label67.TabIndex = 150;
             this.label67.Text = "Select Recipe  :";
             // 
             // CB_RecipeList
             // 
+            this.CB_RecipeList.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.CB_RecipeList.FormattingEnabled = true;
-            this.CB_RecipeList.Location = new System.Drawing.Point(538, 30);
+            this.CB_RecipeList.Location = new System.Drawing.Point(434, 48);
             this.CB_RecipeList.Name = "CB_RecipeList";
-            this.CB_RecipeList.Size = new System.Drawing.Size(118, 24);
+            this.CB_RecipeList.Size = new System.Drawing.Size(188, 35);
             this.CB_RecipeList.TabIndex = 16;
             this.CB_RecipeList.SelectedIndexChanged += new System.EventHandler(this.CB_RecipeList_SelectedIndexChanged);
             this.CB_RecipeList.Click += new System.EventHandler(this.CB_RecipeList_Click);
@@ -2487,24 +2454,26 @@ namespace SPIL
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(17, 19);
+            this.label54.Location = new System.Drawing.Point(8, 10);
             this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(109, 16);
+            this.label54.Size = new System.Drawing.Size(197, 29);
             this.label54.TabIndex = 17;
             this.label54.Text = "CurrentRecipe  :";
             // 
             // tBx_RecipeName
             // 
-            this.tBx_RecipeName.Location = new System.Drawing.Point(133, 19);
+            this.tBx_RecipeName.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tBx_RecipeName.Location = new System.Drawing.Point(9, 45);
             this.tBx_RecipeName.Name = "tBx_RecipeName";
-            this.tBx_RecipeName.Size = new System.Drawing.Size(133, 27);
+            this.tBx_RecipeName.Size = new System.Drawing.Size(187, 40);
             this.tBx_RecipeName.TabIndex = 19;
             // 
             // btn_RecipeSave
             // 
-            this.btn_RecipeSave.Location = new System.Drawing.Point(275, 15);
+            this.btn_RecipeSave.Font = new System.Drawing.Font("新細明體", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_RecipeSave.Location = new System.Drawing.Point(202, 42);
             this.btn_RecipeSave.Name = "btn_RecipeSave";
-            this.btn_RecipeSave.Size = new System.Drawing.Size(113, 31);
+            this.btn_RecipeSave.Size = new System.Drawing.Size(168, 44);
             this.btn_RecipeSave.TabIndex = 20;
             this.btn_RecipeSave.Text = "Recipe Save";
             this.btn_RecipeSave.UseVisualStyleBackColor = true;
@@ -2516,10 +2485,11 @@ namespace SPIL
             this.tabPage7.Controls.Add(this.gpBox_AOI);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(877, 1120);
+            this.tabPage7.Size = new System.Drawing.Size(972, 1520);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "AOIAlgorithm";
             this.tabPage7.UseVisualStyleBackColor = true;
+            this.tabPage7.Click += new System.EventHandler(this.tabPage7_Click);
             // 
             // button8
             // 
@@ -2535,11 +2505,9 @@ namespace SPIL
             // gpBox_AOI
             // 
             this.gpBox_AOI.BackColor = System.Drawing.Color.Snow;
-            this.gpBox_AOI.Controls.Add(this.Log_tBx);
             this.gpBox_AOI.Controls.Add(this.rdBtn_Octagon);
             this.gpBox_AOI.Controls.Add(this.rdBtn_circle);
             this.gpBox_AOI.Controls.Add(this.tabCtrl_AlgorithmList);
-            this.gpBox_AOI.Controls.Add(this.label96);
             this.gpBox_AOI.Controls.Add(this.cogRcdDisp_Distance3);
             this.gpBox_AOI.Controls.Add(this.cogRcdDisp_Distance2);
             this.gpBox_AOI.Controls.Add(this.cogRcdDisp_Distance1);
@@ -2559,28 +2527,18 @@ namespace SPIL
             this.gpBox_AOI.Font = new System.Drawing.Font("新細明體", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.gpBox_AOI.Location = new System.Drawing.Point(4, 41);
             this.gpBox_AOI.Name = "gpBox_AOI";
-            this.gpBox_AOI.Size = new System.Drawing.Size(865, 1066);
+            this.gpBox_AOI.Size = new System.Drawing.Size(965, 1476);
             this.gpBox_AOI.TabIndex = 149;
             this.gpBox_AOI.TabStop = false;
             this.gpBox_AOI.Text = "AOI Distance";
             // 
-            // Log_tBx
-            // 
-            this.Log_tBx.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Log_tBx.Location = new System.Drawing.Point(388, 576);
-            this.Log_tBx.Multiline = true;
-            this.Log_tBx.Name = "Log_tBx";
-            this.Log_tBx.ReadOnly = true;
-            this.Log_tBx.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Log_tBx.Size = new System.Drawing.Size(456, 378);
-            this.Log_tBx.TabIndex = 152;
-            // 
             // rdBtn_Octagon
             // 
             this.rdBtn_Octagon.AutoSize = true;
-            this.rdBtn_Octagon.Location = new System.Drawing.Point(695, 201);
+            this.rdBtn_Octagon.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.rdBtn_Octagon.Location = new System.Drawing.Point(775, 283);
             this.rdBtn_Octagon.Name = "rdBtn_Octagon";
-            this.rdBtn_Octagon.Size = new System.Drawing.Size(103, 28);
+            this.rdBtn_Octagon.Size = new System.Drawing.Size(134, 36);
             this.rdBtn_Octagon.TabIndex = 156;
             this.rdBtn_Octagon.Text = "Octagon";
             this.rdBtn_Octagon.UseVisualStyleBackColor = true;
@@ -2590,9 +2548,10 @@ namespace SPIL
             // 
             this.rdBtn_circle.AutoSize = true;
             this.rdBtn_circle.Checked = true;
-            this.rdBtn_circle.Location = new System.Drawing.Point(591, 201);
+            this.rdBtn_circle.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.rdBtn_circle.Location = new System.Drawing.Point(775, 241);
             this.rdBtn_circle.Name = "rdBtn_circle";
-            this.rdBtn_circle.Size = new System.Drawing.Size(83, 28);
+            this.rdBtn_circle.Size = new System.Drawing.Size(105, 36);
             this.rdBtn_circle.TabIndex = 155;
             this.rdBtn_circle.TabStop = true;
             this.rdBtn_circle.Text = "Circle";
@@ -2603,21 +2562,22 @@ namespace SPIL
             // 
             this.tabCtrl_AlgorithmList.Controls.Add(this.tabPage10);
             this.tabCtrl_AlgorithmList.Controls.Add(this.tabPage11);
+            this.tabCtrl_AlgorithmList.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tabCtrl_AlgorithmList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.tabCtrl_AlgorithmList.Location = new System.Drawing.Point(382, 235);
+            this.tabCtrl_AlgorithmList.Location = new System.Drawing.Point(499, 338);
             this.tabCtrl_AlgorithmList.Name = "tabCtrl_AlgorithmList";
             this.tabCtrl_AlgorithmList.SelectedIndex = 0;
-            this.tabCtrl_AlgorithmList.Size = new System.Drawing.Size(460, 315);
+            this.tabCtrl_AlgorithmList.Size = new System.Drawing.Size(460, 472);
             this.tabCtrl_AlgorithmList.TabIndex = 154;
             // 
             // tabPage10
             // 
             this.tabPage10.BackColor = System.Drawing.Color.Snow;
             this.tabPage10.Controls.Add(this.listBox_AOIAlgorithmList);
-            this.tabPage10.Location = new System.Drawing.Point(4, 34);
+            this.tabPage10.Location = new System.Drawing.Point(4, 42);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(452, 277);
+            this.tabPage10.Size = new System.Drawing.Size(452, 426);
             this.tabPage10.TabIndex = 0;
             this.tabPage10.Text = "tabPage10";
             // 
@@ -2629,7 +2589,7 @@ namespace SPIL
             this.listBox_AOIAlgorithmList.Location = new System.Drawing.Point(2, 3);
             this.listBox_AOIAlgorithmList.Name = "listBox_AOIAlgorithmList";
             this.listBox_AOIAlgorithmList.ScrollAlwaysVisible = true;
-            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 260);
+            this.listBox_AOIAlgorithmList.Size = new System.Drawing.Size(447, 420);
             this.listBox_AOIAlgorithmList.TabIndex = 5;
             this.listBox_AOIAlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AlgorithmList_DoubleClick);
             // 
@@ -2637,10 +2597,10 @@ namespace SPIL
             // 
             this.tabPage11.BackColor = System.Drawing.Color.Snow;
             this.tabPage11.Controls.Add(this.listBox_AOI2AlgorithmList);
-            this.tabPage11.Location = new System.Drawing.Point(4, 34);
+            this.tabPage11.Location = new System.Drawing.Point(4, 42);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(452, 277);
+            this.tabPage11.Size = new System.Drawing.Size(452, 426);
             this.tabPage11.TabIndex = 1;
             this.tabPage11.Text = "tabPage11";
             // 
@@ -2652,19 +2612,9 @@ namespace SPIL
             this.listBox_AOI2AlgorithmList.Location = new System.Drawing.Point(2, 3);
             this.listBox_AOI2AlgorithmList.Name = "listBox_AOI2AlgorithmList";
             this.listBox_AOI2AlgorithmList.ScrollAlwaysVisible = true;
-            this.listBox_AOI2AlgorithmList.Size = new System.Drawing.Size(447, 260);
+            this.listBox_AOI2AlgorithmList.Size = new System.Drawing.Size(447, 420);
             this.listBox_AOI2AlgorithmList.TabIndex = 6;
             this.listBox_AOI2AlgorithmList.DoubleClick += new System.EventHandler(this.listBox_AOI2AlgorithmList_DoubleClick);
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label96.Location = new System.Drawing.Point(384, 552);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(92, 21);
-            this.label96.TabIndex = 153;
-            this.label96.Text = "Log  List :";
             // 
             // cogRcdDisp_Distance3
             // 
@@ -2675,12 +2625,12 @@ namespace SPIL
             this.cogRcdDisp_Distance3.ColorMapUpperRoiLimit = 1D;
             this.cogRcdDisp_Distance3.DoubleTapZoomCycleLength = 2;
             this.cogRcdDisp_Distance3.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance3.Location = new System.Drawing.Point(17, 760);
+            this.cogRcdDisp_Distance3.Location = new System.Drawing.Point(6, 1060);
             this.cogRcdDisp_Distance3.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogRcdDisp_Distance3.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance3.Name = "cogRcdDisp_Distance3";
             this.cogRcdDisp_Distance3.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance3.OcxState")));
-            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(355, 280);
+            this.cogRcdDisp_Distance3.Size = new System.Drawing.Size(480, 400);
             this.cogRcdDisp_Distance3.TabIndex = 151;
             // 
             // cogRcdDisp_Distance2
@@ -2692,12 +2642,12 @@ namespace SPIL
             this.cogRcdDisp_Distance2.ColorMapUpperRoiLimit = 1D;
             this.cogRcdDisp_Distance2.DoubleTapZoomCycleLength = 2;
             this.cogRcdDisp_Distance2.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance2.Location = new System.Drawing.Point(16, 442);
+            this.cogRcdDisp_Distance2.Location = new System.Drawing.Point(6, 604);
             this.cogRcdDisp_Distance2.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogRcdDisp_Distance2.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance2.Name = "cogRcdDisp_Distance2";
             this.cogRcdDisp_Distance2.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance2.OcxState")));
-            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(355, 280);
+            this.cogRcdDisp_Distance2.Size = new System.Drawing.Size(480, 400);
             this.cogRcdDisp_Distance2.TabIndex = 150;
             // 
             // cogRcdDisp_Distance1
@@ -2709,50 +2659,54 @@ namespace SPIL
             this.cogRcdDisp_Distance1.ColorMapUpperRoiLimit = 1D;
             this.cogRcdDisp_Distance1.DoubleTapZoomCycleLength = 2;
             this.cogRcdDisp_Distance1.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRcdDisp_Distance1.Location = new System.Drawing.Point(16, 135);
+            this.cogRcdDisp_Distance1.Location = new System.Drawing.Point(6, 141);
             this.cogRcdDisp_Distance1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogRcdDisp_Distance1.MouseWheelSensitivity = 1D;
             this.cogRcdDisp_Distance1.Name = "cogRcdDisp_Distance1";
             this.cogRcdDisp_Distance1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRcdDisp_Distance1.OcxState")));
-            this.cogRcdDisp_Distance1.Size = new System.Drawing.Size(355, 280);
+            this.cogRcdDisp_Distance1.Size = new System.Drawing.Size(480, 400);
             this.cogRcdDisp_Distance1.TabIndex = 149;
             // 
             // tBx_CuValue
             // 
-            this.tBx_CuValue.Location = new System.Drawing.Point(591, 148);
+            this.tBx_CuValue.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tBx_CuValue.Location = new System.Drawing.Point(817, 176);
             this.tBx_CuValue.Name = "tBx_CuValue";
-            this.tBx_CuValue.Size = new System.Drawing.Size(100, 36);
+            this.tBx_CuValue.Size = new System.Drawing.Size(107, 46);
             this.tBx_CuValue.TabIndex = 142;
             // 
             // txB_RecipePicName3
             // 
-            this.txB_RecipePicName3.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName3.Location = new System.Drawing.Point(523, 83);
+            this.txB_RecipePicName3.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txB_RecipePicName3.Location = new System.Drawing.Point(652, 91);
             this.txB_RecipePicName3.Name = "txB_RecipePicName3";
-            this.txB_RecipePicName3.Size = new System.Drawing.Size(240, 23);
+            this.txB_RecipePicName3.Size = new System.Drawing.Size(300, 33);
             this.txB_RecipePicName3.TabIndex = 148;
             // 
             // tBx_CuNiValue
             // 
-            this.tBx_CuNiValue.Location = new System.Drawing.Point(485, 148);
+            this.tBx_CuNiValue.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tBx_CuNiValue.Location = new System.Drawing.Point(676, 176);
             this.tBx_CuNiValue.Name = "tBx_CuNiValue";
-            this.tBx_CuNiValue.Size = new System.Drawing.Size(100, 36);
+            this.tBx_CuNiValue.Size = new System.Drawing.Size(107, 46);
             this.tBx_CuNiValue.TabIndex = 141;
             // 
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(616, 121);
+            this.label57.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label57.Location = new System.Drawing.Point(848, 141);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(36, 24);
+            this.label57.Size = new System.Drawing.Size(50, 32);
             this.label57.TabIndex = 140;
             this.label57.Text = "Cu";
             // 
             // btn_AOIOpenImage1
             // 
-            this.btn_AOIOpenImage1.Location = new System.Drawing.Point(39, 35);
+            this.btn_AOIOpenImage1.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AOIOpenImage1.Location = new System.Drawing.Point(67, 35);
             this.btn_AOIOpenImage1.Name = "btn_AOIOpenImage1";
-            this.btn_AOIOpenImage1.Size = new System.Drawing.Size(157, 42);
+            this.btn_AOIOpenImage1.Size = new System.Drawing.Size(200, 40);
             this.btn_AOIOpenImage1.TabIndex = 9;
             this.btn_AOIOpenImage1.Text = "OpenImage 1";
             this.btn_AOIOpenImage1.UseVisualStyleBackColor = true;
@@ -2761,17 +2715,19 @@ namespace SPIL
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(502, 121);
+            this.label58.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label58.Location = new System.Drawing.Point(670, 141);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(83, 24);
+            this.label58.Size = new System.Drawing.Size(113, 32);
             this.label58.TabIndex = 139;
             this.label58.Text = "Cu + Ni";
             // 
             // btn_AOIOpenImage3
             // 
-            this.btn_AOIOpenImage3.Location = new System.Drawing.Point(554, 35);
+            this.btn_AOIOpenImage3.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AOIOpenImage3.Location = new System.Drawing.Point(698, 35);
             this.btn_AOIOpenImage3.Name = "btn_AOIOpenImage3";
-            this.btn_AOIOpenImage3.Size = new System.Drawing.Size(157, 42);
+            this.btn_AOIOpenImage3.Size = new System.Drawing.Size(200, 40);
             this.btn_AOIOpenImage3.TabIndex = 145;
             this.btn_AOIOpenImage3.Text = "OpenImage 3";
             this.btn_AOIOpenImage3.UseVisualStyleBackColor = true;
@@ -2779,9 +2735,10 @@ namespace SPIL
             // 
             // btn_AOITesting
             // 
-            this.btn_AOITesting.Location = new System.Drawing.Point(386, 135);
+            this.btn_AOITesting.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AOITesting.Location = new System.Drawing.Point(505, 166);
             this.btn_AOITesting.Name = "btn_AOITesting";
-            this.btn_AOITesting.Size = new System.Drawing.Size(84, 56);
+            this.btn_AOITesting.Size = new System.Drawing.Size(142, 56);
             this.btn_AOITesting.TabIndex = 138;
             this.btn_AOITesting.Text = "Run";
             this.btn_AOITesting.UseVisualStyleBackColor = true;
@@ -2789,17 +2746,18 @@ namespace SPIL
             // 
             // txB_RecipePicName2
             // 
-            this.txB_RecipePicName2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName2.Location = new System.Drawing.Point(270, 83);
+            this.txB_RecipePicName2.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txB_RecipePicName2.Location = new System.Drawing.Point(334, 91);
             this.txB_RecipePicName2.Name = "txB_RecipePicName2";
-            this.txB_RecipePicName2.Size = new System.Drawing.Size(240, 23);
+            this.txB_RecipePicName2.Size = new System.Drawing.Size(300, 33);
             this.txB_RecipePicName2.TabIndex = 146;
             // 
             // btn_AOIOpenImage2
             // 
-            this.btn_AOIOpenImage2.Location = new System.Drawing.Point(313, 35);
+            this.btn_AOIOpenImage2.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btn_AOIOpenImage2.Location = new System.Drawing.Point(381, 35);
             this.btn_AOIOpenImage2.Name = "btn_AOIOpenImage2";
-            this.btn_AOIOpenImage2.Size = new System.Drawing.Size(157, 42);
+            this.btn_AOIOpenImage2.Size = new System.Drawing.Size(200, 40);
             this.btn_AOIOpenImage2.TabIndex = 147;
             this.btn_AOIOpenImage2.Text = "OpenImage 2";
             this.btn_AOIOpenImage2.UseVisualStyleBackColor = true;
@@ -2807,19 +2765,19 @@ namespace SPIL
             // 
             // txB_RecipePicName1
             // 
-            this.txB_RecipePicName1.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txB_RecipePicName1.Location = new System.Drawing.Point(17, 83);
+            this.txB_RecipePicName1.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txB_RecipePicName1.Location = new System.Drawing.Point(16, 91);
             this.txB_RecipePicName1.Name = "txB_RecipePicName1";
-            this.txB_RecipePicName1.Size = new System.Drawing.Size(240, 23);
+            this.txB_RecipePicName1.Size = new System.Drawing.Size(300, 33);
             this.txB_RecipePicName1.TabIndex = 144;
             // 
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label55.Location = new System.Drawing.Point(382, 205);
+            this.label55.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label55.Location = new System.Drawing.Point(499, 255);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(157, 21);
+            this.label55.Size = new System.Drawing.Size(240, 32);
             this.label55.TabIndex = 21;
             this.label55.Text = "AOI Method List :";
             // 
@@ -2832,7 +2790,7 @@ namespace SPIL
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(877, 1120);
+            this.tabPage2.Size = new System.Drawing.Size(992, 1520);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Setup";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2865,7 +2823,7 @@ namespace SPIL
             this.label98.AutoSize = true;
             this.label98.Location = new System.Drawing.Point(283, 31);
             this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(75, 16);
+            this.label98.Size = new System.Drawing.Size(76, 16);
             this.label98.TabIndex = 30;
             this.label98.Text = "統編  /123";
             // 
@@ -2875,7 +2833,7 @@ namespace SPIL
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(10, 31);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(66, 16);
+            this.label20.Size = new System.Drawing.Size(67, 16);
             this.label20.TabIndex = 27;
             this.label20.Text = "Password";
             // 
@@ -3003,7 +2961,7 @@ namespace SPIL
             this.label81.AutoSize = true;
             this.label81.Location = new System.Drawing.Point(21, 123);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(33, 16);
+            this.label81.Size = new System.Drawing.Size(34, 16);
             this.label81.TabIndex = 26;
             this.label81.Text = "Info";
             // 
@@ -3021,7 +2979,7 @@ namespace SPIL
             this.label82.AutoSize = true;
             this.label82.Location = new System.Drawing.Point(21, 88);
             this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(38, 16);
+            this.label82.Size = new System.Drawing.Size(39, 16);
             this.label82.TabIndex = 24;
             this.label82.Text = "Send";
             // 
@@ -3030,7 +2988,7 @@ namespace SPIL
             this.label83.AutoSize = true;
             this.label83.Location = new System.Drawing.Point(21, 53);
             this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(32, 16);
+            this.label83.Size = new System.Drawing.Size(33, 16);
             this.label83.TabIndex = 21;
             this.label83.Text = "Port";
             // 
@@ -3067,7 +3025,7 @@ namespace SPIL
             this.label84.AutoSize = true;
             this.label84.Location = new System.Drawing.Point(22, 23);
             this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(75, 16);
+            this.label84.Size = new System.Drawing.Size(76, 16);
             this.label84.TabIndex = 19;
             this.label84.Text = "IP Address";
             // 
@@ -3191,7 +3149,7 @@ namespace SPIL
             this.radioButton7.Checked = true;
             this.radioButton7.Location = new System.Drawing.Point(18, 26);
             this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(50, 20);
+            this.radioButton7.Size = new System.Drawing.Size(51, 20);
             this.radioButton7.TabIndex = 3;
             this.radioButton7.TabStop = true;
             this.radioButton7.Text = "Top";
@@ -3202,7 +3160,7 @@ namespace SPIL
             this.radioButton8.AutoSize = true;
             this.radioButton8.Location = new System.Drawing.Point(18, 56);
             this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(52, 20);
+            this.radioButton8.Size = new System.Drawing.Size(53, 20);
             this.radioButton8.TabIndex = 4;
             this.radioButton8.TabStop = true;
             this.radioButton8.Text = "Side";
@@ -3287,7 +3245,7 @@ namespace SPIL
             this.radioButton6.AutoSize = true;
             this.radioButton6.Location = new System.Drawing.Point(18, 246);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(44, 20);
+            this.radioButton6.Size = new System.Drawing.Size(45, 20);
             this.radioButton6.TabIndex = 5;
             this.radioButton6.TabStop = true;
             this.radioButton6.Text = "2Y";
@@ -3298,7 +3256,7 @@ namespace SPIL
             this.radioButton5.AutoSize = true;
             this.radioButton5.Location = new System.Drawing.Point(18, 207);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(44, 20);
+            this.radioButton5.Size = new System.Drawing.Size(45, 20);
             this.radioButton5.TabIndex = 4;
             this.radioButton5.TabStop = true;
             this.radioButton5.Text = "1Y";
@@ -3309,7 +3267,7 @@ namespace SPIL
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(18, 159);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(46, 20);
+            this.radioButton4.Size = new System.Drawing.Size(47, 20);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "9M";
@@ -3320,7 +3278,7 @@ namespace SPIL
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(18, 115);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(46, 20);
+            this.radioButton3.Size = new System.Drawing.Size(47, 20);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
             this.radioButton3.Text = "6M";
@@ -3331,7 +3289,7 @@ namespace SPIL
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(18, 74);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(46, 20);
+            this.radioButton2.Size = new System.Drawing.Size(47, 20);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "3M";
@@ -3342,7 +3300,7 @@ namespace SPIL
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(18, 36);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(46, 20);
+            this.radioButton1.Size = new System.Drawing.Size(47, 20);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "1M";
@@ -3450,7 +3408,7 @@ namespace SPIL
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(111, 30);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(18, 16);
+            this.label21.Size = new System.Drawing.Size(19, 16);
             this.label21.TabIndex = 34;
             this.label21.Text = "H";
             // 
@@ -3459,7 +3417,7 @@ namespace SPIL
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(111, 67);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(21, 16);
+            this.label22.Size = new System.Drawing.Size(22, 16);
             this.label22.TabIndex = 35;
             this.label22.Text = "W";
             // 
@@ -3486,7 +3444,7 @@ namespace SPIL
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(10, 30);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(18, 16);
+            this.label7.Size = new System.Drawing.Size(19, 16);
             this.label7.TabIndex = 30;
             this.label7.Text = "X";
             // 
@@ -3495,7 +3453,7 @@ namespace SPIL
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(10, 67);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(18, 16);
+            this.label8.Size = new System.Drawing.Size(19, 16);
             this.label8.TabIndex = 31;
             this.label8.Text = "Y";
             // 
@@ -3530,7 +3488,7 @@ namespace SPIL
             this.label49.AutoSize = true;
             this.label49.Location = new System.Drawing.Point(5, 27);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(36, 16);
+            this.label49.Size = new System.Drawing.Size(37, 16);
             this.label49.TabIndex = 0;
             this.label49.Text = "Idx1";
             // 
@@ -3553,7 +3511,7 @@ namespace SPIL
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(5, 91);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(36, 16);
+            this.label50.Size = new System.Drawing.Size(37, 16);
             this.label50.TabIndex = 4;
             this.label50.Text = "Idx3";
             // 
@@ -3562,7 +3520,7 @@ namespace SPIL
             this.label51.AutoSize = true;
             this.label51.Location = new System.Drawing.Point(5, 59);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(36, 16);
+            this.label51.Size = new System.Drawing.Size(37, 16);
             this.label51.TabIndex = 2;
             this.label51.Text = "Idx2";
             // 
@@ -3593,7 +3551,7 @@ namespace SPIL
             this.label92.AutoSize = true;
             this.label92.Location = new System.Drawing.Point(5, 27);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(36, 16);
+            this.label92.Size = new System.Drawing.Size(37, 16);
             this.label92.TabIndex = 0;
             this.label92.Text = "Idx1";
             // 
@@ -3618,7 +3576,7 @@ namespace SPIL
             this.label47.AutoSize = true;
             this.label47.Location = new System.Drawing.Point(5, 91);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(36, 16);
+            this.label47.Size = new System.Drawing.Size(37, 16);
             this.label47.TabIndex = 4;
             this.label47.Text = "Idx3";
             // 
@@ -3627,7 +3585,7 @@ namespace SPIL
             this.label93.AutoSize = true;
             this.label93.Location = new System.Drawing.Point(5, 59);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(36, 16);
+            this.label93.Size = new System.Drawing.Size(37, 16);
             this.label93.TabIndex = 2;
             this.label93.Text = "Idx2";
             // 
@@ -3714,7 +3672,7 @@ namespace SPIL
             this.label87.AutoSize = true;
             this.label87.Location = new System.Drawing.Point(98, 26);
             this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(83, 16);
+            this.label87.Size = new System.Drawing.Size(84, 16);
             this.label87.TabIndex = 41;
             this.label87.Text = "Right Down";
             // 
@@ -3723,7 +3681,7 @@ namespace SPIL
             this.label88.AutoSize = true;
             this.label88.Location = new System.Drawing.Point(8, 50);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(18, 16);
+            this.label88.Size = new System.Drawing.Size(19, 16);
             this.label88.TabIndex = 35;
             this.label88.Text = "X";
             // 
@@ -3732,7 +3690,7 @@ namespace SPIL
             this.label89.AutoSize = true;
             this.label89.Location = new System.Drawing.Point(33, 26);
             this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(52, 16);
+            this.label89.Size = new System.Drawing.Size(53, 16);
             this.label89.TabIndex = 40;
             this.label89.Text = "Left up";
             // 
@@ -3741,7 +3699,7 @@ namespace SPIL
             this.label90.AutoSize = true;
             this.label90.Location = new System.Drawing.Point(8, 87);
             this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(18, 16);
+            this.label90.Size = new System.Drawing.Size(19, 16);
             this.label90.TabIndex = 36;
             this.label90.Text = "Y";
             // 
@@ -3780,7 +3738,7 @@ namespace SPIL
             this.label85.AutoSize = true;
             this.label85.Location = new System.Drawing.Point(446, 159);
             this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(12, 16);
+            this.label85.Size = new System.Drawing.Size(13, 16);
             this.label85.TabIndex = 52;
             this.label85.Text = "-";
             // 
@@ -3799,7 +3757,7 @@ namespace SPIL
             this.label86.AutoSize = true;
             this.label86.Location = new System.Drawing.Point(337, 159);
             this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(62, 16);
+            this.label86.Size = new System.Drawing.Size(63, 16);
             this.label86.TabIndex = 50;
             this.label86.Text = "0˚ height";
             // 
@@ -3818,7 +3776,7 @@ namespace SPIL
             this.label80.AutoSize = true;
             this.label80.Location = new System.Drawing.Point(13, 106);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(107, 16);
+            this.label80.Size = new System.Drawing.Size(108, 16);
             this.label80.TabIndex = 45;
             this.label80.Text = "Windows Name";
             // 
@@ -3840,7 +3798,7 @@ namespace SPIL
             this.checkBox_csv.AutoSize = true;
             this.checkBox_csv.Location = new System.Drawing.Point(237, 35);
             this.checkBox_csv.Name = "checkBox_csv";
-            this.checkBox_csv.Size = new System.Drawing.Size(51, 20);
+            this.checkBox_csv.Size = new System.Drawing.Size(52, 20);
             this.checkBox_csv.TabIndex = 3;
             this.checkBox_csv.Text = ".csv";
             this.checkBox_csv.UseVisualStyleBackColor = true;
@@ -3850,7 +3808,7 @@ namespace SPIL
             this.checkBox_xlsx.AutoSize = true;
             this.checkBox_xlsx.Location = new System.Drawing.Point(170, 35);
             this.checkBox_xlsx.Name = "checkBox_xlsx";
-            this.checkBox_xlsx.Size = new System.Drawing.Size(56, 20);
+            this.checkBox_xlsx.Size = new System.Drawing.Size(57, 20);
             this.checkBox_xlsx.TabIndex = 2;
             this.checkBox_xlsx.Text = ".xlsx";
             this.checkBox_xlsx.UseVisualStyleBackColor = true;
@@ -3860,7 +3818,7 @@ namespace SPIL
             this.checkBox_poir.AutoSize = true;
             this.checkBox_poir.Location = new System.Drawing.Point(96, 35);
             this.checkBox_poir.Name = "checkBox_poir";
-            this.checkBox_poir.Size = new System.Drawing.Size(55, 20);
+            this.checkBox_poir.Size = new System.Drawing.Size(56, 20);
             this.checkBox_poir.TabIndex = 1;
             this.checkBox_poir.Text = ".poir";
             this.checkBox_poir.UseVisualStyleBackColor = true;
@@ -3870,7 +3828,7 @@ namespace SPIL
             this.checkBox_bmp.AutoSize = true;
             this.checkBox_bmp.Location = new System.Drawing.Point(16, 35);
             this.checkBox_bmp.Name = "checkBox_bmp";
-            this.checkBox_bmp.Size = new System.Drawing.Size(58, 20);
+            this.checkBox_bmp.Size = new System.Drawing.Size(59, 20);
             this.checkBox_bmp.TabIndex = 0;
             this.checkBox_bmp.Text = ".bmp";
             this.checkBox_bmp.UseVisualStyleBackColor = true;
@@ -3911,7 +3869,7 @@ namespace SPIL
             this.label70.AutoSize = true;
             this.label70.Location = new System.Drawing.Point(8, 29);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(18, 16);
+            this.label70.Size = new System.Drawing.Size(19, 16);
             this.label70.TabIndex = 26;
             this.label70.Text = "X";
             // 
@@ -3920,7 +3878,7 @@ namespace SPIL
             this.label69.AutoSize = true;
             this.label69.Location = new System.Drawing.Point(8, 66);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(18, 16);
+            this.label69.Size = new System.Drawing.Size(19, 16);
             this.label69.TabIndex = 27;
             this.label69.Text = "Y";
             // 
@@ -3992,7 +3950,7 @@ namespace SPIL
             this.label78.AutoSize = true;
             this.label78.Location = new System.Drawing.Point(98, 26);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(83, 16);
+            this.label78.Size = new System.Drawing.Size(84, 16);
             this.label78.TabIndex = 41;
             this.label78.Text = "Right Down";
             // 
@@ -4001,7 +3959,7 @@ namespace SPIL
             this.label75.AutoSize = true;
             this.label75.Location = new System.Drawing.Point(8, 50);
             this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(18, 16);
+            this.label75.Size = new System.Drawing.Size(19, 16);
             this.label75.TabIndex = 35;
             this.label75.Text = "X";
             // 
@@ -4010,7 +3968,7 @@ namespace SPIL
             this.label77.AutoSize = true;
             this.label77.Location = new System.Drawing.Point(33, 26);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(52, 16);
+            this.label77.Size = new System.Drawing.Size(53, 16);
             this.label77.TabIndex = 40;
             this.label77.Text = "Left up";
             // 
@@ -4019,7 +3977,7 @@ namespace SPIL
             this.label74.AutoSize = true;
             this.label74.Location = new System.Drawing.Point(8, 87);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(18, 16);
+            this.label74.Size = new System.Drawing.Size(19, 16);
             this.label74.TabIndex = 36;
             this.label74.Text = "Y";
             // 
@@ -4083,7 +4041,7 @@ namespace SPIL
             this.label91.AutoSize = true;
             this.label91.Location = new System.Drawing.Point(184, 231);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(25, 16);
+            this.label91.Size = new System.Drawing.Size(26, 16);
             this.label91.TabIndex = 54;
             this.label91.Text = "ms";
             // 
@@ -4092,7 +4050,7 @@ namespace SPIL
             this.checkBox_Step_6.AutoSize = true;
             this.checkBox_Step_6.Location = new System.Drawing.Point(15, 230);
             this.checkBox_Step_6.Name = "checkBox_Step_6";
-            this.checkBox_Step_6.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_6.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_6.TabIndex = 53;
             this.checkBox_Step_6.Text = "Step 6";
             this.checkBox_Step_6.UseVisualStyleBackColor = true;
@@ -4138,7 +4096,7 @@ namespace SPIL
             this.checkBox_Step_5.AutoSize = true;
             this.checkBox_Step_5.Location = new System.Drawing.Point(15, 194);
             this.checkBox_Step_5.Name = "checkBox_Step_5";
-            this.checkBox_Step_5.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_5.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_5.TabIndex = 48;
             this.checkBox_Step_5.Text = "Step 5";
             this.checkBox_Step_5.UseVisualStyleBackColor = true;
@@ -4175,7 +4133,7 @@ namespace SPIL
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(184, 158);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(25, 16);
+            this.label79.Size = new System.Drawing.Size(26, 16);
             this.label79.TabIndex = 44;
             this.label79.Text = "ms";
             // 
@@ -4184,7 +4142,7 @@ namespace SPIL
             this.checkBox_Step_4.AutoSize = true;
             this.checkBox_Step_4.Location = new System.Drawing.Point(15, 157);
             this.checkBox_Step_4.Name = "checkBox_Step_4";
-            this.checkBox_Step_4.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_4.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_4.TabIndex = 43;
             this.checkBox_Step_4.Text = "Step 4";
             this.checkBox_Step_4.UseVisualStyleBackColor = true;
@@ -4205,7 +4163,7 @@ namespace SPIL
             this.checkBox_Step_3.AutoSize = true;
             this.checkBox_Step_3.Location = new System.Drawing.Point(15, 120);
             this.checkBox_Step_3.Name = "checkBox_Step_3";
-            this.checkBox_Step_3.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_3.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_3.TabIndex = 41;
             this.checkBox_Step_3.Text = "Step 3";
             this.checkBox_Step_3.UseVisualStyleBackColor = true;
@@ -4215,7 +4173,7 @@ namespace SPIL
             this.checkBox_Step_2.AutoSize = true;
             this.checkBox_Step_2.Location = new System.Drawing.Point(15, 83);
             this.checkBox_Step_2.Name = "checkBox_Step_2";
-            this.checkBox_Step_2.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_2.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_2.TabIndex = 40;
             this.checkBox_Step_2.Text = "Step 2";
             this.checkBox_Step_2.UseVisualStyleBackColor = true;
@@ -4225,7 +4183,7 @@ namespace SPIL
             this.checkBox_Step_1.AutoSize = true;
             this.checkBox_Step_1.Location = new System.Drawing.Point(15, 46);
             this.checkBox_Step_1.Name = "checkBox_Step_1";
-            this.checkBox_Step_1.Size = new System.Drawing.Size(65, 20);
+            this.checkBox_Step_1.Size = new System.Drawing.Size(66, 20);
             this.checkBox_Step_1.TabIndex = 39;
             this.checkBox_Step_1.Text = "Step 1";
             this.checkBox_Step_1.UseVisualStyleBackColor = true;
@@ -4290,7 +4248,7 @@ namespace SPIL
             this.label73.AutoSize = true;
             this.label73.Location = new System.Drawing.Point(107, 23);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(18, 16);
+            this.label73.Size = new System.Drawing.Size(19, 16);
             this.label73.TabIndex = 31;
             this.label73.Text = "X";
             // 
@@ -4310,7 +4268,7 @@ namespace SPIL
             this.label72.AutoSize = true;
             this.label72.Location = new System.Drawing.Point(172, 23);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(18, 16);
+            this.label72.Size = new System.Drawing.Size(19, 16);
             this.label72.TabIndex = 32;
             this.label72.Text = "Y";
             // 
@@ -4355,7 +4313,7 @@ namespace SPIL
             this.label68.AutoSize = true;
             this.label68.Location = new System.Drawing.Point(13, 144);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(188, 16);
+            this.label68.Size = new System.Drawing.Size(189, 16);
             this.label68.TabIndex = 22;
             this.label68.Text = "Sharpness ImageFolder Path:";
             // 
@@ -4400,7 +4358,7 @@ namespace SPIL
             this.label53.AutoSize = true;
             this.label53.Location = new System.Drawing.Point(13, 88);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(136, 16);
+            this.label53.Size = new System.Drawing.Size(137, 16);
             this.label53.TabIndex = 17;
             this.label53.Text = "Sharpness VPP Path:";
             // 
@@ -4409,7 +4367,7 @@ namespace SPIL
             this.label52.AutoSize = true;
             this.label52.Location = new System.Drawing.Point(13, 54);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(104, 16);
+            this.label52.Size = new System.Drawing.Size(105, 16);
             this.label52.TabIndex = 16;
             this.label52.Text = "AOI VPP Path :";
             // 
@@ -4418,7 +4376,7 @@ namespace SPIL
             this.tabPage12.Controls.Add(this.lBx_LogList);
             this.tabPage12.Location = new System.Drawing.Point(4, 26);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(877, 1120);
+            this.tabPage12.Size = new System.Drawing.Size(972, 1520);
             this.tabPage12.TabIndex = 4;
             this.tabPage12.Text = "Log";
             this.tabPage12.UseVisualStyleBackColor = true;
@@ -4431,7 +4389,7 @@ namespace SPIL
             this.lBx_LogList.ItemHeight = 27;
             this.lBx_LogList.Location = new System.Drawing.Point(12, 15);
             this.lBx_LogList.Name = "lBx_LogList";
-            this.lBx_LogList.Size = new System.Drawing.Size(837, 1084);
+            this.lBx_LogList.Size = new System.Drawing.Size(944, 1489);
             this.lBx_LogList.TabIndex = 160;
             // 
             // timer_Log_in_Out
@@ -4459,7 +4417,7 @@ namespace SPIL
             // timer_check_delete_file
             // 
             this.timer_check_delete_file.Enabled = true;
-            this.timer_check_delete_file.Interval = 600000;
+            this.timer_check_delete_file.Interval = 6000;
             this.timer_check_delete_file.Tick += new System.EventHandler(this.timer_chek_delete_file_Tick);
             // 
             // backgroundWorker_delete_old_file
@@ -4471,19 +4429,67 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
+            // FileName
+            // 
+            this.FileName.HeaderText = "FileName";
+            this.FileName.MinimumWidth = 6;
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            this.FileName.Width = 125;
+            // 
+            // SearchScore1
+            // 
+            this.SearchScore1.HeaderText = "SearchScore1";
+            this.SearchScore1.MinimumWidth = 6;
+            this.SearchScore1.Name = "SearchScore1";
+            this.SearchScore1.ReadOnly = true;
+            this.SearchScore1.Width = 165;
+            // 
+            // SearchScore2
+            // 
+            this.SearchScore2.HeaderText = "SearchScore2";
+            this.SearchScore2.MinimumWidth = 6;
+            this.SearchScore2.Name = "SearchScore2";
+            this.SearchScore2.ReadOnly = true;
+            this.SearchScore2.Width = 165;
+            // 
+            // Score1
+            // 
+            this.Score1.HeaderText = "Score1";
+            this.Score1.MinimumWidth = 6;
+            this.Score1.Name = "Score1";
+            this.Score1.ReadOnly = true;
+            this.Score1.Width = 150;
+            // 
+            // Score2
+            // 
+            this.Score2.HeaderText = "Score2";
+            this.Score2.MinimumWidth = 6;
+            this.Score2.Name = "Score2";
+            this.Score2.ReadOnly = true;
+            this.Score2.Width = 150;
+            // 
+            // Score3
+            // 
+            this.Score3.HeaderText = "Score3";
+            this.Score3.MinimumWidth = 6;
+            this.Score3.Name = "Score3";
+            this.Score3.ReadOnly = true;
+            this.Score3.Width = 150;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(894, 1161);
+            this.ClientSize = new System.Drawing.Size(1015, 1560);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20240326";
+            this.Text = "YuanLi OLS AOI-20240417";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -4904,11 +4910,9 @@ namespace SPIL
         private System.Windows.Forms.TextBox tbx_AOIPath;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.TextBox Log_tBx;
         private System.Windows.Forms.Button btn_ReadSharpImage;
         private System.Windows.Forms.TextBox tBx_SharpImageFolderPath;
         private System.Windows.Forms.Label label68;
-        private System.Windows.Forms.Label label96;
         private System.Windows.Forms.TabControl tabCtrl_AlgorithmList;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TabPage tabPage11;
@@ -4924,15 +4928,15 @@ namespace SPIL
         private System.Windows.Forms.Label label98;
         private System.Windows.Forms.CheckBox cB_Multi;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.CheckBox checkBox_SaveSharpnessImage;
+        private System.Windows.Forms.Button btn_Remove;
+        private System.Windows.Forms.Button button9;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SearchScore1;
         private System.Windows.Forms.DataGridViewTextBoxColumn SearchScore2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
-        private System.Windows.Forms.CheckBox checkBox_SaveSharpnessImage;
-        private System.Windows.Forms.Button btn_Remove;
-        private System.Windows.Forms.Button button9;
     }
 }
 

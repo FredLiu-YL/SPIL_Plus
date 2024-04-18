@@ -414,7 +414,7 @@ namespace SPIL
                         lock (logLock)
                         {
 
-                            UpdateTextboxAdd(mes, Log_tBx);
+                           // UpdateTextboxAdd(mes, Log_tBx);
 
                             //  lBx_LogList.Items.Add(mes);
                             UpdateLogListBox(mes, lBx_LogList);
@@ -4411,6 +4411,16 @@ namespace SPIL
             // 刪除文件夾及其內容
             Directory.Delete(path, true);
             CB_RecipeList.SelectedIndex = -1;
+
+        }
+
+        private void tabPage7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbx_SearchScore2_TextChanged(object sender, EventArgs e)
+        {
 
         }
 
