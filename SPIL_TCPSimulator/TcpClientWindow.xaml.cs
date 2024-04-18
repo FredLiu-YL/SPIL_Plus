@@ -28,6 +28,8 @@ namespace SPIL_TCPSimulator
     {
         private string ipAddress = "127.0.0.1";
         private int port=1200;
+        private string recipeName;
+        private string pos;
         //  private TcpClient tcpClient;
         ClientCommunication clientCom;
     
@@ -44,6 +46,9 @@ namespace SPIL_TCPSimulator
         public int Port { get => port; set => SetValue(ref port, value); }
         public string ReMessage { get => reMessage; set => SetValue(ref reMessage, value); }
         public string SendMessage { get => sendMessage; set => SetValue(ref sendMessage, value); }
+
+        public string RecipeName { get => recipeName; set => SetValue(ref recipeName, value); }
+        public string Pos { get => pos; set => SetValue(ref pos, value); }
         public ICommand ConnectCommand => new RelayCommand(() =>
         {
             try
@@ -92,6 +97,24 @@ namespace SPIL_TCPSimulator
             SendMessage = param;
             clientCom.Send(param);
             SendMessage="";
+            ReMessage = "";
+        });
+
+
+        public ICommand SetRecipeCommand => new RelayCommand( ()=>
+        {
+            SendMessage = $"SetRecipe,{RecipeName}>";
+          
+            clientCom.Send(SendMessage);
+            SendMessage = "";
+            ReMessage = "";
+        });
+        public ICommand SetPosCommand => new RelayCommand(() =>
+        {
+            SendMessage = $"InPos,{Pos}>";
+          
+            clientCom.Send(SendMessage);
+            SendMessage = "";
             ReMessage = "";
         });
         public ICommand OpeneCommand => new RelayCommand(() =>

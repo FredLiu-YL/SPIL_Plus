@@ -414,7 +414,7 @@ namespace SPIL
                         lock (logLock)
                         {
 
-                           // UpdateTextboxAdd(mes, Log_tBx);
+                            // UpdateTextboxAdd(mes, Log_tBx);
 
                             //  lBx_LogList.Items.Add(mes);
                             UpdateLogListBox(mes, lBx_LogList);
@@ -2923,7 +2923,8 @@ namespace SPIL
                     }
                 }
             }
-            if (checkBox_poir.Checked && !copy_poir_once)
+            //  if (checkBox_poir.Checked && !copy_poir_once)
+            if (checkBox_poir.Checked )
             {
                 logger.WriteLog("AOI_Save poir -1");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
@@ -2948,7 +2949,7 @@ namespace SPIL
                                 string save_full_file_name = save_Folder + save_degree_0_name + textBox_Point.Text + "_0.poir";
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
-                                File.Copy(FIle_List[i].FullName, save_full_file_name);
+                                File.Move(FIle_List[i].FullName, save_full_file_name);
                                 copy_poir_once = true;
                                 Thread.Sleep(1500);
                             }
@@ -2967,7 +2968,7 @@ namespace SPIL
 
                                 if (File.Exists(save_full_file_name))
                                     File.Delete(save_full_file_name);
-                                File.Copy(FIle_List[i].FullName, save_full_file_name);
+                                File.Move(FIle_List[i].FullName, save_full_file_name);
                                 copy_poir_once = true;
                                 Thread.Sleep(1500);
                             }
@@ -2980,7 +2981,7 @@ namespace SPIL
                     }
                 }
             }
-            else if (checkBox_poir.Checked && copy_poir_once)
+            /*else if (checkBox_poir.Checked && copy_poir_once)
             {
                 logger.WriteLog("AOI_Save poir -2");
                 FileInfo[] FIle_List = folder_info.GetFiles("*.poir");
@@ -2999,7 +3000,7 @@ namespace SPIL
                         logger.WriteErrorLog($"Delete poir File Error!  {error.Message}");
                     }
                 }
-            }
+            }*/
             logger.WriteLog("AOI_SaveData-結束");
         }
         private async Task AoiMeansure()
@@ -3079,7 +3080,7 @@ namespace SPIL
                             //量測錯誤時存檔
                             if (!value.isOK)
                             {
-                                SaveErrorImage(machineSetting.SharpnessImagesFolder, Save_File_Folder);
+                                SaveErrorImage(machineSetting.SharpnessImagesFolder, Save_File_Folder+textBox_Point.Text);
 
 
                             }
