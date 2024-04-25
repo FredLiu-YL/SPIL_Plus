@@ -52,6 +52,9 @@ namespace SPIL.Model
         /// 放置 距離清晰度算法的vpp的檔案名稱  
         /// </summary>
         public string SharpVppPath { get; set; }
+
+        public MachineTypes MachineType { get; set; } = MachineTypes.DoubleVision;
+
         public string SharpnessImagesFolder { get; set; } = "D:\\SharpnessImages";
         public AlgorithmDescribe[] AOIAlgorithms { get; set; }
         public AlgorithmDescribe[] AOIAlgorithms_2 { get; set; }
@@ -113,6 +116,14 @@ namespace SPIL.Model
                 throw new InvalidOperationException($"Save recipe failed.", ex);
             }
         }
+
+    }
+
+
+    public enum MachineTypes
+    {
+        DoubleVision,
+        SingleVision
 
     }
 
