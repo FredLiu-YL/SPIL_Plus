@@ -73,6 +73,8 @@ namespace SPIL
             this.textBox_Recipe_Name = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label96 = new System.Windows.Forms.Label();
+            this.pictureBox_OLSConnect_Status = new System.Windows.Forms.PictureBox();
             this.textBox_Wafer_Size = new System.Windows.Forms.TextBox();
             this.label46 = new System.Windows.Forms.Label();
             this.textBox_RFID = new System.Windows.Forms.TextBox();
@@ -395,11 +397,13 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox_OLSConnect_Status = new System.Windows.Forms.PictureBox();
-            this.label96 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
+            this.tBx_SharpImageIncludeNumber = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).BeginInit();
@@ -452,7 +456,6 @@ namespace SPIL
             this.groupBox4.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -1000,6 +1003,25 @@ namespace SPIL
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Excel Data";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(459, 29);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(39, 16);
+            this.label96.TabIndex = 189;
+            this.label96.Text = "OLS:";
+            // 
+            // pictureBox_OLSConnect_Status
+            // 
+            this.pictureBox_OLSConnect_Status.Image = global::SPIL.Properties.Resources.dark;
+            this.pictureBox_OLSConnect_Status.Location = new System.Drawing.Point(513, 17);
+            this.pictureBox_OLSConnect_Status.Name = "pictureBox_OLSConnect_Status";
+            this.pictureBox_OLSConnect_Status.Size = new System.Drawing.Size(35, 35);
+            this.pictureBox_OLSConnect_Status.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox_OLSConnect_Status.TabIndex = 188;
+            this.pictureBox_OLSConnect_Status.TabStop = false;
             // 
             // textBox_Wafer_Size
             // 
@@ -2534,6 +2556,7 @@ namespace SPIL
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.button10);
             this.tabPage7.Controls.Add(this.button8);
             this.tabPage7.Controls.Add(this.gpBox_AOI);
             this.tabPage7.Location = new System.Drawing.Point(4, 26);
@@ -2552,7 +2575,6 @@ namespace SPIL
             this.button8.TabIndex = 8;
             this.button8.Text = "ADD TEST";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // gpBox_AOI
@@ -4327,6 +4349,8 @@ namespace SPIL
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.tBx_SharpImageIncludeNumber);
+            this.tabPage9.Controls.Add(this.label99);
             this.tabPage9.Controls.Add(this.btn_ReadSharpImage);
             this.tabPage9.Controls.Add(this.tBx_SharpImageFolderPath);
             this.tabPage9.Controls.Add(this.label68);
@@ -4340,7 +4364,7 @@ namespace SPIL
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Size = new System.Drawing.Size(816, 996);
             this.tabPage9.TabIndex = 5;
-            this.tabPage9.Text = "AOI Path";
+            this.tabPage9.Text = "AOI Setting";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // btn_ReadSharpImage
@@ -4459,10 +4483,6 @@ namespace SPIL
             // 
             this.backgroundWorker_OLS_File.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_OLS_File_DoWork);
             // 
-            // timer_Initial
-            // 
-            this.timer_Initial.Tick += new System.EventHandler(this.timer_Initial_Tick);
-            // 
             // timer_Mouse_Point
             // 
             this.timer_Mouse_Point.Tick += new System.EventHandler(this.timer_Mouse_Point_Tick);
@@ -4482,24 +4502,32 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // pictureBox_OLSConnect_Status
+            // button10
             // 
-            this.pictureBox_OLSConnect_Status.Image = global::SPIL.Properties.Resources.dark;
-            this.pictureBox_OLSConnect_Status.Location = new System.Drawing.Point(513, 17);
-            this.pictureBox_OLSConnect_Status.Name = "pictureBox_OLSConnect_Status";
-            this.pictureBox_OLSConnect_Status.Size = new System.Drawing.Size(35, 35);
-            this.pictureBox_OLSConnect_Status.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox_OLSConnect_Status.TabIndex = 188;
-            this.pictureBox_OLSConnect_Status.TabStop = false;
+            this.button10.Location = new System.Drawing.Point(101, 10);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 150;
+            this.button10.Text = "button10";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
-            // label96
+            // tBx_SharpImageIncludeNumber
             // 
-            this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(459, 29);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(39, 16);
-            this.label96.TabIndex = 189;
-            this.label96.Text = "OLS:";
+            this.tBx_SharpImageIncludeNumber.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tBx_SharpImageIncludeNumber.Location = new System.Drawing.Point(241, 201);
+            this.tBx_SharpImageIncludeNumber.Name = "tBx_SharpImageIncludeNumber";
+            this.tBx_SharpImageIncludeNumber.Size = new System.Drawing.Size(84, 23);
+            this.tBx_SharpImageIncludeNumber.TabIndex = 26;
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(13, 201);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(223, 16);
+            this.label99.TabIndex = 25;
+            this.label99.Text = "Sharpness Image IncludeNumber: ";
             // 
             // Form1
             // 
@@ -4520,6 +4548,7 @@ namespace SPIL
             this.panel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay1)).EndInit();
@@ -4592,7 +4621,6 @@ namespace SPIL
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.tabPage12.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4964,6 +4992,9 @@ namespace SPIL
         private System.Windows.Forms.DataGridViewTextBoxColumn Score3;
         private System.Windows.Forms.Label label96;
         private System.Windows.Forms.PictureBox pictureBox_OLSConnect_Status;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.TextBox tBx_SharpImageIncludeNumber;
+        private System.Windows.Forms.Label label99;
     }
 }
 

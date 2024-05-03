@@ -56,7 +56,7 @@ namespace SPIL.Model
             WriteLog?.Invoke($"toolBlock2 SharpnessTool:{ tbtool5.RunParams.Mode }  { tbtool5.RunParams.GradientEnergyLowPassSmoothing }");
         }
 
-        public (int Image1Index, int Image2Index, int Image3Index) SharpnessAnalyzeAsync(IEnumerable<Bitmap> bitmaps, bool isMulit )
+        public (int Image1Index, int Image2Index, int Image3Index) SharpnessAnalyzeAsync(IEnumerable<Bitmap> bitmaps,int sharpImageIncludeNumber , bool isMulit )
         {
 
             //   MethodAssignTool();
@@ -92,8 +92,8 @@ namespace SPIL.Model
             //0821 新增  改先刪除NULL的資料
             //var deleteNull = results.Where(r => r != null).ToArray();
 
-            //排序後找出最大10張圖
-            var searchScore1s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore1).Take(20).ToList();
+            //排序後找出最大20張圖
+            var searchScore1s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore1).Take(sharpImageIncludeNumber).ToList();
             if (searchScore1s.Count < 20) throw new Exception("Sharpness Analyze Error");
             //  var image1 = searchScore1s.OrderByDescending(o => o.result.Score1).First();
 
@@ -112,8 +112,8 @@ namespace SPIL.Model
             // var image1 = searchImage2.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.Score1).First();
 
             //       var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2).Take(10);
-            //排序後找出最大10張圖
-            var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(20).ToList();
+            //排序後找出最大20張圖
+            var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(sharpImageIncludeNumber).ToList();
             var image3 = searchScore12s.OrderByDescending(o => o.result.Score3).First();
 
 

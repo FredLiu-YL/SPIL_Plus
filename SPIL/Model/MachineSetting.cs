@@ -56,9 +56,19 @@ namespace SPIL.Model
         public MachineTypes MachineType { get; set; } = MachineTypes.DoubleVision;
 
         public string SharpnessImagesFolder { get; set; } = "D:\\SharpnessImages";
+
+
         public AlgorithmDescribe[] AOIAlgorithms { get; set; }
         public AlgorithmDescribe[] AOIAlgorithms_2 { get; set; }
         public AlgorithmDescribe[] SharpAlgorithms { get; set; }
+
+
+        public int SharpImageIncludeNumber { get; set; } = 20;
+
+
+
+
+
         public static MachineSetting Load(string filename)  
         {
             string extension = Path.GetExtension(filename);

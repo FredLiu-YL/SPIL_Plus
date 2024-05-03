@@ -114,6 +114,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManualPeakImage.cs" />
     <Compile Include="Model\AlgorithmSetting.cs" />
     <Compile Include="Model\AOIFlow.cs" />
     <Compile Include="Model\Logger.cs" />

@@ -47,6 +47,7 @@ namespace SPIL
         private bool isButtonExcute;
         private int tatalPoints = 20;
         private string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine";
+        private string Setup_Data_address = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\SPILmachine\\Setup\\Setup_Data.xml";
         private MachineSetting machineSetting { get; set; } = new MachineSetting();
         private SPILRecipe sPILRecipe { get; set; }
         //距離算法 (圓形)
@@ -55,8 +56,10 @@ namespace SPIL
         private AOIFlow aoIFlow2 { get; set; }
         private SharpnessFlow sharpnessFlow;
         private readonly object logLock = new object();
-
+        private bool isHandMeansure = false;
         private string isReadRecipePath = "";
+        private ManualPeakImage manualpeakImage = new ManualPeakImage();
+
 
         public Form1()
         {
@@ -68,8 +71,10 @@ namespace SPIL
 
 
         #region Var
-        string Setup_Data_address = System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml";
-        Variable_Data variable_data;
+        // string Setup_Data_address = System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml";
+   
+        
+         Variable_Data variable_data;
         static int auto_log_out_Delay = 120;//sec
         int auto_log_out_times = 10;
         int now_delay = 0;
@@ -126,7 +131,7 @@ namespace SPIL
         bool connect_Motion_client = false;
         #endregion
 
-        #region Sub Function
+     
         private void combine_text_box()
         {
             textBoxes_0_1_20[1] = textBox_Mesument_1_0;
@@ -224,6 +229,10 @@ namespace SPIL
                 this.Enabled = false;
                 Task cogt1 = Task.CompletedTask;
 
+
+                if (!Directory.Exists(systemPath))
+                    Directory.CreateDirectory(systemPath);
+
                 // 演算法 模組
                 string configFile = $"{systemPath}\\machineConfig.cfg";
 
@@ -256,6 +265,8 @@ namespace SPIL
                     var sharpName = machineSetting.SharpVppPath.Substring(index, machineSetting.SharpVppPath.Length - index);
 
                     tBx_SharpImageFolderPath.Text = machineSetting.SharpnessImagesFolder;
+                    tBx_SharpImageIncludeNumber.Text = machineSetting.SharpImageIncludeNumber.ToString();
+
                     string aoiVppPath = $"{systemPath}\\{aoi1Name}";
                     string aoi2VppPath = $"{systemPath}\\{aoi1Name2}";
                     string sharpVppPath = $"{systemPath}\\{sharpName}";
@@ -378,7 +389,9 @@ namespace SPIL
                     }
                     file.Close();
 
-                    AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
+
+                    //  AOI_Measurement = new SPILBumpMeasure(vpp_file_test_path);
+                    AOI_Measurement = new SPILBumpMeasure();
                     ////綁定cogRecordDisplay 用來存toolblock結果圖
                     AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                     AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
@@ -390,11 +403,12 @@ namespace SPIL
                     AOI_Measurement.manual_save_AOI_result_idx_1 = (int)numericUpDown_manual_save_idx1.Value;
                     AOI_Measurement.manual_save_AOI_result_idx_2 = (int)numericUpDown_manual_save_idx2.Value;
                     AOI_Measurement.manual_save_AOI_result_idx_3 = (int)numericUpDown_manual_save_idx3.Value;
-                    
 
 
+                    string handpath = $"{systemPath}\\Hand_Measurement.vpp";
                     //載入手動量測
-                    Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    // Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    Hand_Measurement = new SPILBumpMeasure(handpath);
                     Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                     Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
                     Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
@@ -411,7 +425,7 @@ namespace SPIL
                 {
                     groupBox_test_item.Visible = false;
                 }
-                
+
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
                     pictureBox_OLSConnect_Status.Visible = false;
@@ -420,20 +434,20 @@ namespace SPIL
                 await cogt1;//等待 AOI 元件初始化完成
                 logger.WriteLog("Initialed");
 
-                
+
                 tabCtrl_AlgorithmList.Appearance = TabAppearance.FlatButtons;
                 tabCtrl_AlgorithmList.ItemSize = new Size(0, 1);
                 logger.LogRecord = (mes) =>
                 {
 
                     lock (logLock)
-                    {               
+                    {
                         UpdateLogListBox(mes, lBx_LogList);
 
                     }
 
                 };
-                
+
                 sharpnessFlow.WriteLog += (message) =>
                 {
                     logger.WriteLog(message);
@@ -1182,8 +1196,11 @@ namespace SPIL
                     AOI_Measurement.CogDisplay_result_1 = cogDisplay1;
                     AOI_Measurement.CogDisplay_result_2 = cogDisplay2;
                     AOI_Measurement.CogDisplay_result_3 = cogDisplay3;
+
+                    string handpath = $"{systemPath}\\Hand_Measurement.vpp";
                     //載入手動量測vpp
-                    Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    //  Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
+                    Hand_Measurement = new SPILBumpMeasure(handpath);
                     Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                     Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
                     Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
@@ -1217,8 +1234,11 @@ namespace SPIL
                 UpdateRadioButton(true, radioButton_Degree_0);
                 open_hide_1 = false;
                 open_hide_2 = true;
-                HB_off();
-                //  button_hb_off_Click(sender1, e1);
+                //  HB_off();
+                hostOLSCommunication.Send("close_1");
+                hostOLSCommunication.Send("open_2");
+
+
 
                 Send_Server("Mode,e>");
             }
@@ -1227,7 +1247,9 @@ namespace SPIL
                 UpdateRadioButton(true, radioButton_Degree_45);
                 open_hide_1 = true;
                 open_hide_2 = false;
-                button_hb_on_Click(sender1, e1);
+                hostOLSCommunication.Send("open_1");
+                hostOLSCommunication.Send("close_2");
+                // button_hb_on_Click(sender1, e1);
 
                 Send_Server("Mode,e>");
             }
@@ -1269,6 +1291,7 @@ namespace SPIL
         }
         private void Receive_InPos(int Now_Point)
         {
+            CancelManualAOI();
             // count = 1;
             UpdateTextbox(Convert.ToString(Now_Point), textBox_Point);
 
@@ -1290,6 +1313,7 @@ namespace SPIL
         {
             if (receive_data == "0000")
             {
+                CancelManualAOI();
                 Save_Excel();
 
                 Send_Server("Stop,e>");
@@ -1347,6 +1371,62 @@ namespace SPIL
                 throw ex;
             }
         }
+        private async Task Receive_ManualAOI()
+        {
+            try
+            {
+
+                Send_Server("Manual,s>");
+                isHandMeansure = true;
+
+                while (isHandMeansure)//循環執行  三張圖片後計算距離 ， 直到上位機切換下一個點
+                {
+                    logger.WriteLog("手動量測");
+                    string[] aoiImages = null;
+
+                    FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                    if (FIle_List.Length == 0)
+                    {
+                        FIle_List = folder_info.GetFiles("*.bmp");
+                    }
+
+                    var bmps = await manualpeakImage.WaitForImage(folder_info);
+                    aoiImages = bmps.ToArray();
+
+                    if (!isHandMeansure)
+                        break;
+
+                    //得到三張圖  做距離計算
+                    var value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], true);
+
+                    manualpeakImage.DelDirectoryImage(folder_info);
+
+                    logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                    logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                    logger.WriteLog("Img file 3 : " + aoiImages[2]);
+                    logger.WriteLog("AOI_Calculate");
+                    await Task.Delay(1000);
+
+                }
+
+                AoiOutputData(Save_File_Folder);
+                //20211224-S
+                //  Send_Server("Manual,e>");
+            }
+            catch (Exception ex)
+            {
+                Send_Server("Manual,x>");
+                throw ex;
+            }
+        }
+
+        private void CancelManualAOI()
+        {
+            isHandMeansure = false;
+            manualpeakImage.CancelWait();
+        }
+
+
         #endregion
         //
         private (double cuNi, double cu, bool isOK) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
@@ -1551,7 +1631,7 @@ namespace SPIL
         }
         #endregion
         //
-        #endregion
+        
 
         #region Icon Function
 
@@ -1798,9 +1878,10 @@ namespace SPIL
                     Convert.ToString(Now_.Hour) + "_" +
                     Convert.ToString(Now_.Minute) + "_" +
                     Convert.ToString(Now_.Second);
-                File.Move(
+                /*File.Move(
                     System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml",
                     System.Windows.Forms.Application.StartupPath + "\\Setup\\Backup\\Setup_Data" + Today_ + ".xml");
+                */
                 //
                 StreamWriter SW_ = new StreamWriter(Setup_Data_address);
                 SW_.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");//<?xml version="1.0" encoding="utf-8" ?>
@@ -1883,7 +1964,10 @@ namespace SPIL
                 Load_Setup_Data();
 
 
-             
+
+                machineSetting.SharpImageIncludeNumber = Convert.ToInt32(tBx_SharpImageIncludeNumber.Text);
+
+                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
                 MessageBox.Show("Save OK");
             }
             catch (Exception error)
@@ -2224,7 +2308,7 @@ namespace SPIL
 
                 logger.WriteLog("Create Motion Server Successful");
 
-                if(machineSetting.MachineType== MachineTypes.SingleVision)//單相機  0度與45度共用 ，目前使用在彰化矽品
+                if (machineSetting.MachineType == MachineTypes.SingleVision)//單相機  0度與45度共用 ，目前使用在彰化矽品
                 {
 
                     hostOLSCommunication = new HostCommunication(machineSetting.ServerIP, 1000);
@@ -2235,7 +2319,7 @@ namespace SPIL
                     string send_data_str = get_socket_send_data();//更新遮罩數值
                     hostOLSCommunication.Send(send_data_str);
                 }
-               
+
             }
             catch (Exception error)
             {
@@ -2748,8 +2832,9 @@ namespace SPIL
                 logger.WriteLog($"Image Count : {images.Count}  Time {stopwatch.ElapsedMilliseconds} ms");
 
                 stopwatch.Restart();
+                int sharpImageIncludeNumber = machineSetting.SharpImageIncludeNumber;
                 //計算要用哪三張圖計算AOI
-                (int Image1Index, int Image2Index, int Image3Index) imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, true));
+                (int Image1Index, int Image2Index, int Image3Index) imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, sharpImageIncludeNumber, true));
 
                 logger.WriteLog($"SharpnessAnalyzeTime :   {stopwatch.ElapsedMilliseconds} ms");
 
@@ -3162,47 +3247,7 @@ namespace SPIL
             }
         }
 
-        private void timer_Initial_Tick(object sender, EventArgs e)
-        {
-            //server判斷甚麼時候要做事,再傳給client端,client是按左鍵,座標是server預設好的
-            /*    if (now_button_click_delay >= button_click_times)
-                {
-                    now_button_click_delay = 0;
-                    if (OLS_Initial_Now_Step == 0 && checkBox_Step_1.Checked)
-                    {
-                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_1_X), Convert.ToInt32(variable_data.Initial_Step_1_Y));
-                        LeftClick();
-                        OLS_Initial_Now_Step = 2;
-                    }
-                    else if (OLS_Initial_Now_Step == 1 && checkBox_Step_2.Checked)
-                    {
-                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_2_X), Convert.ToInt32(variable_data.Initial_Step_2_Y));
-                        LeftClick();
-                        OLS_Initial_Now_Step = 2;
-                    }
-                    else if (OLS_Initial_Now_Step == 2 && checkBox_Step_3.Checked)
-                    {
-                        Cursor.Position = new Point(Convert.ToInt32(variable_data.Initial_Step_3_X), Convert.ToInt32(variable_data.Initial_Step_3_Y));
-                        LeftClick();
-                        OLS_Initial_Now_Step = 3;
-                    }
-                    else if (checkBox_Step_4.Checked)
-                    {
-                        button_click_times = variable_data.Initial_Step_4_Delay_Time * 1000 / timer_Initial.Interval;
-                        OLS_Initial_Now_Step = 4;
-                    }
-                    else if (OLS_Initial_Now_Step == 4 || (!checkBox_Step_1.Checked && !checkBox_Step_2.Checked && !checkBox_Step_3.Checked && !checkBox_Step_3.Checked))
-                    {
-                        timer_Initial.Enabled = false;
-                        OLS_Initial_Now_Step = 0;
-                        Send_Server("07,Init,e>");
-                    }
-                }
-                else
-                {
-                    now_button_click_delay++;
-                }*/
-        }
+
         private void button_Open_Hide_Click(object sender, EventArgs e)
         {
             try
@@ -3219,6 +3264,7 @@ namespace SPIL
                 logger.WriteErrorLog("Open Hide 1 Error! " + error.ToString());
             }
         }
+
         private void button_Close_Hide_Click(object sender, EventArgs e)
         {
             try
@@ -3238,7 +3284,7 @@ namespace SPIL
             try
             {
                 logger.WriteLog("Open Hide 2");
-              
+
                 //clientSocket_OLS.Send(StringToByteArray(send_data_str));
 
                 hostOLSCommunication.Send("open_2");
@@ -3415,8 +3461,8 @@ namespace SPIL
 
         private void button_update_value_Click(object sender, EventArgs e)
         {
-             string send_data_str = get_socket_send_data();
-           //   clientSocket_OLS.Send(StringToByteArray(send_data_str));
+            string send_data_str = get_socket_send_data();
+            //   clientSocket_OLS.Send(StringToByteArray(send_data_str));
             hostOLSCommunication.Send(send_data_str);
         }
 
@@ -3425,17 +3471,13 @@ namespace SPIL
 
 
 
-        private void button8_Click(object sender, EventArgs e)
+        private async void button8_Click(object sender, EventArgs e)
         {
 
-            //    var window =   new SPIL_TCPSimulator.MainWindow();
-            CB_RecipeList.SelectedIndex = 3;
-
-            // if (hostCommunication == null)
-            //     hostCommunication = new HostCommunication("127.0.0.1", 1234);
-            // else
-            //     hostCommunication.Open();
-
+            //  ManualPeakImage peakImage = new ManualPeakImage();
+            //  var bmps = await peakImage.WaitForImage(folder_info);
+            //   peakImage.DelDirectoryImage(folder_info);
+            await Receive_ManualAOI();
         }
 
         private void HostException(Exception exception)
@@ -4159,7 +4201,9 @@ namespace SPIL
                     var tSec1 = stopwatch.ElapsedMilliseconds;
                     logger.WriteLog($"Cog載入時間: {tSec1 }ms ");
                     stopwatch.Restart();
-                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, cB_Multi.Checked));
+
+                    int sharpImageIncludeNumber = machineSetting.SharpImageIncludeNumber;
+                    var imagesIndex = await Task.Run(() => sharpnessFlow.SharpnessAnalyzeAsync(images, sharpImageIncludeNumber, cB_Multi.Checked));
 
                     var tSec3 = stopwatch.ElapsedMilliseconds;
                     logger.WriteLog($"清晰度運算時間: {tSec3 }ms ");
@@ -4318,7 +4362,8 @@ namespace SPIL
                         Receive_RFID(re_data[1], re_data[2]);
                     else if (re_data[0].Contains("Done"))
                         await Receive_AOI();
-
+                    else if (re_data[0].Contains("Manual"))
+                        await Receive_ManualAOI();
 
                     else
                         logger.WriteLog($"No Match Data!  {receiveData}");
@@ -4481,9 +4526,14 @@ namespace SPIL
 
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Receive_InPos(2);
+        }
+
         private void HB_off()
         {
-            
+
             //clientSocket_OLS.Send(StringToByteArray(send_data_str));
             Thread.Sleep(100);
 

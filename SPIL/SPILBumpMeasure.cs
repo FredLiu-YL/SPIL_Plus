@@ -29,6 +29,11 @@ namespace SPIL
                 logger.WriteErrorLog(ex.ToString());
             }
         }
+        public SPILBumpMeasure()
+        {
+            logger.WriteLog(" new SPILBumpMeasure");
+            
+        }
         public SPILBumpMeasure(CogToolBlock cogToolBlock)
         {
             logger.WriteLog("Load AOI CogToolBlock");
@@ -106,25 +111,33 @@ namespace SPIL
         //    }
         //}
 
-        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal, string saveFolder,string inPoint, out double distance_CuNi, out double distance_Cu)
+        public bool Measurment(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3 , bool is_maunal, string saveFolder, string inPoint, out double distance_CuNi, out double distance_Cu)
         {
+            Bitmap img1 = null;
+            Bitmap img2 = null;
+            Bitmap img3 = null;
+            CogImage24PlanarColor cogImg1 = null;
+            CogImage24PlanarColor cogImg2 = null;
+            CogImage24PlanarColor cogImg3 = null;
+
+
             try
             {
                 logger.WriteLog("Measurement for two images!");
-                Bitmap img1 = new Bitmap(Input_Image_Address1);
-                Bitmap img2 = new Bitmap(Input_Image_Address2);
-                Bitmap img3 = new Bitmap(Input_Image_Address3);
+                img1 = new Bitmap(Input_Image_Address1);
+                img2 = new Bitmap(Input_Image_Address2);
+                img3 = new Bitmap(Input_Image_Address3);
 
-                var cogImg1 = new CogImage24PlanarColor(img1);
-                var cogImg2 = new CogImage24PlanarColor(img2);
-                var cogImg3 = new CogImage24PlanarColor(img3);
+                cogImg1 = new CogImage24PlanarColor(img1);
+                cogImg2 = new CogImage24PlanarColor(img2);
+                cogImg3 = new CogImage24PlanarColor(img3);
                 if (MeasureToolBlock == null) throw new Exception("Recipe not read");
                 MeasureToolBlock.GarbageCollectionEnabled = true;
                 if (is_maunal)
                 {
-                    MeasureToolBlock.Inputs["Input"].Value = cogImg1;
-                    MeasureToolBlock.Inputs["Input1"].Value = cogImg2;
-                    MeasureToolBlock.Inputs["Input2"].Value = cogImg3;
+                    MeasureToolBlock.Inputs[0].Value = cogImg1;
+                    MeasureToolBlock.Inputs[1].Value = cogImg2;
+                    MeasureToolBlock.Inputs[2].Value = cogImg3;
                 }
                 else
                 {
@@ -162,20 +175,44 @@ namespace SPIL
                 else
                 {
                     //存圖有問題  如果有需要就另外寫
-                 //   Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
-                  
+                    //   Save_Toolblock_result_img(Input_Image_Address1, Input_Image_Address2, Input_Image_Address3, is_maunal);
+
+                   
                     var cord = MeasureToolBlock.CreateLastRunRecord();
-                    cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
-                    var result_img1 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
-                    cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool2.OutputImage"];
-                    var result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
-                    cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
-                    var result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+
+                    Bitmap result_img1 = null, result_img2 = null, result_img3=null;
+                    if (is_maunal)
+                    {
+                        cogRecord_save_result_img.Record = cord.SubRecords[manual_save_AOI_result_idx_1 - 1];
+                         result_img1 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+                        cogRecord_save_result_img.Record = cord.SubRecords[manual_save_AOI_result_idx_2 - 1];
+                         result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+                        cogRecord_save_result_img.Record = cord.SubRecords[manual_save_AOI_result_idx_3 - 1];
+                         result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+
+                    }
+                    else
+                    {
+                        cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool1.OutputImage"];
+                         result_img1 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+                        cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool2.OutputImage"];
+                         result_img2 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+                        cogRecord_save_result_img.Record = cord.SubRecords["CogFixtureTool3.OutputImage"];
+                         result_img3 = (Bitmap)cogRecord_save_result_img.CreateContentBitmap(CogDisplayContentBitmapConstants.Image);
+
+
+                    }
+
+
+
+
+
+
 
                     result_img1.Save($"{saveFolder}\\Result{inPoint}--1_AOI.bmp");
                     result_img2.Save($"{saveFolder}\\Result{inPoint}--2_AOI.bmp");
                     result_img3.Save($"{saveFolder}\\Result{inPoint}--3_AOI.bmp");
-                    
+
 
                     CogDisplay_result_1.Image = new CogImage24PlanarColor(result_img1);
                     CogDisplay_result_1.Fit(true);
@@ -190,13 +227,7 @@ namespace SPIL
                     result_img2.Dispose();
                     result_img3.Dispose();
                 }
-                cogImg1.Dispose();
-                cogImg2.Dispose();
-                cogImg3.Dispose();
 
-                img1.Dispose();
-                img2.Dispose();
-                img3.Dispose();
 
                 if (vision_pro_run_result != CogToolResultConstants.Accept)
                     return false;
@@ -209,6 +240,18 @@ namespace SPIL
                 distance_Cu = -1;
                 return false;
             }
+            finally
+            {
+                cogImg1.Dispose();
+                cogImg2.Dispose();
+                cogImg3.Dispose();
+
+                img1.Dispose();
+                img2.Dispose();
+                img3.Dispose();
+
+            }
+
         }
 
         void Save_Toolblock_result_img(string Input_Image_Address1, string Input_Image_Address2, string Input_Image_Address3, bool is_maunal)
