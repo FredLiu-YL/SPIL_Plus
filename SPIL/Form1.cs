@@ -2323,7 +2323,7 @@ namespace SPIL
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.ToString());
+                MessageBox.Show($"伺服器連線失敗: {machineSetting.ServerIP},{machineSetting.ServerPort}"+ error.Message);
                 logger.WriteErrorLog("Create Motion Server Fail ! " + error.ToString());
             }
         }
