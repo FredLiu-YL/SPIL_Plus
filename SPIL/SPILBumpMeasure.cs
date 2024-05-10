@@ -162,6 +162,7 @@ namespace SPIL
                 if (vision_pro_run_result != CogToolResultConstants.Accept)
                 {
                     logger.WriteErrorLog("Run Result : " + Convert.ToString(MeasureToolBlock.RunStatus.Message));
+                    logger.WriteLog("Measurment  Result : "+ MeasureToolBlock.RunStatus.Message );
                     CogImage24PlanarColor error_img = new CogImage24PlanarColor(new Bitmap("X.png"));
                     CogDisplay_result_1.Image = new CogImage24PlanarColor(error_img);
                     CogDisplay_result_1.Fit(true);
@@ -236,6 +237,7 @@ namespace SPIL
             catch (Exception error)
             {
                 logger.WriteErrorLog("Measurement Error! " + error.ToString());
+                logger.WriteLog("Measurement Error! " + error.ToString());
                 distance_CuNi = -1;
                 distance_Cu = -1;
                 return false;

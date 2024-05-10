@@ -32,7 +32,7 @@ namespace SPIL
             isCancel = false;
             //  List<Bitmap> bmpList = new List<Bitmap>();
             List<string> bmpList = new List<string>();
-            FileInfo[] jpgFiles = new FileInfo[] { };
+    //        FileInfo[] jpgFiles = new FileInfo[] { };
             FileInfo[] bmpFiles = new FileInfo[] { };
 
             await Task.Run(async () =>
@@ -42,11 +42,11 @@ namespace SPIL
                  while (imagecount < 3 && !isCancel)
                  {
                      await Task.Delay(500);
-                     jpgFiles = folder_info.GetFiles("*.jpg");
-                     bmpFiles = folder_info.GetFiles("*.bmp");
-
-                     imagecount = jpgFiles.Length + bmpFiles.Length;
-
+     //                jpgFiles = folder_info.GetFiles("*.jpg");
+                     bmpFiles = folder_info.GetFiles("*COLOR2D*");
+               //      "COLOR2D"
+                  //   imagecount = jpgFiles.Length + bmpFiles.Length;
+                     imagecount =   bmpFiles.Length;
                  }
 
 
@@ -78,8 +78,8 @@ namespace SPIL
                 item.Dispose();
             }*/
 
-            foreach (var item in jpgFiles)
-                bmpList.Add(item.FullName);
+         //   foreach (var item in jpgFiles)
+         //       bmpList.Add(item.FullName);
         
             foreach (var item in bmpFiles)
                 bmpList.Add(item.FullName);

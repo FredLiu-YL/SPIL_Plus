@@ -72,9 +72,9 @@ namespace SPIL
 
         #region Var
         // string Setup_Data_address = System.Windows.Forms.Application.StartupPath + "\\Setup\\Setup_Data.xml";
-   
-        
-         Variable_Data variable_data;
+
+
+        Variable_Data variable_data;
         static int auto_log_out_Delay = 120;//sec
         int auto_log_out_times = 10;
         int now_delay = 0;
@@ -131,7 +131,7 @@ namespace SPIL
         bool connect_Motion_client = false;
         #endregion
 
-     
+
         private void combine_text_box()
         {
             textBoxes_0_1_20[1] = textBox_Mesument_1_0;
@@ -614,57 +614,72 @@ namespace SPIL
         }
         private void Cal_File_Address()
         {
-            DateTime Now_ = DateTime.Now;
-            string D_ = Now_.ToString("yyyyMMdd");
-            string T_ = Now_.ToString("hhmmss");
-            write_date = D_;
-            write_time = T_;
-            //
-            string file_add = "";
-            string folder_add = "";
-            file_add = variable_data.Save_File_Path_1 + "\\";
-            folder_add = file_add;
-            if (variable_data.Save_File_Path_2 != "")
+            try
             {
-                string second_ = variable_data.Save_File_Path_2.Replace("*R*", textBox_Recipe_Name.Text);
-                second_ = second_.Replace("*D*", D_);
-                second_ = second_.Replace("*T*", T_);
-                second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
-                second_ = second_.Replace("*RF*", textBox_RFID.Text);
-                second_ = second_.Replace("*S*", textBox_Slot.Text);
-                file_add = file_add + second_ + "\\";
-                folder_add = file_add;
-                Check_Folder_Exist(folder_add);
-            }
-            if (variable_data.Save_File_Path_3 != "")
-            {
-                string second_ = variable_data.Save_File_Path_3.Replace("*R*", textBox_Recipe_Name.Text);
-                second_ = second_.Replace("*D*", D_);
-                second_ = second_.Replace("*T*", T_);
-                second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
-                second_ = second_.Replace("*RF*", textBox_RFID.Text);
-                second_ = second_.Replace("*S*", textBox_Slot.Text);
-                file_add = file_add + second_ + "\\";
-                folder_add = file_add;
-                Check_Folder_Exist(folder_add);
-            }
-            if (variable_data.Save_File_Name != "")
-            {
-                string second_ = variable_data.Save_File_Name.Replace("*R*", textBox_Recipe_Name.Text);
-                second_ = second_.Replace("*D*", D_);
-                second_ = second_.Replace("*T*", T_);
-                second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
-                second_ = second_.Replace("*RF*", textBox_RFID.Text);
-                second_ = second_.Replace("*S*", textBox_Slot.Text);
-                //file_add = file_add + second_ + ".xml";
-                file_add = file_add + second_ + ".csv";
-            }
 
 
-            //   folder_add= SearchFolderCount(folder_add);
-            //
-            Save_File_Folder = folder_add;
-            Save_File_Address = file_add;
+                DateTime Now_ = DateTime.Now;
+                string D_ = Now_.ToString("yyyyMMdd");
+                string T_ = Now_.ToString("hhmmss");
+                if (textBox_LotID.Text == "")
+                    textBox_LotID.Text = "LotID";
+                write_date = D_;
+                write_time = T_;
+                //
+                string file_add = "";
+                string folder_add = "";
+                file_add = variable_data.Save_File_Path_1 + "\\";
+                folder_add = file_add;
+                if (variable_data.Save_File_Path_2 != "")
+                {
+                    string second_ = variable_data.Save_File_Path_2.Replace("*R*", textBox_Recipe_Name.Text);
+                    second_ = second_.Replace("*D*", D_);
+                    second_ = second_.Replace("*T*", T_);
+                    second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
+                    second_ = second_.Replace("*L*", textBox_LotID.Text);
+                    second_ = second_.Replace("*RF*", textBox_RFID.Text);
+                    second_ = second_.Replace("*S*", textBox_Slot.Text);
+                    file_add = file_add + second_ + "\\";
+                    folder_add = file_add;
+                    Check_Folder_Exist(folder_add);
+                }
+                if (variable_data.Save_File_Path_3 != "")
+                {
+                    string second_ = variable_data.Save_File_Path_3.Replace("*R*", textBox_Recipe_Name.Text);
+                    second_ = second_.Replace("*D*", D_);
+                    second_ = second_.Replace("*T*", T_);
+                    second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
+                    second_ = second_.Replace("*L*", textBox_LotID.Text);
+                    second_ = second_.Replace("*RF*", textBox_RFID.Text);
+                    second_ = second_.Replace("*S*", textBox_Slot.Text);
+                    file_add = file_add + second_ + "\\";
+                    folder_add = file_add;
+                    Check_Folder_Exist(folder_add);
+                }
+                if (variable_data.Save_File_Name != "")
+                {
+                    string second_ = variable_data.Save_File_Name.Replace("*R*", textBox_Recipe_Name.Text);
+                    second_ = second_.Replace("*D*", D_);
+                    second_ = second_.Replace("*T*", T_);
+                    second_ = second_.Replace("*W*", textBox_Wafer_ID.Text);
+                    second_ = second_.Replace("*L*", textBox_LotID.Text);
+                    second_ = second_.Replace("*RF*", textBox_RFID.Text);
+                    second_ = second_.Replace("*S*", textBox_Slot.Text);
+                    //file_add = file_add + second_ + ".xml";
+                    file_add = file_add + second_ + ".csv";
+                }
+
+
+                //   folder_add= SearchFolderCount(folder_add);
+                //
+                Save_File_Folder = folder_add;
+                Save_File_Address = file_add;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         private string SearchFolderCount(string folder_address)
         {
@@ -1199,8 +1214,8 @@ namespace SPIL
 
                     string handpath = $"{systemPath}\\Hand_Measurement.vpp";
                     //載入手動量測vpp
-                    //  Hand_Measurement = new SPILBumpMeasure("Setup//Vision//Hand_Measurement.vpp");
-                    Hand_Measurement = new SPILBumpMeasure(handpath);
+
+                    //    Hand_Measurement = new SPILBumpMeasure(handpath);
                     Hand_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
                     Hand_Measurement.CogDisplay_result_1 = cogDisplay1;
                     Hand_Measurement.CogDisplay_result_2 = cogDisplay2;
@@ -1288,6 +1303,8 @@ namespace SPIL
             UpdateGroupBox(false, gpBox_Sharpness);
             UpdateGroupBox(false, gpBox_AOI);
             isRemote = true;
+
+
         }
         private void Receive_InPos(int Now_Point)
         {
@@ -1348,7 +1365,7 @@ namespace SPIL
                 Send_Server("Done,s>");
 
                 //  Cal_File_Address(); //建資料夾
-
+                CancelManualAOI();
 
                 if (AOI_Measurement.MeasureToolBlock == null)
                 {
@@ -1370,6 +1387,20 @@ namespace SPIL
                 Send_Server("Done,x>");
                 throw ex;
             }
+            finally
+            {
+                if (machineSetting.MachineType == MachineTypes.SingleVision)//彰化廠需要自己刪除圖片
+                {
+                    string[] files = Directory.GetFiles(machineSetting.SharpnessImagesFolder);
+                    var images = files.Where(f => f.Contains("jpg") || f.Contains("bmp"));
+                    foreach (var item in images)
+                    {
+                        File.Delete(item);
+                    }
+
+                }
+
+            }
         }
         private async Task Receive_ManualAOI()
         {
@@ -1378,7 +1409,7 @@ namespace SPIL
 
                 Send_Server("Manual,s>");
                 isHandMeansure = true;
-
+                Send_Server("Manual,e>");
                 while (isHandMeansure)//循環執行  三張圖片後計算距離 ， 直到上位機切換下一個點
                 {
                     logger.WriteLog("手動量測");
@@ -1631,7 +1662,7 @@ namespace SPIL
         }
         #endregion
         //
-        
+
 
         #region Icon Function
 
@@ -2116,6 +2147,8 @@ namespace SPIL
             catch (Exception error)
             {
                 logger.WriteLog("Save Error!" + error.ToString());
+
+                MessageBox.Show(error.Message);
             }
         }
 
@@ -2323,7 +2356,7 @@ namespace SPIL
             }
             catch (Exception error)
             {
-                MessageBox.Show($"伺服器連線失敗: {machineSetting.ServerIP},{machineSetting.ServerPort}"+ error.Message);
+                MessageBox.Show($"伺服器連線失敗: {machineSetting.ServerIP},{machineSetting.ServerPort}" + error.Message);
                 logger.WriteErrorLog("Create Motion Server Fail ! " + error.ToString());
             }
         }
@@ -3206,27 +3239,7 @@ namespace SPIL
 
                         }
 
-                        //if (count > 3)//已經存超過兩張
-                        //{
-                        //    //執行AOI計算
-                        //    if (is_hand_measurement)
-                        //    {
-                        //        AOI_Calculate(Hand_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                        //        logger.Write_Logger("手動量測");
-                        //    }
-                        //    else
-                        //    {
-                        //        AOI_Calculate(AOI_Measurement, Save_AOI_file_name[0], Save_AOI_file_name[1], Save_AOI_file_name[2]);
-                        //        logger.Write_Logger("AOI自動量測");
-                        //    }
 
-                        //    count = 1;
-                        //    logger.Write_Logger("Img file 1 : " + Save_AOI_file_name[0]);
-                        //    logger.Write_Logger("Img file 2 : " + Save_AOI_file_name[1]);
-                        //    logger.Write_Logger("Img file 3 : " + Save_AOI_file_name[2]);
-                        //    logger.Write_Logger("AOI_Calculate");
-                        //    button_hb_on_Click(sender, e);
-                        //}
 
                     }
 
@@ -3474,8 +3487,8 @@ namespace SPIL
         private async void button8_Click(object sender, EventArgs e)
         {
 
-            //  ManualPeakImage peakImage = new ManualPeakImage();
-            //  var bmps = await peakImage.WaitForImage(folder_info);
+            //    ManualPeakImage peakImage = new ManualPeakImage();
+            //     var bmps = await peakImage.WaitForImage(folder_info);
             //   peakImage.DelDirectoryImage(folder_info);
             await Receive_ManualAOI();
         }
@@ -3778,7 +3791,7 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-
+                logger.WriteLog(ex.ToString());
                 MessageBox.Show(ex.Message);
             }
             finally
@@ -3848,25 +3861,35 @@ namespace SPIL
 
         private void btn_OpenSharpnessImage_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
 
-            dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
-            var result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {// 載入圖片
+                dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
+                var result = dlg.ShowDialog();
+                if (result == DialogResult.OK)
+                {// 載入圖片
 
-                var temp = new Bitmap(dlg.FileName);
+                    var temp = new Bitmap(dlg.FileName);
 
-                sharpnessImage = new Bitmap(temp);
-                pBox_SharpnessPic.Image = sharpnessImage;
-                pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
+                    sharpnessImage = new Bitmap(temp);
+                    pBox_SharpnessPic.Image = sharpnessImage;
+                    pBox_SharpnessPic.SizeMode = PictureBoxSizeMode.Zoom;
 
-                txB_SharpnessPicName.Text = dlg.FileName;
-                temp.Dispose();
-                //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
+                    txB_SharpnessPicName.Text = dlg.FileName;
+                    temp.Dispose();
+                    //     var cogGM = new CogGapCaliper { MethodName = MethodName.GapMeansure };
 
-                //     cogGM.EditParameter(image);
+                    //     cogGM.EditParameter(image);
+                }
+
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
         private void btn_SharpnessRun_Click(object sender, EventArgs e)
         {
@@ -3895,7 +3918,7 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-
+                logger.WriteLog(ex.ToString());
                 MessageBox.Show(ex.Message);
             }
 
@@ -4075,7 +4098,7 @@ namespace SPIL
             }
             catch (Exception ex)
             {
-
+                logger.WriteLog(ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
             finally
@@ -4529,6 +4552,7 @@ namespace SPIL
         private void button10_Click(object sender, EventArgs e)
         {
             Receive_InPos(2);
+
         }
 
         private void HB_off()
