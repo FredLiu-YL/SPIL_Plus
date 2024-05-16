@@ -88,6 +88,48 @@ namespace SPIL
             return bmpList;
 
         }
+
+        public async Task<string>  WaitForPoir(DirectoryInfo folder_info)
+        {
+
+            int imagecount = 0;
+            isCancel = false;
+            //  List<Bitmap> bmpList = new List<Bitmap>();
+           
+            FileInfo[] poirFiles = new FileInfo[] { };
+
+            await Task.Run(async () =>
+            {
+
+
+                while (imagecount < 1 && !isCancel)
+                {
+                    await Task.Delay(500);
+                    poirFiles = folder_info.GetFiles("*.CSV");
+                //    bmpFiles = folder_info.GetFiles("*COLOR2D*");
+                    //      "COLOR2D"
+                    //   imagecount = jpgFiles.Length + bmpFiles.Length;
+                    imagecount = poirFiles.Length;
+                }
+
+
+
+            });
+
+
+            if (isCancel)
+            {
+
+                return "";
+            }
+
+          
+  
+
+            return poirFiles[0].FullName;
+
+        }
+
         /// <summary>
         /// 清除資料夾內 圖片檔案
         /// </summary>

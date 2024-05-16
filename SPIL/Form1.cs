@@ -113,7 +113,7 @@ namespace SPIL
         bool copy_poir_once = false;
         //   int count = 1; //執行toolblock前存圖計數參數
         string[] Save_AOI_file_name = new string[3];
-        string img_file_last_name = "COLOR2D"; //AOI檢測時讀取檔名檢查
+
         bool is_hand_measurement = false; //手動模式
         bool is_test_mode = false;
         TextBox[] textBoxes_0_1_20 = new TextBox[21];
@@ -425,10 +425,11 @@ namespace SPIL
                 {
                     groupBox_test_item.Visible = false;
                 }
-
+                panel_Offset.Visible = false;
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
                     pictureBox_OLSConnect_Status.Visible = false;
+                    panel_Offset.Visible = true;//只有台中有
                 }
 
                 await cogt1;//等待 AOI 元件初始化完成
@@ -653,9 +654,17 @@ namespace SPIL
                     second_ = second_.Replace("*RF*", textBox_RFID.Text);
                     second_ = second_.Replace("*S*", textBox_Slot.Text);
                     file_add = file_add + second_ + "\\";
+
                     folder_add = file_add;
                     Check_Folder_Exist(folder_add);
                 }
+                if (machineSetting.MachineType == MachineTypes.DoubleVision)
+                {
+                    file_add = SearchFolderCount(file_add);
+                    folder_add = SearchFolderCount(folder_add);
+                    Check_Folder_Exist(folder_add);
+                }
+
                 if (variable_data.Save_File_Name != "")
                 {
                     string second_ = variable_data.Save_File_Name.Replace("*R*", textBox_Recipe_Name.Text);
@@ -670,7 +679,7 @@ namespace SPIL
                 }
 
 
-                //   folder_add= SearchFolderCount(folder_add);
+                //    folder_add= SearchFolderCount(folder_add);
                 //
                 Save_File_Folder = folder_add;
                 Save_File_Address = file_add;
@@ -1410,37 +1419,82 @@ namespace SPIL
                 Send_Server("Manual,s>");
                 isHandMeansure = true;
                 Send_Server("Manual,e>");
-                while (isHandMeansure)//循環執行  三張圖片後計算距離 ， 直到上位機切換下一個點
-                {
-                    logger.WriteLog("手動量測");
-                    string[] aoiImages = null;
 
-                    FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
-                    if (FIle_List.Length == 0)
+
+                if (radioButton_Degree_0.Checked) //0度
+                {
+                    while (isHandMeansure)//循環執行  三張圖片後計算距離 ， 直到上位機切換下一個點
                     {
-                        FIle_List = folder_info.GetFiles("*.bmp");
+                        await manualpeakImage.WaitForPoir(folder_info);
+                        if (!isHandMeansure)
+                            break;
+                        FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                        if (FIle_List.Length == 0)
+                        {
+                            FIle_List = folder_info.GetFiles("*.bmp");
+                        }
+                        List<string> file_list_part_name = new List<string>();
+
+                        //try
+                        //{
+                        for (int i = 0; i < FIle_List.Length; i++)
+                        {
+                            file_list_part_name.Add(FIle_List[i].FullName);
+
+                        }
+
+
+                        logger.WriteLog("AOI Degree_0 量測-開始");
+                        foreach (var imageName in file_list_part_name)
+                        {
+                            AoiDegree_0(imageName);
+                        }
+                        logger.WriteLog("AOI Degree_0 量測-結束");
+                        AoiOutputData(Save_File_Folder); //因為POIR刪除機制坐在裡面 只能放While內
                     }
 
-                    var bmps = await manualpeakImage.WaitForImage(folder_info);
-                    aoiImages = bmps.ToArray();
-
-                    if (!isHandMeansure)
-                        break;
-
-                    //得到三張圖  做距離計算
-                    var value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], true);
-
-                    manualpeakImage.DelDirectoryImage(folder_info);
-
-                    logger.WriteLog("Img file 1 : " + aoiImages[0]);
-                    logger.WriteLog("Img file 2 : " + aoiImages[1]);
-                    logger.WriteLog("Img file 3 : " + aoiImages[2]);
-                    logger.WriteLog("AOI_Calculate");
-                    await Task.Delay(1000);
 
                 }
+                else
+                {
+                    while (isHandMeansure)//循環執行  三張圖片後計算距離 ， 直到上位機切換下一個點
+                    {
+                        logger.WriteLog("手動量測");
+                        string[] aoiImages = null;
 
-                AoiOutputData(Save_File_Folder);
+                        var folder_info = new DirectoryInfo(machineSetting.SharpnessImagesFolder);
+
+                        FileInfo[] FIle_List = folder_info.GetFiles("*.jpg");
+                        if (FIle_List.Length == 0)
+                        {
+                            FIle_List = folder_info.GetFiles("*.bmp");
+                        }
+
+                        var bmps = await manualpeakImage.WaitForImage(folder_info);
+                        aoiImages = bmps.ToArray();
+
+                        if (!isHandMeansure)
+                            break;
+
+                        //得到三張圖  做距離計算
+                        var value = AOI_Calculate(Hand_Measurement, aoiImages[0], aoiImages[1], aoiImages[2], true);
+
+                        manualpeakImage.DelDirectoryImage(folder_info);
+
+                        logger.WriteLog("Img file 1 : " + aoiImages[0]);
+                        logger.WriteLog("Img file 2 : " + aoiImages[1]);
+                        logger.WriteLog("Img file 3 : " + aoiImages[2]);
+                        logger.WriteLog("AOI_Calculate");
+                        await Task.Delay(1000);
+
+                    }
+
+                    AoiOutputData(Save_File_Folder);//因為圖片刪除機制自己做 所以放While外 
+                }
+
+
+
+
                 //20211224-S
                 //  Send_Server("Manual,e>");
             }
@@ -1462,32 +1516,46 @@ namespace SPIL
         //
         private (double cuNi, double cu, bool isOK) AOI_Calculate(SPILBumpMeasure Measuremrnt, string file_address1, string file_address2, string file_address3, bool is_maunal)
         {
-            bool isOK = false;
-            string inPoint = textBox_Point.Text;
-            logger.WriteLog("AOI Measurment Point " + inPoint);
-            double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
-            Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, Save_File_Folder, inPoint, out distance_CuNi, out distance_Cu);
-            if (distance_CuNi != -1 && distance_Cu != -1)
+            try
             {
-                cuNi = distance_CuNi * variable_data.Degree_Ratio;
-                cu = distance_Cu * variable_data.Degree_Ratio;
-                logger.WriteLog("AOI Measurment Distance" + Convert.ToString(cuNi));
-                logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
-                UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
-                UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
-                isOK = true;
+
+
+                bool isOK = false;
+                string inPoint = textBox_Point.Text;
+                logger.WriteLog("AOI Measurment Point " + inPoint);
+                double distance_CuNi, distance_Cu, cuNi = 0, cu = 0;
+                Measuremrnt.Measurment(file_address1, file_address2, file_address3, is_maunal, Save_File_Folder, inPoint, out distance_CuNi, out distance_Cu);
+                if (distance_CuNi != -1 && distance_Cu != -1)
+                {
+                    var cuniOffset = Convert.ToDouble(textBox_Mesument_CuNioffset.Text); //固定扣OFFSET
+                    var cuOffset = Convert.ToDouble(textBox_Mesument_Cuoffset.Text);
+
+                    cuNi = (distance_CuNi * variable_data.Degree_Ratio) - cuniOffset;
+                    cu = (distance_Cu * variable_data.Degree_Ratio) - cuOffset;
+                    logger.WriteLog("AOI Measurment Distance" + Convert.ToString(cuNi));
+                    logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
+                    UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
+                    UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
+                    isOK = true;
+                }
+                else
+                {
+                    // string error_value_string = "量測錯誤";
+                    string error_value_string = "0";
+                    UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
+                    UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
+                    logger.WriteErrorLog("AOI Error!");
+                    isOK = false;
+
+                }
+
+                return (cuNi, cu, isOK);
             }
-            else
+            catch (Exception ex)
             {
-                string error_value_string = "量測錯誤";
-                UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
-                UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
-                logger.WriteErrorLog("AOI Error!");
-                isOK = false;
 
+                throw ex;
             }
-
-            return (cuNi, cu, isOK);
         }
         //
         private void Initial_OLS()
@@ -3617,40 +3685,59 @@ namespace SPIL
 
         private void LoadRecipe(string path)
         {
+            try
+            { //讀取 料號 實際Cognex參數存在這
+                sPILRecipe.Load(path);
 
-            //讀取 料號 實際Cognex參數存在這
-            sPILRecipe.Load(path);
 
+                //        UpdateTextbox(machineSetting.AOIVppPath, tbx_AOIPath);
+                //        UpdateTextbox(machineSetting.SharpVppPath, tbx_SharpPath);
+                //tBx_RecipeName.Text = new DirectoryInfo(path).Name;
+                //tbx_AOIPath.Text = machineSetting.AOIVppPath;
+                //tbx_SharpPath.Text = machineSetting.SharpVppPath;
+                aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
+                aoIFlow2.SetMethodParam(sPILRecipe.AOIParams2);
+                sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
+                sharpnessFlow.DuplicateTool();
+                logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
 
-            //        UpdateTextbox(machineSetting.AOIVppPath, tbx_AOIPath);
-            //        UpdateTextbox(machineSetting.SharpVppPath, tbx_SharpPath);
-            //tBx_RecipeName.Text = new DirectoryInfo(path).Name;
-            //tbx_AOIPath.Text = machineSetting.AOIVppPath;
-            //tbx_SharpPath.Text = machineSetting.SharpVppPath;
-            aoIFlow.SetMethodParam(sPILRecipe.AOIParams);
-            aoIFlow2.SetMethodParam(sPILRecipe.AOIParams2);
-            sharpnessFlow.SetMethodParam(sPILRecipe.ClarityParams);
-            sharpnessFlow.DuplicateTool();
-            logger.WriteLog("Read Recipe :" + new DirectoryInfo(path).Name);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
 
         }
         private void SaveErrorImage(string sourcePath, string savePath)
         {
-            logger.WriteLog("SaveErrorImage-開始");
-            Directory.CreateDirectory($"{savePath}\\SharpnessImages");
-            string[] files = Directory.GetFiles(sourcePath);
-            foreach (string file in files)
+            try
             {
 
-                string extension1 = Path.GetExtension(file).ToLower();
-                string name = Path.GetFileName(file);
-                // 檢查副檔名是否為影像檔（可根據需求調整）
-                if (extension1 == ".bmp" || extension1 == ".jpg" || extension1 == ".jpeg" || extension1 == ".png" || extension1 == ".gif")
-                    File.Copy(file, $"{savePath}\\SharpnessImages\\{name}");
+                logger.WriteLog("SaveErrorImage-開始");
+                Directory.CreateDirectory($"{savePath}\\SharpnessImages");
+                string[] files = Directory.GetFiles(sourcePath);
+                foreach (string file in files)
+                {
+
+                    string extension1 = Path.GetExtension(file).ToLower();
+                    string name = Path.GetFileName(file);
+                    // 檢查副檔名是否為影像檔（可根據需求調整）
+                    if (extension1 == ".bmp" || extension1 == ".jpg" || extension1 == ".jpeg" || extension1 == ".png" || extension1 == ".gif")
+                        File.Copy(file, $"{savePath}\\SharpnessImages\\{name}");
+
+
+                }
+                logger.WriteLog("SaveErrorImage-結束");
 
 
             }
-            logger.WriteLog("SaveErrorImage-結束");
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         private void SaveRecipe(SPILRecipe recipe, string path)
@@ -3660,23 +3747,32 @@ namespace SPIL
 
         private void btn_ReadAOIVPP_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            listBox_AOIAlgorithmList.Items.Clear();
-            listBox_AOI2AlgorithmList.Items.Clear();
-            dlg.Filter = "vpp |*.vpp";
-            dlg.FileName = machineSetting.AOIVppPath;
-            var result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {// 載入圖片
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
+                listBox_AOIAlgorithmList.Items.Clear();
+                listBox_AOI2AlgorithmList.Items.Clear();
+                dlg.Filter = "vpp |*.vpp";
+                dlg.FileName = machineSetting.AOIVppPath;
+                var result = dlg.ShowDialog();
+                if (result == DialogResult.OK)
+                {// 載入圖片
 
-                tbx_AOIPath.Text = dlg.FileName;
-                //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+                    tbx_AOIPath.Text = dlg.FileName;
+                    //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
 
 
-                machineSetting.AOIVppPath = tbx_AOIPath.Text;
+                    machineSetting.AOIVppPath = tbx_AOIPath.Text;
 
-                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+                    machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void btn_ReadSharpVPP_Click(object sender, EventArgs e)
@@ -3702,44 +3798,62 @@ namespace SPIL
 
         private void btn_ReadSharpImage_Click(object sender, EventArgs e)
         {
-            // 建立 FolderBrowserDialog 物件
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            try
+            {
+                // 建立 FolderBrowserDialog 物件
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 
-            // 設定對話方塊的標題
-            folderBrowserDialog.Description = "請選取資料夾";
-            folderBrowserDialog.SelectedPath = machineSetting.SharpnessImagesFolder;
-
-
-
-            // 顯示對話方塊並等待使用者選擇資料夾
-            DialogResult result = folderBrowserDialog.ShowDialog();
+                // 設定對話方塊的標題
+                folderBrowserDialog.Description = "請選取資料夾";
+                folderBrowserDialog.SelectedPath = machineSetting.SharpnessImagesFolder;
 
 
-            if (result == DialogResult.OK)
-            {// 載入圖片
 
-                tBx_SharpImageFolderPath.Text = folderBrowserDialog.SelectedPath;
-                //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+                // 顯示對話方塊並等待使用者選擇資料夾
+                DialogResult result = folderBrowserDialog.ShowDialog();
 
 
-                machineSetting.SharpnessImagesFolder = tBx_SharpImageFolderPath.Text;
-                machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+                if (result == DialogResult.OK)
+                {// 載入圖片
+
+                    tBx_SharpImageFolderPath.Text = folderBrowserDialog.SelectedPath;
+                    //  toolBlock = CogSerializer.LoadObjectFromFile(dlg.FileName) as CogToolBlock;
+
+
+                    machineSetting.SharpnessImagesFolder = tBx_SharpImageFolderPath.Text;
+                    machineSetting.Save($"{systemPath}\\machineConfig.cfg");
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void CB_RecipeList_Click(object sender, EventArgs e)
         {
-            string folderPath = $"{systemPath}\\Recipe"; // 資料夾路徑
-
-            // 取得資料夾內所有資料夾的路徑
-            string[] subDirectories = Directory.GetDirectories(folderPath);
-            CB_RecipeList.Items.Clear();
-            var dirNames = subDirectories.Select(d => new DirectoryInfo(d).Name);
-            foreach (var item in dirNames)
+            try
             {
-                CB_RecipeList.Items.Add(item);
-            }
 
+
+                string folderPath = $"{systemPath}\\Recipe"; // 資料夾路徑
+
+                // 取得資料夾內所有資料夾的路徑
+                string[] subDirectories = Directory.GetDirectories(folderPath);
+                CB_RecipeList.Items.Clear();
+                var dirNames = subDirectories.Select(d => new DirectoryInfo(d).Name);
+                foreach (var item in dirNames)
+                {
+                    CB_RecipeList.Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
@@ -3754,7 +3868,25 @@ namespace SPIL
                  Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
                  var cord = aoIFlow.Measurment(img1, img2, img3, out double distance_CuNi, out double distance_Cu);*/
 
+                if (textBox_Wafer_ID.Text == "")
+                {
+                    MessageBox.Show("WaferID no value");
+                    return;
+                }
+                if (textBox_RFID.Text == "")
+                {
+                    MessageBox.Show("RFID no value");
+                    return;
+                }
+                if (textBox_Slot.Text == "")
+                {
+                    MessageBox.Show("Slot no value");
+                    return;
+                }
 
+
+
+                Cal_File_Address();
 
                 cogRcdDisp_Distance1.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
                 cogRcdDisp_Distance2.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Touch;
@@ -3802,19 +3934,30 @@ namespace SPIL
 
         private void btn_AOIOpenImage1_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            try
+            {
 
-            dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
-            var result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {// 載入圖片
 
-                Bitmap temp1 = new Bitmap(dlg.FileName);
+                OpenFileDialog dlg = new OpenFileDialog();
 
-                aoiImage1 = new Bitmap(temp1);
-                txB_RecipePicName1.Text = dlg.FileName;
-                temp1.Dispose();
+                dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
+                var result = dlg.ShowDialog();
+                if (result == DialogResult.OK)
+                {// 載入圖片
 
+                    Bitmap temp1 = new Bitmap(dlg.FileName);
+
+                    aoiImage1 = new Bitmap(temp1);
+                    txB_RecipePicName1.Text = dlg.FileName;
+                    temp1.Dispose();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -3822,38 +3965,54 @@ namespace SPIL
 
         private void btn_AOIOpenImage2_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
 
-            dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
+                dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
 
-            var result = dlg.ShowDialog();
+                var result = dlg.ShowDialog();
 
-            if (result == DialogResult.OK)
-            {// 載入圖片
+                if (result == DialogResult.OK)
+                {// 載入圖片
 
-                var temp2 = new Bitmap(dlg.FileName);
-                aoiImage2 = new Bitmap(temp2);
-                txB_RecipePicName2.Text = dlg.FileName;
-                temp2.Dispose();
+                    var temp2 = new Bitmap(dlg.FileName);
+                    aoiImage2 = new Bitmap(temp2);
+                    txB_RecipePicName2.Text = dlg.FileName;
+                    temp2.Dispose();
 
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void btn_AOIOpenImage3_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
-            var result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
+            try
             {
-                // 載入圖片
-                var temp3 = new Bitmap(dlg.FileName);
-                aoiImage3 = new Bitmap(temp3);
+                OpenFileDialog dlg = new OpenFileDialog();
 
-                txB_RecipePicName3.Text = dlg.FileName;
-                temp3.Dispose();
+                dlg.Filter = "BMP files & JPG files |*.bmp;*.jpg|PNG files (*.png)|*.png";
+                var result = dlg.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    // 載入圖片
+                    var temp3 = new Bitmap(dlg.FileName);
+                    aoiImage3 = new Bitmap(temp3);
 
+                    txB_RecipePicName3.Text = dlg.FileName;
+                    temp3.Dispose();
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
@@ -4263,22 +4422,32 @@ namespace SPIL
 
         private void UpdateAOIRecord(ICogRecord cogRecord1, ICogRecord cogRecord2, ICogRecord cogRecord3)
         {
-            var id = Thread.CurrentThread.ManagedThreadId;
-            int index = dataGrid_Sharpness.Rows.Count;
-
-            if (dataGrid_Sharpness.InvokeRequired)
+            try
             {
-                // 如果不在 UI 執行緒，則使用 Control.Invoke 方法在 UI 執行緒上執行程式碼
-                dataGrid_Sharpness.Invoke(new Action<ICogRecord, ICogRecord, ICogRecord>(UpdateAOIRecord), new object[] { cogRecord1, cogRecord2, cogRecord3 });
+
+
+                var id = Thread.CurrentThread.ManagedThreadId;
+                int index = dataGrid_Sharpness.Rows.Count;
+
+                if (dataGrid_Sharpness.InvokeRequired)
+                {
+                    // 如果不在 UI 執行緒，則使用 Control.Invoke 方法在 UI 執行緒上執行程式碼
+                    dataGrid_Sharpness.Invoke(new Action<ICogRecord, ICogRecord, ICogRecord>(UpdateAOIRecord), new object[] { cogRecord1, cogRecord2, cogRecord3 });
+                }
+                else
+                {
+
+                    // 在此範例中，將資料新增至 DataGridView
+                    cogRcdDisp_Distance1.Record = cogRecord1;
+                    cogRcdDisp_Distance2.Record = cogRecord2;
+                    cogRcdDisp_Distance3.Record = cogRecord3;
+
+                }
             }
-            else
+            catch (Exception)
             {
 
-                // 在此範例中，將資料新增至 DataGridView
-                cogRcdDisp_Distance1.Record = cogRecord1;
-                cogRcdDisp_Distance2.Record = cogRecord2;
-                cogRcdDisp_Distance3.Record = cogRecord3;
-
+                throw;
             }
         }
         private void UpdateDataGridView(SharpnessResult sharpResult, ICogRecord cogRecord)
