@@ -3269,7 +3269,7 @@ namespace SPIL
                         FIle_List = folder_info.GetFiles("*.bmp");
                     }
                     List<string> file_list_part_name = new List<string>();
-
+                     
                     //try
                     //{
                     for (int i = 0; i < FIle_List.Length; i++)
@@ -3752,7 +3752,7 @@ namespace SPIL
             try
             {
 
-                logger.WriteLog("SaveErrorImage-開始");
+                logger.WriteLog($"SaveErrorImage-開始 : {savePath}\\SharpnessImages ");
                 Directory.CreateDirectory($"{savePath}\\SharpnessImages");
                 string[] files = Directory.GetFiles(sourcePath);
                 foreach (string file in files)
@@ -3907,20 +3907,23 @@ namespace SPIL
 
                 if (textBox_Wafer_ID.Text == "")
                 {
-                    MessageBox.Show("WaferID no value");
-                    return;
+                    textBox_Wafer_ID.Text = "WaferID";
+                   // MessageBox.Show("WaferID no value");
+                   // return;
                 }
                 if (textBox_RFID.Text == "")
                 {
-                    MessageBox.Show("RFID no value");
-                    return;
+                    textBox_RFID.Text = "RFID";
+                   // MessageBox.Show("RFID no value");
+                   //  return;
                 }
                 if (textBox_Slot.Text == "")
                 {
-                    MessageBox.Show("Slot no value");
-                    return;
+                    textBox_Slot.Text = "Slot";
+                   // MessageBox.Show("Slot no value");
+                   //  return;
                 }
-
+                CancelManualAOI();
 
 
                 Cal_File_Address();
@@ -4091,7 +4094,7 @@ namespace SPIL
         {
             try
             {
-
+                CancelManualAOI();
                 Bitmap img1 = new Bitmap(txB_SharpnessPicName.Text);
                 //  cogRecordDisplay2.Size = new System.Drawing.Size(img1.Width, img1.Height);
                 var sharpResult = sharpnessFlow.Measurement(img1);
