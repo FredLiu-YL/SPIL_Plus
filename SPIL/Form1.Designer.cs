@@ -73,6 +73,11 @@ namespace SPIL
             this.textBox_Recipe_Name = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel_Offset = new System.Windows.Forms.Panel();
+            this.textBox_Mesument_Cuoffset = new System.Windows.Forms.TextBox();
+            this.label101 = new System.Windows.Forms.Label();
+            this.textBox_Mesument_0offset = new System.Windows.Forms.TextBox();
+            this.textBox_Mesument_CuNioffset = new System.Windows.Forms.TextBox();
             this.textBox_Mesument_20_Cu = new System.Windows.Forms.TextBox();
             this.textBox_Mesument_19_Cu = new System.Windows.Forms.TextBox();
             this.textBox_LotID = new System.Windows.Forms.TextBox();
@@ -165,9 +170,9 @@ namespace SPIL
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.textBox_Mesument_1_45 = new System.Windows.Forms.TextBox();
-            this.button_Save_Excel = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.textBox_Mesument_1_0 = new System.Windows.Forms.TextBox();
+            this.button_Save_Excel = new System.Windows.Forms.Button();
             this.label96 = new System.Windows.Forms.Label();
             this.pictureBox_OLSConnect_Status = new System.Windows.Forms.PictureBox();
             this.label24 = new System.Windows.Forms.Label();
@@ -402,14 +407,10 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
-            this.textBox_Mesument_Cuoffset = new System.Windows.Forms.TextBox();
-            this.textBox_Mesument_CuNioffset = new System.Windows.Forms.TextBox();
-            this.textBox_Mesument_0offset = new System.Windows.Forms.TextBox();
-            this.label101 = new System.Windows.Forms.Label();
-            this.panel_Offset = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel_Offset.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay2)).BeginInit();
@@ -463,7 +464,6 @@ namespace SPIL
             this.groupBox4.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage12.SuspendLayout();
-            this.panel_Offset.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -519,7 +519,7 @@ namespace SPIL
             this.checkBox_SaveSharpnessImage.AutoSize = true;
             this.checkBox_SaveSharpnessImage.Location = new System.Drawing.Point(18, 136);
             this.checkBox_SaveSharpnessImage.Name = "checkBox_SaveSharpnessImage";
-            this.checkBox_SaveSharpnessImage.Size = new System.Drawing.Size(100, 20);
+            this.checkBox_SaveSharpnessImage.Size = new System.Drawing.Size(99, 20);
             this.checkBox_SaveSharpnessImage.TabIndex = 42;
             this.checkBox_SaveSharpnessImage.Text = "Save Image";
             this.checkBox_SaveSharpnessImage.UseVisualStyleBackColor = true;
@@ -530,7 +530,7 @@ namespace SPIL
             this.label97.AutoSize = true;
             this.label97.Location = new System.Drawing.Point(15, 184);
             this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(100, 16);
+            this.label97.Size = new System.Drawing.Size(99, 16);
             this.label97.TabIndex = 30;
             this.label97.Text = "Secs csv  Path:";
             // 
@@ -557,7 +557,7 @@ namespace SPIL
             this.label48.AutoSize = true;
             this.label48.Location = new System.Drawing.Point(525, 105);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(88, 16);
+            this.label48.Size = new System.Drawing.Size(87, 16);
             this.label48.TabIndex = 39;
             this.label48.Text = "*S* : Slot ID";
             // 
@@ -566,7 +566,7 @@ namespace SPIL
             this.label45.AutoSize = true;
             this.label45.Location = new System.Drawing.Point(414, 105);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(88, 16);
+            this.label45.Size = new System.Drawing.Size(87, 16);
             this.label45.TabIndex = 38;
             this.label45.Text = "*RF* : RFID";
             // 
@@ -575,7 +575,7 @@ namespace SPIL
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(467, 64);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(38, 16);
+            this.label62.Size = new System.Drawing.Size(37, 16);
             this.label62.TabIndex = 37;
             this.label62.Text = ".xlsx";
             // 
@@ -584,7 +584,7 @@ namespace SPIL
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(260, 64);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(12, 16);
+            this.label61.Size = new System.Drawing.Size(11, 16);
             this.label61.TabIndex = 36;
             this.label61.Text = "\\";
             // 
@@ -593,7 +593,7 @@ namespace SPIL
             this.label60.AutoSize = true;
             this.label60.Location = new System.Drawing.Point(84, 64);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(12, 16);
+            this.label60.Size = new System.Drawing.Size(11, 16);
             this.label60.TabIndex = 35;
             this.label60.Text = "\\";
             // 
@@ -602,7 +602,7 @@ namespace SPIL
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(335, 29);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(12, 16);
+            this.label13.Size = new System.Drawing.Size(11, 16);
             this.label13.TabIndex = 34;
             this.label13.Text = "\\";
             // 
@@ -611,7 +611,7 @@ namespace SPIL
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(291, 105);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(108, 16);
+            this.label12.Size = new System.Drawing.Size(107, 16);
             this.label12.TabIndex = 33;
             this.label12.Text = "*W* : Wafer ID";
             // 
@@ -620,7 +620,7 @@ namespace SPIL
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(102, 105);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(77, 16);
+            this.label11.Size = new System.Drawing.Size(76, 16);
             this.label11.TabIndex = 29;
             this.label11.Text = "*T* : Time";
             // 
@@ -629,7 +629,7 @@ namespace SPIL
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(196, 105);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(76, 16);
+            this.label10.Size = new System.Drawing.Size(75, 16);
             this.label10.TabIndex = 28;
             this.label10.Text = "*D* : Date";
             // 
@@ -638,7 +638,7 @@ namespace SPIL
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(7, 105);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 16);
+            this.label9.Size = new System.Drawing.Size(88, 16);
             this.label9.TabIndex = 27;
             this.label9.Text = "*R* : Recipe";
             // 
@@ -745,7 +745,7 @@ namespace SPIL
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(39, 71);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 16);
+            this.label4.Size = new System.Drawing.Size(76, 16);
             this.label4.TabIndex = 14;
             this.label4.Text = "OLS Name";
             // 
@@ -766,7 +766,7 @@ namespace SPIL
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(22, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 16);
+            this.label1.Size = new System.Drawing.Size(75, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "IP Address";
             // 
@@ -775,7 +775,7 @@ namespace SPIL
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(22, 59);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 16);
+            this.label2.Size = new System.Drawing.Size(32, 16);
             this.label2.TabIndex = 12;
             this.label2.Text = "Port";
             // 
@@ -796,7 +796,7 @@ namespace SPIL
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(162, 42);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(71, 16);
+            this.label19.Size = new System.Drawing.Size(70, 16);
             this.label19.TabIndex = 29;
             this.label19.Text = "um / pixel";
             // 
@@ -805,7 +805,7 @@ namespace SPIL
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(15, 42);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(65, 16);
+            this.label18.Size = new System.Drawing.Size(64, 16);
             this.label18.TabIndex = 27;
             this.label18.Text = "45˚ Ratio";
             // 
@@ -860,7 +860,7 @@ namespace SPIL
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 87);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 16);
+            this.label5.Size = new System.Drawing.Size(39, 16);
             this.label5.TabIndex = 12;
             this.label5.Text = "Point";
             // 
@@ -891,12 +891,13 @@ namespace SPIL
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 32);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(92, 16);
+            this.label6.Size = new System.Drawing.Size(91, 16);
             this.label6.TabIndex = 18;
             this.label6.Text = "Recipe Name";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.panel_Offset);
             this.groupBox2.Controls.Add(this.textBox_Mesument_20_Cu);
             this.groupBox2.Controls.Add(this.textBox_Mesument_19_Cu);
             this.groupBox2.Controls.Add(this.textBox_LotID);
@@ -996,10 +997,65 @@ namespace SPIL
             this.groupBox2.Controls.Add(this.textBox_Mesument_1_0);
             this.groupBox2.Location = new System.Drawing.Point(6, 63);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(423, 1001);
+            this.groupBox2.Size = new System.Drawing.Size(423, 1112);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Excel Data";
+            // 
+            // panel_Offset
+            // 
+            this.panel_Offset.Controls.Add(this.textBox_Mesument_Cuoffset);
+            this.panel_Offset.Controls.Add(this.label101);
+            this.panel_Offset.Controls.Add(this.textBox_Mesument_0offset);
+            this.panel_Offset.Controls.Add(this.textBox_Mesument_CuNioffset);
+            this.panel_Offset.Location = new System.Drawing.Point(0, 1013);
+            this.panel_Offset.Name = "panel_Offset";
+            this.panel_Offset.Size = new System.Drawing.Size(419, 81);
+            this.panel_Offset.TabIndex = 195;
+            // 
+            // textBox_Mesument_Cuoffset
+            // 
+            this.textBox_Mesument_Cuoffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox_Mesument_Cuoffset.Location = new System.Drawing.Point(301, 16);
+            this.textBox_Mesument_Cuoffset.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_Mesument_Cuoffset.MaxLength = 15;
+            this.textBox_Mesument_Cuoffset.Name = "textBox_Mesument_Cuoffset";
+            this.textBox_Mesument_Cuoffset.Size = new System.Drawing.Size(100, 30);
+            this.textBox_Mesument_Cuoffset.TabIndex = 194;
+            this.textBox_Mesument_Cuoffset.Text = "0";
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label101.Location = new System.Drawing.Point(3, 19);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(54, 19);
+            this.label101.TabIndex = 192;
+            this.label101.Text = "Offset";
+            // 
+            // textBox_Mesument_0offset
+            // 
+            this.textBox_Mesument_0offset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox_Mesument_0offset.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.textBox_Mesument_0offset.Location = new System.Drawing.Point(81, 16);
+            this.textBox_Mesument_0offset.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_Mesument_0offset.MaxLength = 15;
+            this.textBox_Mesument_0offset.Name = "textBox_Mesument_0offset";
+            this.textBox_Mesument_0offset.Size = new System.Drawing.Size(100, 30);
+            this.textBox_Mesument_0offset.TabIndex = 192;
+            this.textBox_Mesument_0offset.Text = "0";
+            // 
+            // textBox_Mesument_CuNioffset
+            // 
+            this.textBox_Mesument_CuNioffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox_Mesument_CuNioffset.Location = new System.Drawing.Point(189, 16);
+            this.textBox_Mesument_CuNioffset.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox_Mesument_CuNioffset.MaxLength = 15;
+            this.textBox_Mesument_CuNioffset.Name = "textBox_Mesument_CuNioffset";
+            this.textBox_Mesument_CuNioffset.Size = new System.Drawing.Size(100, 30);
+            this.textBox_Mesument_CuNioffset.TabIndex = 193;
+            this.textBox_Mesument_CuNioffset.Text = "0";
             // 
             // textBox_Mesument_20_Cu
             // 
@@ -1026,22 +1082,24 @@ namespace SPIL
             // textBox_LotID
             // 
             this.textBox_LotID.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_LotID.Location = new System.Drawing.Point(290, 154);
+            this.textBox_LotID.Location = new System.Drawing.Point(292, 162);
             this.textBox_LotID.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_LotID.MaxLength = 15;
             this.textBox_LotID.Name = "textBox_LotID";
             this.textBox_LotID.Size = new System.Drawing.Size(116, 27);
             this.textBox_LotID.TabIndex = 191;
             this.textBox_LotID.Text = "Lot ID";
+            this.textBox_LotID.Visible = false;
             // 
             // label100
             // 
             this.label100.AutoSize = true;
             this.label100.Location = new System.Drawing.Point(226, 165);
             this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(49, 16);
+            this.label100.Size = new System.Drawing.Size(48, 16);
             this.label100.TabIndex = 190;
             this.label100.Text = "Lot ID";
+            this.label100.Visible = false;
             // 
             // textBox_Mesument_18_Cu
             // 
@@ -1125,7 +1183,7 @@ namespace SPIL
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(7, 128);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(76, 16);
+            this.label46.Size = new System.Drawing.Size(75, 16);
             this.label46.TabIndex = 186;
             this.label46.Text = "Wafer Size";
             // 
@@ -1177,7 +1235,7 @@ namespace SPIL
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(6, 46);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(53, 16);
+            this.label14.Size = new System.Drawing.Size(52, 16);
             this.label14.TabIndex = 20;
             this.label14.Text = "Degree";
             // 
@@ -1186,7 +1244,7 @@ namespace SPIL
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(226, 128);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(42, 16);
+            this.label44.Size = new System.Drawing.Size(41, 16);
             this.label44.TabIndex = 184;
             this.label44.Text = "RFID";
             // 
@@ -1229,7 +1287,7 @@ namespace SPIL
             this.label76.AutoSize = true;
             this.label76.Location = new System.Drawing.Point(226, 46);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(66, 16);
+            this.label76.Size = new System.Drawing.Size(65, 16);
             this.label76.TabIndex = 120;
             this.label76.Text = "Wafer ID";
             // 
@@ -1249,7 +1307,7 @@ namespace SPIL
             this.label71.AutoSize = true;
             this.label71.Location = new System.Drawing.Point(226, 93);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(32, 16);
+            this.label71.Size = new System.Drawing.Size(31, 16);
             this.label71.TabIndex = 121;
             this.label71.Text = "Slot";
             // 
@@ -2026,16 +2084,6 @@ namespace SPIL
             this.textBox_Mesument_1_45.Text = "0";
             this.textBox_Mesument_1_45.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Mesument_45_KeyDown);
             // 
-            // button_Save_Excel
-            // 
-            this.button_Save_Excel.Location = new System.Drawing.Point(38, 1257);
-            this.button_Save_Excel.Name = "button_Save_Excel";
-            this.button_Save_Excel.Size = new System.Drawing.Size(369, 41);
-            this.button_Save_Excel.TabIndex = 22;
-            this.button_Save_Excel.Text = "Save";
-            this.button_Save_Excel.UseVisualStyleBackColor = true;
-            this.button_Save_Excel.Click += new System.EventHandler(this.button_Save_Excel_Click);
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -2059,12 +2107,22 @@ namespace SPIL
             this.textBox_Mesument_1_0.Text = "0";
             this.textBox_Mesument_1_0.TextChanged += new System.EventHandler(this.textBox_Mesument_1_0_TextChanged);
             // 
+            // button_Save_Excel
+            // 
+            this.button_Save_Excel.Location = new System.Drawing.Point(38, 1257);
+            this.button_Save_Excel.Name = "button_Save_Excel";
+            this.button_Save_Excel.Size = new System.Drawing.Size(369, 41);
+            this.button_Save_Excel.TabIndex = 22;
+            this.button_Save_Excel.Text = "Save";
+            this.button_Save_Excel.UseVisualStyleBackColor = true;
+            this.button_Save_Excel.Click += new System.EventHandler(this.button_Save_Excel_Click);
+            // 
             // label96
             // 
             this.label96.AutoSize = true;
             this.label96.Location = new System.Drawing.Point(427, 25);
             this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(40, 16);
+            this.label96.Size = new System.Drawing.Size(39, 16);
             this.label96.TabIndex = 189;
             this.label96.Text = "OLS:";
             // 
@@ -2083,7 +2141,7 @@ namespace SPIL
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(627, 1014);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(85, 16);
+            this.label24.Size = new System.Drawing.Size(84, 16);
             this.label24.TabIndex = 132;
             this.label24.Text = "AOI result 3";
             // 
@@ -2109,7 +2167,7 @@ namespace SPIL
             this.label95.AutoSize = true;
             this.label95.Location = new System.Drawing.Point(627, 517);
             this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(85, 16);
+            this.label95.Size = new System.Drawing.Size(84, 16);
             this.label95.TabIndex = 127;
             this.label95.Text = "AOI result 2";
             // 
@@ -2118,7 +2176,7 @@ namespace SPIL
             this.label94.AutoSize = true;
             this.label94.Location = new System.Drawing.Point(627, 25);
             this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(85, 16);
+            this.label94.Size = new System.Drawing.Size(84, 16);
             this.label94.TabIndex = 126;
             this.label94.Text = "AOI result 1";
             // 
@@ -2171,7 +2229,7 @@ namespace SPIL
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(277, 25);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 16);
+            this.label3.Size = new System.Drawing.Size(63, 16);
             this.label3.TabIndex = 54;
             this.label3.Text = "Connect:";
             // 
@@ -2190,7 +2248,6 @@ namespace SPIL
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.panel_Offset);
             this.tabPage1.Controls.Add(this.label96);
             this.tabPage1.Controls.Add(this.pictureBox_OLSConnect_Status);
             this.tabPage1.Controls.Add(this.groupBox2);
@@ -2387,7 +2444,7 @@ namespace SPIL
             this.label66.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label66.Location = new System.Drawing.Point(10, 340);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(114, 32);
+            this.label66.Size = new System.Drawing.Size(113, 32);
             this.label66.TabIndex = 157;
             this.label66.Text = "Score3 :";
             // 
@@ -2405,7 +2462,7 @@ namespace SPIL
             this.label65.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label65.Location = new System.Drawing.Point(10, 288);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(114, 32);
+            this.label65.Size = new System.Drawing.Size(113, 32);
             this.label65.TabIndex = 155;
             this.label65.Text = "Score2 :";
             // 
@@ -2423,7 +2480,7 @@ namespace SPIL
             this.label64.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label64.Location = new System.Drawing.Point(10, 236);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(114, 32);
+            this.label64.Size = new System.Drawing.Size(113, 32);
             this.label64.TabIndex = 153;
             this.label64.Text = "Score1 :";
             // 
@@ -2442,7 +2499,7 @@ namespace SPIL
             this.label63.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label63.Location = new System.Drawing.Point(6, 179);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(203, 32);
+            this.label63.Size = new System.Drawing.Size(202, 32);
             this.label63.TabIndex = 151;
             this.label63.Text = "Search Score2 :";
             // 
@@ -2485,7 +2542,7 @@ namespace SPIL
             this.label59.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label59.Location = new System.Drawing.Point(6, 127);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(203, 32);
+            this.label59.Size = new System.Drawing.Size(202, 32);
             this.label59.TabIndex = 142;
             this.label59.Text = "Search Score1 :";
             // 
@@ -2657,7 +2714,7 @@ namespace SPIL
             this.rdBtn_Octagon.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.rdBtn_Octagon.Location = new System.Drawing.Point(775, 283);
             this.rdBtn_Octagon.Name = "rdBtn_Octagon";
-            this.rdBtn_Octagon.Size = new System.Drawing.Size(134, 36);
+            this.rdBtn_Octagon.Size = new System.Drawing.Size(133, 36);
             this.rdBtn_Octagon.TabIndex = 156;
             this.rdBtn_Octagon.Text = "Octagon";
             this.rdBtn_Octagon.UseVisualStyleBackColor = true;
@@ -2670,7 +2727,7 @@ namespace SPIL
             this.rdBtn_circle.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.rdBtn_circle.Location = new System.Drawing.Point(775, 241);
             this.rdBtn_circle.Name = "rdBtn_circle";
-            this.rdBtn_circle.Size = new System.Drawing.Size(105, 36);
+            this.rdBtn_circle.Size = new System.Drawing.Size(104, 36);
             this.rdBtn_circle.TabIndex = 155;
             this.rdBtn_circle.TabStop = true;
             this.rdBtn_circle.Text = "Circle";
@@ -2816,7 +2873,7 @@ namespace SPIL
             this.label57.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label57.Location = new System.Drawing.Point(848, 141);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(50, 32);
+            this.label57.Size = new System.Drawing.Size(49, 32);
             this.label57.TabIndex = 140;
             this.label57.Text = "Cu";
             // 
@@ -2837,7 +2894,7 @@ namespace SPIL
             this.label58.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label58.Location = new System.Drawing.Point(670, 141);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(113, 32);
+            this.label58.Size = new System.Drawing.Size(112, 32);
             this.label58.TabIndex = 139;
             this.label58.Text = "Cu + Ni";
             // 
@@ -2896,7 +2953,7 @@ namespace SPIL
             this.label55.Font = new System.Drawing.Font("新細明體", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label55.Location = new System.Drawing.Point(499, 255);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(240, 32);
+            this.label55.Size = new System.Drawing.Size(239, 32);
             this.label55.TabIndex = 21;
             this.label55.Text = "AOI Method List :";
             // 
@@ -2942,7 +2999,7 @@ namespace SPIL
             this.label98.AutoSize = true;
             this.label98.Location = new System.Drawing.Point(283, 31);
             this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(76, 16);
+            this.label98.Size = new System.Drawing.Size(75, 16);
             this.label98.TabIndex = 30;
             this.label98.Text = "統編  /123";
             // 
@@ -2952,7 +3009,7 @@ namespace SPIL
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(10, 31);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(67, 16);
+            this.label20.Size = new System.Drawing.Size(66, 16);
             this.label20.TabIndex = 27;
             this.label20.Text = "Password";
             // 
@@ -3080,7 +3137,7 @@ namespace SPIL
             this.label81.AutoSize = true;
             this.label81.Location = new System.Drawing.Point(21, 123);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(34, 16);
+            this.label81.Size = new System.Drawing.Size(33, 16);
             this.label81.TabIndex = 26;
             this.label81.Text = "Info";
             // 
@@ -3098,7 +3155,7 @@ namespace SPIL
             this.label82.AutoSize = true;
             this.label82.Location = new System.Drawing.Point(21, 88);
             this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(39, 16);
+            this.label82.Size = new System.Drawing.Size(38, 16);
             this.label82.TabIndex = 24;
             this.label82.Text = "Send";
             // 
@@ -3107,7 +3164,7 @@ namespace SPIL
             this.label83.AutoSize = true;
             this.label83.Location = new System.Drawing.Point(21, 53);
             this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(33, 16);
+            this.label83.Size = new System.Drawing.Size(32, 16);
             this.label83.TabIndex = 21;
             this.label83.Text = "Port";
             // 
@@ -3144,7 +3201,7 @@ namespace SPIL
             this.label84.AutoSize = true;
             this.label84.Location = new System.Drawing.Point(22, 23);
             this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(76, 16);
+            this.label84.Size = new System.Drawing.Size(75, 16);
             this.label84.TabIndex = 19;
             this.label84.Text = "IP Address";
             // 
@@ -3268,7 +3325,7 @@ namespace SPIL
             this.radioButton7.Checked = true;
             this.radioButton7.Location = new System.Drawing.Point(18, 26);
             this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(51, 20);
+            this.radioButton7.Size = new System.Drawing.Size(50, 20);
             this.radioButton7.TabIndex = 3;
             this.radioButton7.TabStop = true;
             this.radioButton7.Text = "Top";
@@ -3279,7 +3336,7 @@ namespace SPIL
             this.radioButton8.AutoSize = true;
             this.radioButton8.Location = new System.Drawing.Point(18, 56);
             this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(53, 20);
+            this.radioButton8.Size = new System.Drawing.Size(52, 20);
             this.radioButton8.TabIndex = 4;
             this.radioButton8.TabStop = true;
             this.radioButton8.Text = "Side";
@@ -3364,7 +3421,7 @@ namespace SPIL
             this.radioButton6.AutoSize = true;
             this.radioButton6.Location = new System.Drawing.Point(18, 246);
             this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(45, 20);
+            this.radioButton6.Size = new System.Drawing.Size(44, 20);
             this.radioButton6.TabIndex = 5;
             this.radioButton6.TabStop = true;
             this.radioButton6.Text = "2Y";
@@ -3375,7 +3432,7 @@ namespace SPIL
             this.radioButton5.AutoSize = true;
             this.radioButton5.Location = new System.Drawing.Point(18, 207);
             this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(45, 20);
+            this.radioButton5.Size = new System.Drawing.Size(44, 20);
             this.radioButton5.TabIndex = 4;
             this.radioButton5.TabStop = true;
             this.radioButton5.Text = "1Y";
@@ -3386,7 +3443,7 @@ namespace SPIL
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(18, 159);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(47, 20);
+            this.radioButton4.Size = new System.Drawing.Size(46, 20);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "9M";
@@ -3397,7 +3454,7 @@ namespace SPIL
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(18, 115);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(47, 20);
+            this.radioButton3.Size = new System.Drawing.Size(46, 20);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
             this.radioButton3.Text = "6M";
@@ -3408,7 +3465,7 @@ namespace SPIL
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(18, 74);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 20);
+            this.radioButton2.Size = new System.Drawing.Size(46, 20);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "3M";
@@ -3419,7 +3476,7 @@ namespace SPIL
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(18, 36);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(47, 20);
+            this.radioButton1.Size = new System.Drawing.Size(46, 20);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "1M";
@@ -3527,7 +3584,7 @@ namespace SPIL
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(111, 30);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(19, 16);
+            this.label21.Size = new System.Drawing.Size(18, 16);
             this.label21.TabIndex = 34;
             this.label21.Text = "H";
             // 
@@ -3536,7 +3593,7 @@ namespace SPIL
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(111, 67);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(22, 16);
+            this.label22.Size = new System.Drawing.Size(21, 16);
             this.label22.TabIndex = 35;
             this.label22.Text = "W";
             // 
@@ -3563,7 +3620,7 @@ namespace SPIL
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(10, 30);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(19, 16);
+            this.label7.Size = new System.Drawing.Size(18, 16);
             this.label7.TabIndex = 30;
             this.label7.Text = "X";
             // 
@@ -3572,7 +3629,7 @@ namespace SPIL
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(10, 67);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(19, 16);
+            this.label8.Size = new System.Drawing.Size(18, 16);
             this.label8.TabIndex = 31;
             this.label8.Text = "Y";
             // 
@@ -3607,7 +3664,7 @@ namespace SPIL
             this.label49.AutoSize = true;
             this.label49.Location = new System.Drawing.Point(5, 27);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(37, 16);
+            this.label49.Size = new System.Drawing.Size(36, 16);
             this.label49.TabIndex = 0;
             this.label49.Text = "Idx1";
             // 
@@ -3630,7 +3687,7 @@ namespace SPIL
             this.label50.AutoSize = true;
             this.label50.Location = new System.Drawing.Point(5, 91);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(37, 16);
+            this.label50.Size = new System.Drawing.Size(36, 16);
             this.label50.TabIndex = 4;
             this.label50.Text = "Idx3";
             // 
@@ -3639,7 +3696,7 @@ namespace SPIL
             this.label51.AutoSize = true;
             this.label51.Location = new System.Drawing.Point(5, 59);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(37, 16);
+            this.label51.Size = new System.Drawing.Size(36, 16);
             this.label51.TabIndex = 2;
             this.label51.Text = "Idx2";
             // 
@@ -3670,7 +3727,7 @@ namespace SPIL
             this.label92.AutoSize = true;
             this.label92.Location = new System.Drawing.Point(5, 27);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(37, 16);
+            this.label92.Size = new System.Drawing.Size(36, 16);
             this.label92.TabIndex = 0;
             this.label92.Text = "Idx1";
             // 
@@ -3695,7 +3752,7 @@ namespace SPIL
             this.label47.AutoSize = true;
             this.label47.Location = new System.Drawing.Point(5, 91);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(37, 16);
+            this.label47.Size = new System.Drawing.Size(36, 16);
             this.label47.TabIndex = 4;
             this.label47.Text = "Idx3";
             // 
@@ -3704,7 +3761,7 @@ namespace SPIL
             this.label93.AutoSize = true;
             this.label93.Location = new System.Drawing.Point(5, 59);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(37, 16);
+            this.label93.Size = new System.Drawing.Size(36, 16);
             this.label93.TabIndex = 2;
             this.label93.Text = "Idx2";
             // 
@@ -3791,7 +3848,7 @@ namespace SPIL
             this.label87.AutoSize = true;
             this.label87.Location = new System.Drawing.Point(98, 26);
             this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(84, 16);
+            this.label87.Size = new System.Drawing.Size(83, 16);
             this.label87.TabIndex = 41;
             this.label87.Text = "Right Down";
             // 
@@ -3800,7 +3857,7 @@ namespace SPIL
             this.label88.AutoSize = true;
             this.label88.Location = new System.Drawing.Point(8, 50);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(19, 16);
+            this.label88.Size = new System.Drawing.Size(18, 16);
             this.label88.TabIndex = 35;
             this.label88.Text = "X";
             // 
@@ -3809,7 +3866,7 @@ namespace SPIL
             this.label89.AutoSize = true;
             this.label89.Location = new System.Drawing.Point(33, 26);
             this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(53, 16);
+            this.label89.Size = new System.Drawing.Size(52, 16);
             this.label89.TabIndex = 40;
             this.label89.Text = "Left up";
             // 
@@ -3818,7 +3875,7 @@ namespace SPIL
             this.label90.AutoSize = true;
             this.label90.Location = new System.Drawing.Point(8, 87);
             this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(19, 16);
+            this.label90.Size = new System.Drawing.Size(18, 16);
             this.label90.TabIndex = 36;
             this.label90.Text = "Y";
             // 
@@ -3857,7 +3914,7 @@ namespace SPIL
             this.label85.AutoSize = true;
             this.label85.Location = new System.Drawing.Point(446, 159);
             this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(13, 16);
+            this.label85.Size = new System.Drawing.Size(12, 16);
             this.label85.TabIndex = 52;
             this.label85.Text = "-";
             // 
@@ -3876,7 +3933,7 @@ namespace SPIL
             this.label86.AutoSize = true;
             this.label86.Location = new System.Drawing.Point(337, 159);
             this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(63, 16);
+            this.label86.Size = new System.Drawing.Size(62, 16);
             this.label86.TabIndex = 50;
             this.label86.Text = "0˚ height";
             // 
@@ -3895,7 +3952,7 @@ namespace SPIL
             this.label80.AutoSize = true;
             this.label80.Location = new System.Drawing.Point(13, 106);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(108, 16);
+            this.label80.Size = new System.Drawing.Size(107, 16);
             this.label80.TabIndex = 45;
             this.label80.Text = "Windows Name";
             // 
@@ -3917,7 +3974,7 @@ namespace SPIL
             this.checkBox_csv.AutoSize = true;
             this.checkBox_csv.Location = new System.Drawing.Point(237, 35);
             this.checkBox_csv.Name = "checkBox_csv";
-            this.checkBox_csv.Size = new System.Drawing.Size(52, 20);
+            this.checkBox_csv.Size = new System.Drawing.Size(51, 20);
             this.checkBox_csv.TabIndex = 3;
             this.checkBox_csv.Text = ".csv";
             this.checkBox_csv.UseVisualStyleBackColor = true;
@@ -3927,7 +3984,7 @@ namespace SPIL
             this.checkBox_xlsx.AutoSize = true;
             this.checkBox_xlsx.Location = new System.Drawing.Point(170, 35);
             this.checkBox_xlsx.Name = "checkBox_xlsx";
-            this.checkBox_xlsx.Size = new System.Drawing.Size(57, 20);
+            this.checkBox_xlsx.Size = new System.Drawing.Size(56, 20);
             this.checkBox_xlsx.TabIndex = 2;
             this.checkBox_xlsx.Text = ".xlsx";
             this.checkBox_xlsx.UseVisualStyleBackColor = true;
@@ -3937,7 +3994,7 @@ namespace SPIL
             this.checkBox_poir.AutoSize = true;
             this.checkBox_poir.Location = new System.Drawing.Point(96, 35);
             this.checkBox_poir.Name = "checkBox_poir";
-            this.checkBox_poir.Size = new System.Drawing.Size(56, 20);
+            this.checkBox_poir.Size = new System.Drawing.Size(55, 20);
             this.checkBox_poir.TabIndex = 1;
             this.checkBox_poir.Text = ".poir";
             this.checkBox_poir.UseVisualStyleBackColor = true;
@@ -3947,7 +4004,7 @@ namespace SPIL
             this.checkBox_bmp.AutoSize = true;
             this.checkBox_bmp.Location = new System.Drawing.Point(16, 35);
             this.checkBox_bmp.Name = "checkBox_bmp";
-            this.checkBox_bmp.Size = new System.Drawing.Size(59, 20);
+            this.checkBox_bmp.Size = new System.Drawing.Size(58, 20);
             this.checkBox_bmp.TabIndex = 0;
             this.checkBox_bmp.Text = ".bmp";
             this.checkBox_bmp.UseVisualStyleBackColor = true;
@@ -3988,7 +4045,7 @@ namespace SPIL
             this.label70.AutoSize = true;
             this.label70.Location = new System.Drawing.Point(8, 29);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(19, 16);
+            this.label70.Size = new System.Drawing.Size(18, 16);
             this.label70.TabIndex = 26;
             this.label70.Text = "X";
             // 
@@ -3997,7 +4054,7 @@ namespace SPIL
             this.label69.AutoSize = true;
             this.label69.Location = new System.Drawing.Point(8, 66);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(19, 16);
+            this.label69.Size = new System.Drawing.Size(18, 16);
             this.label69.TabIndex = 27;
             this.label69.Text = "Y";
             // 
@@ -4069,7 +4126,7 @@ namespace SPIL
             this.label78.AutoSize = true;
             this.label78.Location = new System.Drawing.Point(98, 26);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(84, 16);
+            this.label78.Size = new System.Drawing.Size(83, 16);
             this.label78.TabIndex = 41;
             this.label78.Text = "Right Down";
             // 
@@ -4078,7 +4135,7 @@ namespace SPIL
             this.label75.AutoSize = true;
             this.label75.Location = new System.Drawing.Point(8, 50);
             this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(19, 16);
+            this.label75.Size = new System.Drawing.Size(18, 16);
             this.label75.TabIndex = 35;
             this.label75.Text = "X";
             // 
@@ -4087,7 +4144,7 @@ namespace SPIL
             this.label77.AutoSize = true;
             this.label77.Location = new System.Drawing.Point(33, 26);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(53, 16);
+            this.label77.Size = new System.Drawing.Size(52, 16);
             this.label77.TabIndex = 40;
             this.label77.Text = "Left up";
             // 
@@ -4096,7 +4153,7 @@ namespace SPIL
             this.label74.AutoSize = true;
             this.label74.Location = new System.Drawing.Point(8, 87);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(19, 16);
+            this.label74.Size = new System.Drawing.Size(18, 16);
             this.label74.TabIndex = 36;
             this.label74.Text = "Y";
             // 
@@ -4160,7 +4217,7 @@ namespace SPIL
             this.label91.AutoSize = true;
             this.label91.Location = new System.Drawing.Point(184, 231);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(26, 16);
+            this.label91.Size = new System.Drawing.Size(25, 16);
             this.label91.TabIndex = 54;
             this.label91.Text = "ms";
             // 
@@ -4169,7 +4226,7 @@ namespace SPIL
             this.checkBox_Step_6.AutoSize = true;
             this.checkBox_Step_6.Location = new System.Drawing.Point(15, 230);
             this.checkBox_Step_6.Name = "checkBox_Step_6";
-            this.checkBox_Step_6.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_6.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_6.TabIndex = 53;
             this.checkBox_Step_6.Text = "Step 6";
             this.checkBox_Step_6.UseVisualStyleBackColor = true;
@@ -4215,7 +4272,7 @@ namespace SPIL
             this.checkBox_Step_5.AutoSize = true;
             this.checkBox_Step_5.Location = new System.Drawing.Point(15, 194);
             this.checkBox_Step_5.Name = "checkBox_Step_5";
-            this.checkBox_Step_5.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_5.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_5.TabIndex = 48;
             this.checkBox_Step_5.Text = "Step 5";
             this.checkBox_Step_5.UseVisualStyleBackColor = true;
@@ -4252,7 +4309,7 @@ namespace SPIL
             this.label79.AutoSize = true;
             this.label79.Location = new System.Drawing.Point(184, 158);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(26, 16);
+            this.label79.Size = new System.Drawing.Size(25, 16);
             this.label79.TabIndex = 44;
             this.label79.Text = "ms";
             // 
@@ -4261,7 +4318,7 @@ namespace SPIL
             this.checkBox_Step_4.AutoSize = true;
             this.checkBox_Step_4.Location = new System.Drawing.Point(15, 157);
             this.checkBox_Step_4.Name = "checkBox_Step_4";
-            this.checkBox_Step_4.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_4.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_4.TabIndex = 43;
             this.checkBox_Step_4.Text = "Step 4";
             this.checkBox_Step_4.UseVisualStyleBackColor = true;
@@ -4282,7 +4339,7 @@ namespace SPIL
             this.checkBox_Step_3.AutoSize = true;
             this.checkBox_Step_3.Location = new System.Drawing.Point(15, 120);
             this.checkBox_Step_3.Name = "checkBox_Step_3";
-            this.checkBox_Step_3.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_3.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_3.TabIndex = 41;
             this.checkBox_Step_3.Text = "Step 3";
             this.checkBox_Step_3.UseVisualStyleBackColor = true;
@@ -4292,7 +4349,7 @@ namespace SPIL
             this.checkBox_Step_2.AutoSize = true;
             this.checkBox_Step_2.Location = new System.Drawing.Point(15, 83);
             this.checkBox_Step_2.Name = "checkBox_Step_2";
-            this.checkBox_Step_2.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_2.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_2.TabIndex = 40;
             this.checkBox_Step_2.Text = "Step 2";
             this.checkBox_Step_2.UseVisualStyleBackColor = true;
@@ -4302,7 +4359,7 @@ namespace SPIL
             this.checkBox_Step_1.AutoSize = true;
             this.checkBox_Step_1.Location = new System.Drawing.Point(15, 46);
             this.checkBox_Step_1.Name = "checkBox_Step_1";
-            this.checkBox_Step_1.Size = new System.Drawing.Size(66, 20);
+            this.checkBox_Step_1.Size = new System.Drawing.Size(65, 20);
             this.checkBox_Step_1.TabIndex = 39;
             this.checkBox_Step_1.Text = "Step 1";
             this.checkBox_Step_1.UseVisualStyleBackColor = true;
@@ -4367,7 +4424,7 @@ namespace SPIL
             this.label73.AutoSize = true;
             this.label73.Location = new System.Drawing.Point(107, 23);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(19, 16);
+            this.label73.Size = new System.Drawing.Size(18, 16);
             this.label73.TabIndex = 31;
             this.label73.Text = "X";
             // 
@@ -4387,7 +4444,7 @@ namespace SPIL
             this.label72.AutoSize = true;
             this.label72.Location = new System.Drawing.Point(172, 23);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(19, 16);
+            this.label72.Size = new System.Drawing.Size(18, 16);
             this.label72.TabIndex = 32;
             this.label72.Text = "Y";
             // 
@@ -4424,7 +4481,7 @@ namespace SPIL
             this.label99.AutoSize = true;
             this.label99.Location = new System.Drawing.Point(13, 201);
             this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(224, 16);
+            this.label99.Size = new System.Drawing.Size(223, 16);
             this.label99.TabIndex = 25;
             this.label99.Text = "Sharpness Image IncludeNumber: ";
             // 
@@ -4451,7 +4508,7 @@ namespace SPIL
             this.label68.AutoSize = true;
             this.label68.Location = new System.Drawing.Point(13, 144);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(189, 16);
+            this.label68.Size = new System.Drawing.Size(188, 16);
             this.label68.TabIndex = 22;
             this.label68.Text = "Sharpness ImageFolder Path:";
             // 
@@ -4496,7 +4553,7 @@ namespace SPIL
             this.label53.AutoSize = true;
             this.label53.Location = new System.Drawing.Point(13, 88);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(137, 16);
+            this.label53.Size = new System.Drawing.Size(136, 16);
             this.label53.TabIndex = 17;
             this.label53.Text = "Sharpness VPP Path:";
             // 
@@ -4505,7 +4562,7 @@ namespace SPIL
             this.label52.AutoSize = true;
             this.label52.Location = new System.Drawing.Point(13, 54);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(105, 16);
+            this.label52.Size = new System.Drawing.Size(104, 16);
             this.label52.TabIndex = 16;
             this.label52.Text = "AOI VPP Path :";
             // 
@@ -4563,80 +4620,27 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
-            // textBox_Mesument_Cuoffset
-            // 
-            this.textBox_Mesument_Cuoffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox_Mesument_Cuoffset.Location = new System.Drawing.Point(301, 16);
-            this.textBox_Mesument_Cuoffset.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_Mesument_Cuoffset.MaxLength = 15;
-            this.textBox_Mesument_Cuoffset.Name = "textBox_Mesument_Cuoffset";
-            this.textBox_Mesument_Cuoffset.Size = new System.Drawing.Size(100, 30);
-            this.textBox_Mesument_Cuoffset.TabIndex = 194;
-            this.textBox_Mesument_Cuoffset.Text = "0";
-            // 
-            // textBox_Mesument_CuNioffset
-            // 
-            this.textBox_Mesument_CuNioffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox_Mesument_CuNioffset.Location = new System.Drawing.Point(189, 16);
-            this.textBox_Mesument_CuNioffset.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_Mesument_CuNioffset.MaxLength = 15;
-            this.textBox_Mesument_CuNioffset.Name = "textBox_Mesument_CuNioffset";
-            this.textBox_Mesument_CuNioffset.Size = new System.Drawing.Size(100, 30);
-            this.textBox_Mesument_CuNioffset.TabIndex = 193;
-            this.textBox_Mesument_CuNioffset.Text = "0";
-            // 
-            // textBox_Mesument_0offset
-            // 
-            this.textBox_Mesument_0offset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox_Mesument_0offset.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_Mesument_0offset.Location = new System.Drawing.Point(81, 16);
-            this.textBox_Mesument_0offset.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox_Mesument_0offset.MaxLength = 15;
-            this.textBox_Mesument_0offset.Name = "textBox_Mesument_0offset";
-            this.textBox_Mesument_0offset.Size = new System.Drawing.Size(100, 30);
-            this.textBox_Mesument_0offset.TabIndex = 192;
-            this.textBox_Mesument_0offset.Text = "0";
-            // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label101.Location = new System.Drawing.Point(3, 19);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(54, 19);
-            this.label101.TabIndex = 192;
-            this.label101.Text = "Offset";
-            // 
-            // panel_Offset
-            // 
-            this.panel_Offset.Controls.Add(this.textBox_Mesument_Cuoffset);
-            this.panel_Offset.Controls.Add(this.label101);
-            this.panel_Offset.Controls.Add(this.textBox_Mesument_0offset);
-            this.panel_Offset.Controls.Add(this.textBox_Mesument_CuNioffset);
-            this.panel_Offset.Location = new System.Drawing.Point(6, 1085);
-            this.panel_Offset.Name = "panel_Offset";
-            this.panel_Offset.Size = new System.Drawing.Size(419, 81);
-            this.panel_Offset.TabIndex = 195;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1015, 1561);
+            this.ClientSize = new System.Drawing.Size(1015, 1061);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20240516";
+            this.Text = "YuanLi OLS AOI-20240517";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panel_Offset.ResumeLayout(false);
+            this.panel_Offset.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_OLSConnect_Status)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cogDisplay2)).EndInit();
@@ -4711,8 +4715,6 @@ namespace SPIL
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.tabPage12.ResumeLayout(false);
-            this.panel_Offset.ResumeLayout(false);
-            this.panel_Offset.PerformLayout();
             this.ResumeLayout(false);
 
         }

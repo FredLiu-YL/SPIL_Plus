@@ -138,7 +138,7 @@ namespace SPIL.Model
             catch (Exception)
             {
 
-                throw;
+                throw new Exception("篩選後圖像張數不足");
             }
         }
 

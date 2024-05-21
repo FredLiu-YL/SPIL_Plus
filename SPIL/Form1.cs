@@ -59,6 +59,8 @@ namespace SPIL
         private bool isHandMeansure = false;
         private string isReadRecipePath = "";
         private ManualPeakImage manualpeakImage = new ManualPeakImage();
+        private bool isCountAdd = false; //判斷是不是同一次 START 算一次
+
 
 
         public Form1()
@@ -428,8 +430,8 @@ namespace SPIL
                 panel_Offset.Visible = false;
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
-                    pictureBox_OLSConnect_Status.Visible = false;
-                    panel_Offset.Visible = true;//只有台中有
+                   pictureBox_OLSConnect_Status.Visible = false;
+                //    panel_Offset.Visible = true;//只有台中有
                 }
 
                 await cogt1;//等待 AOI 元件初始化完成
@@ -660,9 +662,16 @@ namespace SPIL
                 }
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)
                 {
-                    file_add = SearchFolderCount(file_add);
-                    folder_add = SearchFolderCount(folder_add);
+
+
+                    file_add = SearchFolderCount(file_add, isCountAdd);
+                    folder_add = SearchFolderCount(folder_add, isCountAdd);
                     Check_Folder_Exist(folder_add);
+                    if (isCountAdd)
+                    {
+                        isCountAdd = false; //第一次進來是TRUE 後面改FALSE
+                    }
+
                 }
 
                 if (variable_data.Save_File_Name != "")
@@ -690,16 +699,18 @@ namespace SPIL
                 throw ex;
             }
         }
-        private string SearchFolderCount(string folder_address)
+        private string SearchFolderCount(string folder_address, bool isCountAdd)
         {
             DirectoryInfo directory = new DirectoryInfo(folder_address);
 
             if (!directory.Exists) throw new Exception();
 
             int folderCount = directory.GetDirectories().Count();
-
-
-            string path = $"{folder_address}Execute{folderCount + 1}\\";
+            string path = "";
+            if (isCountAdd)
+                path = $"{folder_address}Execute{folderCount + 1}\\";
+            else
+                path = $"{folder_address}Execute{folderCount + 0}\\";
             return path;
         }
 
@@ -1259,8 +1270,12 @@ namespace SPIL
                 open_hide_1 = false;
                 open_hide_2 = true;
                 //  HB_off();
-                hostOLSCommunication.Send("close_1");
-                hostOLSCommunication.Send("open_2");
+                if (machineSetting.MachineType == MachineTypes.SingleVision)
+                {
+                    hostOLSCommunication.Send("close_1");
+                    hostOLSCommunication.Send("open_2");
+                }
+
 
 
 
@@ -1271,8 +1286,11 @@ namespace SPIL
                 UpdateRadioButton(true, radioButton_Degree_45);
                 open_hide_1 = true;
                 open_hide_2 = false;
-                hostOLSCommunication.Send("open_1");
-                hostOLSCommunication.Send("close_2");
+                if (machineSetting.MachineType == MachineTypes.SingleVision)
+                {
+                    hostOLSCommunication.Send("open_1");
+                    hostOLSCommunication.Send("close_2");
+                }
                 // button_hb_on_Click(sender1, e1);
 
                 Send_Server("Mode,e>");
@@ -1312,6 +1330,7 @@ namespace SPIL
             UpdateGroupBox(false, gpBox_Sharpness);
             UpdateGroupBox(false, gpBox_AOI);
             isRemote = true;
+            isCountAdd = true;
 
 
         }
@@ -1346,7 +1365,7 @@ namespace SPIL
 
                 open_hide_1 = false;
                 open_hide_2 = false;
-
+                isCountAdd = true; //將判斷同次資料夾的狀態清除
                 HB_off();
                 isRemote = false;
                 tatalPoints = 20;
@@ -1530,12 +1549,16 @@ namespace SPIL
                     var cuniOffset = Convert.ToDouble(textBox_Mesument_CuNioffset.Text); //固定扣OFFSET
                     var cuOffset = Convert.ToDouble(textBox_Mesument_Cuoffset.Text);
 
-                    cuNi = (distance_CuNi * variable_data.Degree_Ratio) - cuniOffset;
-                    cu = (distance_Cu * variable_data.Degree_Ratio) - cuOffset;
-                    logger.WriteLog("AOI Measurment Distance" + Convert.ToString(cuNi));
-                    logger.WriteLog("AOI Measurment Distance1" + Convert.ToString(cu));
-                    UpdateTextbox(Convert.ToString(cuNi), textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
-                    UpdateTextbox(Convert.ToString(cu), textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
+                    cuNi = (distance_CuNi * variable_data.Degree_Ratio);
+                    cu = (distance_Cu * variable_data.Degree_Ratio);
+                    logger.WriteLog("AOI Measurment Distance:" + Convert.ToString(cuNi));
+                    logger.WriteLog("AOI Measurment Distance:" + Convert.ToString(cu));
+
+
+                    logger.WriteLog("AOI Measurment CuNiOffset :" + Convert.ToString(cuniOffset));
+                    logger.WriteLog("AOI Measurment CuOffset :" + Convert.ToString(cuOffset));
+                    UpdateTextbox(Convert.ToString(cuNi + cuniOffset), textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
+                    UpdateTextbox(Convert.ToString(cu + cuOffset), textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
                     isOK = true;
                 }
                 else
@@ -1544,7 +1567,8 @@ namespace SPIL
                     string error_value_string = "0";
                     UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
                     UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
-                    logger.WriteErrorLog("AOI Error!");
+                    logger.WriteErrorLog("AOI Meansure Error!");
+       
                     isOK = false;
 
                 }
@@ -1985,15 +2009,15 @@ namespace SPIL
                 StreamWriter SW_ = new StreamWriter(Setup_Data_address);
                 SW_.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");//<?xml version="1.0" encoding="utf-8" ?>
                 SW_.WriteLine("<SPIL_Program_Setup>");//
-                //
+                                                      //
                 SW_.WriteLine("  <Setup_Part Setup_Part=\"Motion Server\">");//
                 SW_.WriteLine("    <Setup Setup=\"IP_Port\">" + Convert.ToString(textBox_Port.Text) + "</Setup>");
                 SW_.WriteLine("  </Setup_Part>");//
-                //
+                                                 //
                 SW_.WriteLine("  <Setup_Part Setup_Part=\"AOI\">");//
                 SW_.WriteLine("    <Setup Setup=\"Vision_Pro_File\">" + Convert.ToString(textBox_Vision_Pro_File.Text) + "</Setup>");
                 SW_.WriteLine("  </Setup_Part>");//
-                //
+                                                 //
                 SW_.WriteLine("  <Setup_Part Setup_Part=\"OLS\">");//
                 SW_.WriteLine("    <Setup Setup=\"OLS_Name\">" + Convert.ToString(textBox_OLS_Program_Name.Text) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"Windows_Name\">" + Convert.ToString(textBox_Windows_Name.Text) + "</Setup>");
@@ -2039,12 +2063,12 @@ namespace SPIL
                 SW_.WriteLine("    <Setup Setup=\"hand_measurement_H\">" + Convert.ToString(textBox_hand_measure_H.Text) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"hand_measurement_W\">" + Convert.ToString(textBox_hand_measure_W.Text) + "</Setup>");
                 SW_.WriteLine("  </Setup_Part>");//
-                //
+                                                 //
                 SW_.WriteLine("  <Setup_Part Setup_Part=\"Delete Data\">");//
                 SW_.WriteLine("    <Setup Setup=\"Delete_Time_Setting\">" + Convert.ToString(delete_data_setting) + "</Setup>");
                 SW_.WriteLine("  </Setup_Part>");//
-                //
-                //
+                                                 //
+                                                 //
                 SW_.WriteLine("  <Setup_Part Setup_Part=\"Excel File\">");//
                 SW_.WriteLine("    <Setup Setup=\"Save_File_Path_1\">" + Convert.ToString(textBox_Excel_File_Path_1.Text) + "</Setup>");
                 SW_.WriteLine("    <Setup Setup=\"Save_File_Path_2\">" + Convert.ToString(textBox_Excel_File_Path_2.Text) + "</Setup>");
@@ -2055,7 +2079,7 @@ namespace SPIL
                 //
 
                 SW_.WriteLine("  </Setup_Part>");//
-                //
+                                                 //
                 SW_.WriteLine("</SPIL_Program_Setup>");//
                 SW_.Close();
                 //
@@ -2163,7 +2187,7 @@ namespace SPIL
         {
             try
             {
-                Cal_File_Address();
+                //            Cal_File_Address(); 20240517 註解
                 //20211224-S
                 //double[] zero_degree_ = new double[9];
                 //zero_degree_[0] = Convert.ToDouble(textBox_Mesument_1_0.Text);
@@ -2925,7 +2949,7 @@ namespace SPIL
 
                    }
 
-   */
+        */
                 var ii = Thread.CurrentThread.ManagedThreadId;
 
                 List<string> names = new List<string>();
@@ -3033,7 +3057,7 @@ namespace SPIL
                 string[] file_list_part_name = fileName.Split('_');
                 //使用'_'分割檔名
                 string save_degree_0_name = "";
-                logger.WriteLog("split by _ keyword:");
+            //    logger.WriteLog("split by _ keyword:");
                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(fileName).Split('_');
                 //foreach(string s in split_input_file_names)
                 //{
@@ -3047,7 +3071,7 @@ namespace SPIL
                     logger.WriteLog("Delete File : " + save_full_file_name);
                 }
                 File.Move(fileName, save_full_file_name);
-                logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
+        //        logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
             }
             catch (Exception ex)
             {
@@ -3092,12 +3116,18 @@ namespace SPIL
                                     tmp.Add(tmp1);
                                 }
                                 reader.Close();
+
+
                                 //從GUI介面中0度height 欄位取出對應csv數值
                                 int row = Convert.ToInt32(textBox_0_degree_height_Num.Text) - 1;
                                 int column = textBox_0_degree_height_A.Text.ToCharArray()[0] - 'C';
+
+                                var offset0 = Convert.ToDouble(textBox_Mesument_0offset.Text);
+                                var csvValue = Convert.ToDouble(tmp[row][column]);
                                 //顯示在GUI Measurement 對應 point點位中
-                                imshowValueInMeasurementGUI(tmp[row][column]);
-                                logger.WriteLog("get measurement value: " + tmp[row][column]);
+                                //imshowValueInMeasurementGUI(tmp[row][column]);
+                                imshowValueInMeasurementGUI(Convert.ToString(csvValue + offset0));
+                                logger.WriteLog("get measurement value: " + tmp[row][column] + "Offset :" + textBox_Mesument_0offset.Text);
                                 //移動檔案
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
@@ -3159,7 +3189,7 @@ namespace SPIL
                             {
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
-                                logger.WriteLog("split by _ keyword:");
+             //                   logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
@@ -3177,7 +3207,7 @@ namespace SPIL
                             {
                                 //使用'_'分割檔名
                                 string save_degree_45_name = "";
-                                logger.WriteLog("split by _ keyword:");
+                 //               logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
@@ -3333,12 +3363,15 @@ namespace SPIL
         {
             try
             {
-                logger.WriteLog("Open Hide 1");
+                if (machineSetting.MachineType == MachineTypes.SingleVision)
+                {
+                    logger.WriteLog("Open Hide 1");
 
-                Thread.Sleep(100);
+                    Thread.Sleep(100);
 
-                hostOLSCommunication.Send("open_1");
-                Thread.Sleep(100);
+                    hostOLSCommunication.Send("open_1");
+                    Thread.Sleep(100);
+                }
             }
             catch (Exception error)
             {
@@ -3364,12 +3397,14 @@ namespace SPIL
         {
             try
             {
-                logger.WriteLog("Open Hide 2");
+                if (machineSetting.MachineType == MachineTypes.SingleVision)
+                {
+                    logger.WriteLog("Open Hide 2");
 
-                //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+                    //clientSocket_OLS.Send(StringToByteArray(send_data_str));
 
-                hostOLSCommunication.Send("open_2");
-
+                    hostOLSCommunication.Send("open_2");
+                }
 
             }
             catch (Exception error)
@@ -3381,9 +3416,11 @@ namespace SPIL
         {
             try
             {
-                logger.WriteLog("Close Hide 2");
-                hostOLSCommunication.Send("close_2");
-
+                if (machineSetting.MachineType == MachineTypes.SingleVision)
+                {
+                    logger.WriteLog("Close Hide 2");
+                    hostOLSCommunication.Send("close_2");
+                }
 
             }
             catch (Exception error)
@@ -4726,13 +4763,14 @@ namespace SPIL
 
         private void HB_off()
         {
+            if (machineSetting.MachineType == MachineTypes.SingleVision)
+            {
+                //clientSocket_OLS.Send(StringToByteArray(send_data_str));
+                Thread.Sleep(100);
 
-            //clientSocket_OLS.Send(StringToByteArray(send_data_str));
-            Thread.Sleep(100);
-
-            hostOLSCommunication.Send("close_hb");
-            Thread.Sleep(100);
-
+                hostOLSCommunication.Send("close_hb");
+                Thread.Sleep(100);
+            }
         }
 
 
