@@ -23,7 +23,11 @@ namespace SPIL.model
             //}
 
         }
-
+      
+        public double Mesument_0offset { get; set; }
+        public double Mesument_CuNioffset { get; set; }
+        public double Mesument_Cuoffset { get; set; }
+ 
         public AOIFunction AOIAlgorithmFunction { get; set; }
 
 
@@ -108,6 +112,9 @@ namespace SPIL.model
             //未來新增不同屬性  這裡都要不斷新增
 
             AOIAlgorithmFunction = mRecipe.AOIAlgorithmFunction ;
+            Mesument_0offset = mRecipe.Mesument_0offset;
+            Mesument_CuNioffset = mRecipe.Mesument_CuNioffset;
+            Mesument_Cuoffset = mRecipe.Mesument_Cuoffset;
             //SharpVppPath = mRecipe.SharpVppPath;
 
 

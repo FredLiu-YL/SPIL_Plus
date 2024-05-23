@@ -4625,14 +4625,14 @@ namespace SPIL
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1015, 1061);
+            this.ClientSize = new System.Drawing.Size(1015, 1461);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("新細明體", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "YuanLi OLS AOI-20240517";
+            this.Text = "YuanLi OLS AOI-20240523";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

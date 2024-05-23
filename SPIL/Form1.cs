@@ -431,7 +431,7 @@ namespace SPIL
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
                    pictureBox_OLSConnect_Status.Visible = false;
-                //    panel_Offset.Visible = true;//只有台中有
+                   panel_Offset.Visible = true;//只有台中有
                 }
 
                 await cogt1;//等待 AOI 元件初始化完成
@@ -660,7 +660,7 @@ namespace SPIL
                     folder_add = file_add;
                     Check_Folder_Exist(folder_add);
                 }
-                if (machineSetting.MachineType == MachineTypes.DoubleVision)
+              //  if (machineSetting.MachineType == MachineTypes.DoubleVision)
                 {
 
 
@@ -1208,16 +1208,15 @@ namespace SPIL
                     isReadRecipePath = path;
                     LoadRecipe(path);
 
-
-                    /*DirectoryInfo vpp_file_folder = new DirectoryInfo(variable_data.Vision_Pro_File);
-                    string vpp_file_name = vpp_file_folder.GetFiles(recipe_name.Substring(recipe_len - 4) + "*" + ".vpp")[0].FullName;              
-                    AOI_Measurement = new SPILBumpMeasure(vpp_file_name);*/
+  
 
                     // AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
                     if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
                         AOI_Measurement.MeasureToolBlock = aoIFlow.MeasureToolBlock;//選用 圓形的VPP
                     else
                         AOI_Measurement.MeasureToolBlock = aoIFlow2.MeasureToolBlock;//選用 八角形的VPP
+
+                    RecipeToUI(sPILRecipe);
 
                     //綁定cogRecordDisplay 用來存toolblock結果圖
                     AOI_Measurement.cogRecord_save_result_img = cogRecordDisplay1;
@@ -1325,6 +1324,26 @@ namespace SPIL
             open_hide_2 = true;
             //
             tatalPoints = totoal_Point;
+
+            if (machineSetting.MachineType == MachineTypes.SingleVision)//彰化廠需要執行之前自己刪除圖片
+            {
+                FileInfo[] jpgList = folder_info.GetFiles("*.jpg");
+                foreach (var item in jpgList)
+                    item.Delete();
+                FileInfo[] bmpList = folder_info.GetFiles("*.bmp");
+                foreach (var item in bmpList)
+                    item.Delete();
+
+                string[] files = Directory.GetFiles(machineSetting.SharpnessImagesFolder);
+                var images = files.Where(f => f.Contains("jpg") || f.Contains("bmp"));
+                foreach (var item in images)
+                {
+                    File.Delete(item);
+                }
+
+            }
+
+
             Send_Server("Start,e>");
             UpdateGroupBox(false, groupBox2);
             UpdateGroupBox(false, gpBox_Sharpness);
@@ -3653,8 +3672,7 @@ namespace SPIL
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
                 UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
-                MessageBox.Show("讀取完成");
-
+             
                 switch (sPILRecipe.AOIAlgorithmFunction)
                 {
                     case AOIFunction.Circle:
@@ -3666,12 +3684,12 @@ namespace SPIL
                     default:
                         break;
                 }
-
-                //sPILRecipe.AOIAlgorithmFunction = (AOIFunction)tabCtrl_AlgorithmList.SelectedIndex;
+                RecipeToUI(sPILRecipe);
 
 
                 gpBox_AOI.Enabled = true;
                 gpBox_Sharpness.Enabled = true;
+                MessageBox.Show("讀取完成");
             }
             catch (Exception ex)
             {
@@ -3679,6 +3697,8 @@ namespace SPIL
                 MessageBox.Show(ex.Message);
             }
         }
+        
+
         private void btn_RecipeSave_Click(object sender, EventArgs e)
         {
             try
@@ -3693,8 +3713,10 @@ namespace SPIL
                     var result = MessageBox.Show("Do you want to replace the existing file?", "", MessageBoxButtons.OKCancel);
                     if (result == DialogResult.Cancel) return;
                 }
-
-
+                //UI資料 轉Recipe
+                sPILRecipe.Mesument_0offset =Convert.ToDouble( textBox_Mesument_0offset.Text);
+                sPILRecipe.Mesument_CuNioffset = Convert.ToDouble(textBox_Mesument_CuNioffset.Text);
+                sPILRecipe.Mesument_Cuoffset = Convert.ToDouble(textBox_Mesument_Cuoffset.Text);
 
                 SaveRecipe(sPILRecipe, path);
                 MessageBox.Show("存檔完成");
@@ -3898,8 +3920,7 @@ namespace SPIL
         {
             try
             {
-
-
+                 
                 /* Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
                  Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
                  Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
@@ -3958,7 +3979,7 @@ namespace SPIL
                 tBx_CuValue.Text = result.cu.ToString("0.000");
                 await Task.Delay(1000);
 
-
+               
 
             }
             catch (Exception ex)
@@ -3971,6 +3992,7 @@ namespace SPIL
                 AOI_Measurement.ShowRecord -= UpdateAOIRecord;
             }
         }
+
 
         private void btn_AOIOpenImage1_Click(object sender, EventArgs e)
         {
@@ -4688,7 +4710,23 @@ namespace SPIL
                 machineSetting.Save($"{systemPath}\\machineConfig.cfg");
             }
         }
+        /// <summary>
+        /// 將Recipe資料 寫入UI
+        /// </summary>
+        /// <param name="spilRecipe"></param>
+        private void RecipeToUI(SPILRecipe spilRecipe)
+        {
 
+
+            UpdateTextbox(spilRecipe.Mesument_0offset.ToString(), textBox_Mesument_0offset);
+            UpdateTextbox(spilRecipe.Mesument_CuNioffset.ToString(), textBox_Mesument_CuNioffset);
+            UpdateTextbox(spilRecipe.Mesument_Cuoffset.ToString(), textBox_Mesument_Cuoffset);
+            //    textBox_Mesument_0offset.Text = spilRecipe.Mesument_0offset.ToString();
+            //    textBox_Mesument_CuNioffset.Text = spilRecipe.Mesument_CuNioffset.ToString();
+            //     textBox_Mesument_Cuoffset.Text = spilRecipe.Mesument_Cuoffset.ToString();
+
+
+        }
         private void button7_Click(object sender, EventArgs e)
         {
             var size = this.Size;
