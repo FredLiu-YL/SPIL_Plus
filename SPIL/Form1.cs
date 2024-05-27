@@ -1343,7 +1343,7 @@ namespace SPIL
 
             }
 
-
+            isReadRecipePath = "";//清除先前讀取過的recipe資料，確保每次start 都會讀取一次recipe
             Send_Server("Start,e>");
             UpdateGroupBox(false, groupBox2);
             UpdateGroupBox(false, gpBox_Sharpness);
@@ -4721,6 +4721,12 @@ namespace SPIL
             UpdateTextbox(spilRecipe.Mesument_0offset.ToString(), textBox_Mesument_0offset);
             UpdateTextbox(spilRecipe.Mesument_CuNioffset.ToString(), textBox_Mesument_CuNioffset);
             UpdateTextbox(spilRecipe.Mesument_Cuoffset.ToString(), textBox_Mesument_Cuoffset);
+
+            //讀到主畫面顯示 offet
+            UpdateTextbox(spilRecipe.Mesument_0offset.ToString(), tBx_OnlyReadOffset0);
+            UpdateTextbox(spilRecipe.Mesument_CuNioffset.ToString(), tBx_OnlyReadOffsetCuNi);
+            UpdateTextbox(spilRecipe.Mesument_Cuoffset.ToString(), tBx_OnlyReadOffsetCu);
+            
             //    textBox_Mesument_0offset.Text = spilRecipe.Mesument_0offset.ToString();
             //    textBox_Mesument_CuNioffset.Text = spilRecipe.Mesument_CuNioffset.ToString();
             //     textBox_Mesument_Cuoffset.Text = spilRecipe.Mesument_Cuoffset.ToString();
