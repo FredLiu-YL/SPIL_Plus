@@ -428,10 +428,12 @@ namespace SPIL
                     groupBox_test_item.Visible = false;
                 }
                 panel_Offset.Visible = false;
+                panel_OffsetOnRecipe.Visible = false;
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
                    pictureBox_OLSConnect_Status.Visible = false;
                    panel_Offset.Visible = true;//只有台中有
+                    panel_OffsetOnRecipe.Visible = true;
                 }
 
                 await cogt1;//等待 AOI 元件初始化完成
@@ -2459,9 +2461,10 @@ namespace SPIL
                     // hostOLSCommunication.ReceiverMessage += ReciveMessage;
                     hostOLSCommunication.ReceiverException += ReciveException;
                     hostOLSCommunication.ReceiverIsConnect += ReciveOLSIsConnect;
-
-                    string send_data_str = get_socket_send_data();//更新遮罩數值
-                    hostOLSCommunication.Send(send_data_str);
+                    
+                    //更新遮罩數值
+                    //   string send_data_str = get_socket_send_data(); //移到ReciveOLSIsConnect 確保每次連回來都可以給數值
+                    //  hostOLSCommunication.Send(send_data_str);
                 }
 
             }
@@ -4546,6 +4549,9 @@ namespace SPIL
             {
                 UpdatePicturebox(I_Green, pictureBox_OLSConnect_Status);
                 logger.WriteLog("與OLS設備連線 ");
+
+                string send_data_str = get_socket_send_data();//更新遮罩數值
+                hostOLSCommunication.Send(send_data_str);
             }
 
             else

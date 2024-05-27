@@ -414,6 +414,7 @@ namespace SPIL
             this.timer_check_delete_file = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker_delete_old_file = new System.ComponentModel.BackgroundWorker();
             this.timer_Open_Hide = new System.Windows.Forms.Timer(this.components);
+            this.panel_OffsetOnRecipe = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -471,6 +472,7 @@ namespace SPIL
             this.groupBox4.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage12.SuspendLayout();
+            this.panel_OffsetOnRecipe.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_OLS_Folder
@@ -2691,13 +2693,7 @@ namespace SPIL
             // gpBox_AOI
             // 
             this.gpBox_AOI.BackColor = System.Drawing.Color.Snow;
-            this.gpBox_AOI.Controls.Add(this.label103);
-            this.gpBox_AOI.Controls.Add(this.label104);
-            this.gpBox_AOI.Controls.Add(this.label105);
-            this.gpBox_AOI.Controls.Add(this.label102);
-            this.gpBox_AOI.Controls.Add(this.textBox_Mesument_Cuoffset);
-            this.gpBox_AOI.Controls.Add(this.textBox_Mesument_0offset);
-            this.gpBox_AOI.Controls.Add(this.textBox_Mesument_CuNioffset);
+            this.gpBox_AOI.Controls.Add(this.panel_OffsetOnRecipe);
             this.gpBox_AOI.Controls.Add(this.rdBtn_Octagon);
             this.gpBox_AOI.Controls.Add(this.rdBtn_circle);
             this.gpBox_AOI.Controls.Add(this.tabCtrl_AlgorithmList);
@@ -2729,7 +2725,7 @@ namespace SPIL
             // 
             this.label103.AutoSize = true;
             this.label103.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label103.Location = new System.Drawing.Point(853, 239);
+            this.label103.Location = new System.Drawing.Point(343, 16);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(30, 19);
             this.label103.TabIndex = 201;
@@ -2739,7 +2735,7 @@ namespace SPIL
             // 
             this.label104.AutoSize = true;
             this.label104.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label104.Location = new System.Drawing.Point(736, 239);
+            this.label104.Location = new System.Drawing.Point(226, 16);
             this.label104.Name = "label104";
             this.label104.Size = new System.Drawing.Size(68, 19);
             this.label104.TabIndex = 200;
@@ -2749,7 +2745,7 @@ namespace SPIL
             // 
             this.label105.AutoSize = true;
             this.label105.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label105.Location = new System.Drawing.Point(615, 239);
+            this.label105.Location = new System.Drawing.Point(105, 16);
             this.label105.Name = "label105";
             this.label105.Size = new System.Drawing.Size(104, 19);
             this.label105.TabIndex = 199;
@@ -2759,7 +2755,7 @@ namespace SPIL
             // 
             this.label102.AutoSize = true;
             this.label102.Font = new System.Drawing.Font("新細明體", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label102.Location = new System.Drawing.Point(516, 275);
+            this.label102.Location = new System.Drawing.Point(6, 54);
             this.label102.Name = "label102";
             this.label102.Size = new System.Drawing.Size(74, 27);
             this.label102.TabIndex = 198;
@@ -2768,7 +2764,7 @@ namespace SPIL
             // textBox_Mesument_Cuoffset
             // 
             this.textBox_Mesument_Cuoffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox_Mesument_Cuoffset.Location = new System.Drawing.Point(839, 275);
+            this.textBox_Mesument_Cuoffset.Location = new System.Drawing.Point(329, 54);
             this.textBox_Mesument_Cuoffset.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Mesument_Cuoffset.MaxLength = 15;
             this.textBox_Mesument_Cuoffset.Name = "textBox_Mesument_Cuoffset";
@@ -2780,7 +2776,7 @@ namespace SPIL
             // 
             this.textBox_Mesument_0offset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox_Mesument_0offset.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_Mesument_0offset.Location = new System.Drawing.Point(619, 275);
+            this.textBox_Mesument_0offset.Location = new System.Drawing.Point(109, 54);
             this.textBox_Mesument_0offset.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Mesument_0offset.MaxLength = 15;
             this.textBox_Mesument_0offset.Name = "textBox_Mesument_0offset";
@@ -2791,7 +2787,7 @@ namespace SPIL
             // textBox_Mesument_CuNioffset
             // 
             this.textBox_Mesument_CuNioffset.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox_Mesument_CuNioffset.Location = new System.Drawing.Point(727, 275);
+            this.textBox_Mesument_CuNioffset.Location = new System.Drawing.Point(217, 54);
             this.textBox_Mesument_CuNioffset.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Mesument_CuNioffset.MaxLength = 15;
             this.textBox_Mesument_CuNioffset.Name = "textBox_Mesument_CuNioffset";
@@ -4711,6 +4707,20 @@ namespace SPIL
             this.timer_Open_Hide.Interval = 1;
             this.timer_Open_Hide.Tick += new System.EventHandler(this.timer_Open_Hide_Tick);
             // 
+            // panel_OffsetOnRecipe
+            // 
+            this.panel_OffsetOnRecipe.Controls.Add(this.label102);
+            this.panel_OffsetOnRecipe.Controls.Add(this.label103);
+            this.panel_OffsetOnRecipe.Controls.Add(this.textBox_Mesument_CuNioffset);
+            this.panel_OffsetOnRecipe.Controls.Add(this.label104);
+            this.panel_OffsetOnRecipe.Controls.Add(this.textBox_Mesument_0offset);
+            this.panel_OffsetOnRecipe.Controls.Add(this.label105);
+            this.panel_OffsetOnRecipe.Controls.Add(this.textBox_Mesument_Cuoffset);
+            this.panel_OffsetOnRecipe.Location = new System.Drawing.Point(508, 255);
+            this.panel_OffsetOnRecipe.Name = "panel_OffsetOnRecipe";
+            this.panel_OffsetOnRecipe.Size = new System.Drawing.Size(447, 98);
+            this.panel_OffsetOnRecipe.TabIndex = 202;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -4806,6 +4816,8 @@ namespace SPIL
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.tabPage12.ResumeLayout(false);
+            this.panel_OffsetOnRecipe.ResumeLayout(false);
+            this.panel_OffsetOnRecipe.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5194,6 +5206,7 @@ namespace SPIL
         private System.Windows.Forms.TextBox tBx_OnlyReadOffsetCu;
         private System.Windows.Forms.TextBox tBx_OnlyReadOffsetCuNi;
         private System.Windows.Forms.TextBox tBx_OnlyReadOffset0;
+        private System.Windows.Forms.Panel panel_OffsetOnRecipe;
     }
 }
 
