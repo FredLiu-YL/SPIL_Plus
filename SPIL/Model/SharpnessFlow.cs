@@ -90,6 +90,7 @@ namespace SPIL.Model
                 }
                 else
                 {
+                    int i = 0;
                     //計算清晰度
                     foreach (var bmp in bitmaps)
                     {
@@ -97,7 +98,7 @@ namespace SPIL.Model
 
                         results.Add(sharpnessResult.result);
                         WriteCogResult?.Invoke(sharpnessResult.result, sharpnessResult.cogRecord);
-
+                        i++;
                     }
                 }
 
@@ -126,7 +127,8 @@ namespace SPIL.Model
 
                 //       var searchScore2s = results.Select((r, i) => (r.SearchScore2, i)).OrderBy(o => o.SearchScore2).Take(10);
                 //排序後找出最大20張圖
-                var searchScore12s = results.Select((result, index) => (result, index)).Where(r => r.result != null).OrderByDescending(o => o.result.SearchScore2).Take(sharpImageIncludeNumber).ToList();
+                var selectSearchScore2s = results.Select((result, index) => (result, index)).Where(r => r.result != null);
+                var searchScore12s = selectSearchScore2s.OrderByDescending(o => o.result.SearchScore2).Take(sharpImageIncludeNumber).ToList();
                 var image3 = searchScore12s.OrderByDescending(o => o.result.Score3).First();
 
 
@@ -175,7 +177,7 @@ namespace SPIL.Model
                 ICogRecord cogRecord = measureToolBlock.CreateLastRunRecord().SubRecords[0];
                 if (vision_pro_run_result != CogToolResultConstants.Accept) return (null, null);
                 SharpnessResult result = new SharpnessResult(r1, r2, s0, s1, s2);
-
+                
                 return (result, cogRecord);
 
             }
@@ -223,7 +225,11 @@ namespace SPIL.Model
             }
         }
 
+        public void SaveToolblock(string path)
+        {
+            CogSerializer.SaveObjectToFile(measureToolBlock, path);
 
+        }
         private List<SharpnessResult> Mulitmeasure(Bitmap[] bmps)
         {
             List<SharpnessResult> results = new List<SharpnessResult>();

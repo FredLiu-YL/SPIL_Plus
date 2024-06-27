@@ -431,8 +431,8 @@ namespace SPIL
                 panel_OffsetOnRecipe.Visible = false;
                 if (machineSetting.MachineType == MachineTypes.DoubleVision)//雙相機  0度與45度分開 ，台中矽品
                 {
-                   pictureBox_OLSConnect_Status.Visible = false;
-                   panel_Offset.Visible = true;//只有台中有
+                    pictureBox_OLSConnect_Status.Visible = false;
+                    panel_Offset.Visible = true;//只有台中有
                     panel_OffsetOnRecipe.Visible = true;
                 }
 
@@ -662,7 +662,7 @@ namespace SPIL
                     folder_add = file_add;
                     Check_Folder_Exist(folder_add);
                 }
-              //  if (machineSetting.MachineType == MachineTypes.DoubleVision)
+                //  if (machineSetting.MachineType == MachineTypes.DoubleVision)
                 {
 
 
@@ -1210,7 +1210,7 @@ namespace SPIL
                     isReadRecipePath = path;
                     LoadRecipe(path);
 
-  
+
 
                     // AOI_Measurement = new SPILBumpMeasure(aoIFlow.MeasureToolBlock);
                     if (sPILRecipe.AOIAlgorithmFunction == AOIFunction.Circle)
@@ -1368,12 +1368,30 @@ namespace SPIL
         private void Receive_Data(string dataNi, string dataCu)
         {
 
-            var ni = Convert.ToDouble(dataNi) * variable_data.Degree_Ratio;
-            var cu = Convert.ToDouble(dataCu) * variable_data.Degree_Ratio;
+            var cuniOffset = Convert.ToDouble(textBox_Mesument_CuNioffset.Text); //固定扣OFFSET
+            var cuOffset = Convert.ToDouble(textBox_Mesument_Cuoffset.Text);
 
-            UpdateTextbox(ni.ToString(), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
-            UpdateTextbox(cu.ToString(), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+          var  cuNi = Convert.ToDouble( dataNi) * variable_data.Degree_Ratio;
+          var  cu = Convert.ToDouble(dataCu) * variable_data.Degree_Ratio;
+            logger.WriteLog("AOI Measurment Distance:" + Convert.ToString(cuNi));
+            logger.WriteLog("AOI Measurment Distance:" + Convert.ToString(cu));
+
+
+            logger.WriteLog("AOI Measurment CuNiOffset :" + Convert.ToString(cuniOffset));
+            logger.WriteLog("AOI Measurment CuOffset :" + Convert.ToString(cuOffset));
+            UpdateTextbox(Convert.ToString(cuNi + cuniOffset), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
+            UpdateTextbox(Convert.ToString(cu + cuOffset), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+
+
+
+        //    var ni = Convert.ToDouble(dataNi) * variable_data.Degree_Ratio;
+        //    var cu = Convert.ToDouble(dataCu) * variable_data.Degree_Ratio;
+
+        //    UpdateTextbox(ni.ToString(), textBoxes_CuNi_1_20[Convert.ToInt32(textBox_Point.Text)]);
+        //    UpdateTextbox(cu.ToString(), textBoxes_Cu_1_20[Convert.ToInt32(textBox_Point.Text)]);
+         
             Send_Server("Data,e>");
+        
         }
         private void Receive_Stop(string receive_data)
         {
@@ -1589,7 +1607,7 @@ namespace SPIL
                     UpdateTextbox(error_value_string, textBoxes_CuNi_1_20[Convert.ToInt32(inPoint)]);
                     UpdateTextbox(error_value_string, textBoxes_Cu_1_20[Convert.ToInt32(inPoint)]);
                     logger.WriteErrorLog("AOI Meansure Error!");
-       
+
                     isOK = false;
 
                 }
@@ -2461,7 +2479,7 @@ namespace SPIL
                     // hostOLSCommunication.ReceiverMessage += ReciveMessage;
                     hostOLSCommunication.ReceiverException += ReciveException;
                     hostOLSCommunication.ReceiverIsConnect += ReciveOLSIsConnect;
-                    
+
                     //更新遮罩數值
                     //   string send_data_str = get_socket_send_data(); //移到ReciveOLSIsConnect 確保每次連回來都可以給數值
                     //  hostOLSCommunication.Send(send_data_str);
@@ -3079,7 +3097,7 @@ namespace SPIL
                 string[] file_list_part_name = fileName.Split('_');
                 //使用'_'分割檔名
                 string save_degree_0_name = "";
-            //    logger.WriteLog("split by _ keyword:");
+                //    logger.WriteLog("split by _ keyword:");
                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(fileName).Split('_');
                 //foreach(string s in split_input_file_names)
                 //{
@@ -3093,7 +3111,7 @@ namespace SPIL
                     logger.WriteLog("Delete File : " + save_full_file_name);
                 }
                 File.Move(fileName, save_full_file_name);
-        //        logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
+                //        logger.WriteLog("Move File : " + fileName + " Move To:" + save_full_file_name);
             }
             catch (Exception ex)
             {
@@ -3211,7 +3229,7 @@ namespace SPIL
                             {
                                 //使用'_'分割檔名
                                 string save_degree_0_name = "";
-             //                   logger.WriteLog("split by _ keyword:");
+                                //                   logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
@@ -3229,7 +3247,7 @@ namespace SPIL
                             {
                                 //使用'_'分割檔名
                                 string save_degree_45_name = "";
-                 //               logger.WriteLog("split by _ keyword:");
+                                //               logger.WriteLog("split by _ keyword:");
                                 string[] split_input_file_names = Path.GetFileNameWithoutExtension(FIle_List[i].FullName).Split('_');
                                 foreach (string s in split_input_file_names)
                                 {
@@ -3291,7 +3309,7 @@ namespace SPIL
                         FIle_List = folder_info.GetFiles("*.bmp");
                     }
                     List<string> file_list_part_name = new List<string>();
-                     
+
                     //try
                     //{
                     for (int i = 0; i < FIle_List.Length; i++)
@@ -3675,7 +3693,7 @@ namespace SPIL
                 string path = $"{systemPath}\\Recipe\\{name}";
                 LoadRecipe(path);
                 UpdateTextbox(new DirectoryInfo(path).Name, tBx_RecipeName);
-             
+
                 switch (sPILRecipe.AOIAlgorithmFunction)
                 {
                     case AOIFunction.Circle:
@@ -3700,7 +3718,7 @@ namespace SPIL
                 MessageBox.Show(ex.Message);
             }
         }
-        
+
 
         private void btn_RecipeSave_Click(object sender, EventArgs e)
         {
@@ -3717,7 +3735,7 @@ namespace SPIL
                     if (result == DialogResult.Cancel) return;
                 }
                 //UI資料 轉Recipe
-                sPILRecipe.Mesument_0offset =Convert.ToDouble( textBox_Mesument_0offset.Text);
+                sPILRecipe.Mesument_0offset = Convert.ToDouble(textBox_Mesument_0offset.Text);
                 sPILRecipe.Mesument_CuNioffset = Convert.ToDouble(textBox_Mesument_CuNioffset.Text);
                 sPILRecipe.Mesument_Cuoffset = Convert.ToDouble(textBox_Mesument_Cuoffset.Text);
 
@@ -3905,7 +3923,8 @@ namespace SPIL
                 // 取得資料夾內所有資料夾的路徑
                 string[] subDirectories = Directory.GetDirectories(folderPath);
                 CB_RecipeList.Items.Clear();
-                var dirNames = subDirectories.Select(d => new DirectoryInfo(d).Name);
+                var dirNames = subDirectories.Select(d => new DirectoryInfo(d).Name).ToArray();
+                Thread.Sleep(100);
                 foreach (var item in dirNames)
                 {
                     CB_RecipeList.Items.Add(item);
@@ -3923,7 +3942,7 @@ namespace SPIL
         {
             try
             {
-                 
+
                 /* Bitmap img1 = new Bitmap(txB_RecipePicName1.Text);
                  Bitmap img2 = new Bitmap(txB_RecipePicName2.Text);
                  Bitmap img3 = new Bitmap(txB_RecipePicName3.Text);
@@ -3932,20 +3951,20 @@ namespace SPIL
                 if (textBox_Wafer_ID.Text == "")
                 {
                     textBox_Wafer_ID.Text = "WaferID";
-                   // MessageBox.Show("WaferID no value");
-                   // return;
+                    // MessageBox.Show("WaferID no value");
+                    // return;
                 }
                 if (textBox_RFID.Text == "")
                 {
                     textBox_RFID.Text = "RFID";
-                   // MessageBox.Show("RFID no value");
-                   //  return;
+                    // MessageBox.Show("RFID no value");
+                    //  return;
                 }
                 if (textBox_Slot.Text == "")
                 {
                     textBox_Slot.Text = "Slot";
-                   // MessageBox.Show("Slot no value");
-                   //  return;
+                    // MessageBox.Show("Slot no value");
+                    //  return;
                 }
                 CancelManualAOI();
 
@@ -3982,7 +4001,7 @@ namespace SPIL
                 tBx_CuValue.Text = result.cu.ToString("0.000");
                 await Task.Delay(1000);
 
-               
+
 
             }
             catch (Exception ex)
@@ -4124,7 +4143,17 @@ namespace SPIL
                 //  cogRecordDisplay2.Size = new System.Drawing.Size(img1.Width, img1.Height);
                 var sharpResult = sharpnessFlow.Measurement(img1);
 
-                if (sharpResult.result == null) throw new Exception(sharpnessFlow.ResultMessage);
+                if (sharpResult.result == null)
+                {
+                    tbx_SearchScore1.Text = "0";
+                    tbx_SearchScore2.Text = "0";
+                    tbx_SharpnessScore1.Text = "0";
+                    tbx_SharpnessScore2.Text = "0";
+                    tbx_SharpnessScore3.Text = "0";
+
+                    throw new Exception(sharpnessFlow.ResultMessage);
+
+                }
 
                 tbx_SearchScore1.Text = sharpResult.result.SearchScore1.ToString("0.00000");
                 tbx_SearchScore2.Text = sharpResult.result.SearchScore2.ToString("0.00000");
@@ -4390,7 +4419,7 @@ namespace SPIL
 
                         bmpNameList.Clear();
                         //一次跑5張
-                        int dequeuecount = Queuefiles.Count >= 5 ? 5 : Queuefiles.Count;
+                        int dequeuecount = Queuefiles.Count >= 5? 5 : Queuefiles.Count;
 
                         for (int i = 0; i < dequeuecount; i++)
                         {
@@ -4732,7 +4761,7 @@ namespace SPIL
             UpdateTextbox(spilRecipe.Mesument_0offset.ToString(), tBx_OnlyReadOffset0);
             UpdateTextbox(spilRecipe.Mesument_CuNioffset.ToString(), tBx_OnlyReadOffsetCuNi);
             UpdateTextbox(spilRecipe.Mesument_Cuoffset.ToString(), tBx_OnlyReadOffsetCu);
-            
+
             //    textBox_Mesument_0offset.Text = spilRecipe.Mesument_0offset.ToString();
             //    textBox_Mesument_CuNioffset.Text = spilRecipe.Mesument_CuNioffset.ToString();
             //     textBox_Mesument_Cuoffset.Text = spilRecipe.Mesument_Cuoffset.ToString();
@@ -4812,6 +4841,24 @@ namespace SPIL
         {
             Receive_InPos(2);
 
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+           SaveFileDialog dlg = new SaveFileDialog();
+
+            dlg.Filter = "ToolBlock files (*.vpp)|*.vpp";
+            var result = dlg.ShowDialog();
+            if (result == DialogResult.OK)
+            { 
+
+                sharpnessFlow.SaveToolblock(dlg.FileName); 
+            }
+        }
+
+        private void CB_RecipeList_MouseDown(object sender, MouseEventArgs e)
+        {
+           
         }
 
         private void HB_off()
